@@ -49,7 +49,7 @@ To setup the TODO shortcut in VSCode:
   "body": [
     "$LINE_COMMENT TODO(<your_email_address>, ${1:$CURRENT_MONTH}/${2:$CURRENT_DATE}/${3:$CURRENT_YEAR}): $0"
   ],
-  "description": "Insert TODO comment with your email address and expected date of completion"
+  "description": "Insert TODO comment with expected date of completion"
 }
 ```
 4. Replace `<your_email_address>` with your email address.
