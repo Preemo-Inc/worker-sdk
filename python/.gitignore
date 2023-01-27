@@ -1,0 +1,5 @@
+# unencrypted secrets
+.env*
+secrets.env
+.*-env
+
