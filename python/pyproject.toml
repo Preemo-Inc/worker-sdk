@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "preemo_worker_sdk"
+version = "0.1.0"
+description = ""
+authors = [
+  "Forrest Moret <forrest@preemo.io>",
+  "Adrian Miguel <adrian@preemo.io>",
+]
+
+[tool.poetry.dependencies]
+python = "3.10.2"
+
+[tool.poetry.dev-dependencies]
+autoflake = "1.4"
+black = "22.3.0"
+flake8 = "4.0.1"
+isort = "5.10.1"
+mypy = "0.961"
+pep8-naming = "0.13.0"
+
+[tool.isort]
+profile = "black"
+
+# mypy options copied from https://blog.wolt.com/engineering/2021/09/30/professional-grade-mypy-configuration/
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_unimported = true
+disallow_untyped_defs = true
+no_implicit_optional = true
+show_error_codes = true
+warn_return_any = true
+warn_unused_ignores = true
