@@ -7,6 +7,7 @@ from pprint import pprint
 template_paths = [
     ".gcloudignore.jinja2",
     "python/Dockerfile.build.dockerignore.jinja2",
+    "template_renderer/Dockerfile.build.dockerignore.jinja2",
 ]
 
 
