@@ -1,0 +1,28 @@
+FROM python:3.10.2-slim as builder
+
+ENV PROJECT_DIR=python
+ENV IMAGE_DIR=/usr/src/app/python_worker_sdk
+
+RUN pip install poetry==1.1.13
+
+# define working directory for docker
+WORKDIR $IMAGE_DIR
+
+# copy installation dependencies, source files, caches, and configuration files
+COPY $PROJECT_DIR/poetry.lock \
+     $PROJECT_DIR/pyproject.toml \
+     $PROJECT_DIR/.flake8 \
+     $IMAGE_DIR/
+
+COPY $PROJECT_DIR/src $IMAGE_DIR/src
+COPY $PROJECT_DIR/bin $IMAGE_DIR/bin
+
+# install dependencies
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-interaction --no-ansi
+
+# run static release checks
+RUN bash -e ./bin/dev/lint.sh
+# TODO(adrian@preemo.io, 01/30/2023): add these lines back once pytest has been added
+# RUN pytest ./src/tests/unit
+# RUN pytest ./src/tests/integration

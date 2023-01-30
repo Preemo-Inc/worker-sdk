@@ -1,0 +1,13 @@
+# ignore everything
+*
+
+# but don't ignore the following
+!python/.flake8
+!python/bin/**
+!python/Dockerfile.build
+!python/Dockerfile.build.dockerignore
+!python/poetry.lock
+!python/pyproject.toml
+!python/src/**
+
+# TODO(adrian@preemo.io, 01/30/2023): does it make sense to copy template_renderer into this repo?
