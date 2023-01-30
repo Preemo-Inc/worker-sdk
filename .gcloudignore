@@ -1,0 +1,26 @@
+# rendered via <root>/bin/render_ignore_templates.py
+
+.gcloudignore
+.git
+.gitignore
+
+# ignore everything
+*
+# allow current dir for submits
+!.
+
+#!include:.gitignore
+
+# inject dep exclusions here
+!python/.flake8
+!python/bin/**
+!python/Dockerfile.build
+!python/Dockerfile.build.dockerignore
+!python/Dockerfile.build.dockerignore.jinja2
+!python/poetry.lock
+!python/pyproject.toml
+!python/src/**
+
+!template_renderer/.ignore-excludes
+!template_renderer/pyproject.toml
+!template_renderer/scripts/**

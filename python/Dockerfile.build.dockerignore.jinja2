@@ -6,11 +6,4 @@
 *
 
 # inject dep exclusions here
-!python/.flake8
-!python/bin/**
-!python/Dockerfile.build
-!python/Dockerfile.build.dockerignore
-!python/Dockerfile.build.dockerignore.jinja2
-!python/poetry.lock
-!python/pyproject.toml
-!python/src/**
+{{ ignore_excludes['python'] }}

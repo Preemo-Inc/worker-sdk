@@ -1,0 +1,3 @@
+!template_renderer/.ignore-excludes
+!template_renderer/pyproject.toml
+!template_renderer/scripts/**

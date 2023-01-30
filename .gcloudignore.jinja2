@@ -1,0 +1,16 @@
+# rendered via <root>/bin/render_ignore_templates.py
+
+.gcloudignore
+.git
+.gitignore
+
+# ignore everything
+*
+# allow current dir for submits
+!.
+
+#!include:.gitignore
+
+# inject dep exclusions here
+{{ ignore_excludes['python'] }}
+{{ ignore_excludes['template_renderer'] }}
