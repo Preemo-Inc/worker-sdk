@@ -23,6 +23,5 @@ RUN poetry config virtualenvs.create false && \
 
 # run static release checks
 RUN bash -e ./bin/dev/lint.sh
-# TODO(adrian@preemo.io, 01/30/2023): add these lines back once pytest has been added
-# RUN pytest ./src/tests/unit
-# RUN pytest ./src/tests/integration
+RUN pytest ./src/tests/unit
+RUN pytest ./src/tests/integration
