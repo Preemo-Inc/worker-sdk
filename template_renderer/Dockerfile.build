@@ -1,0 +1,12 @@
+FROM python:3.10.2-slim as builder
+
+# install poetry
+RUN pip install poetry==1.1.13
+
+# define working directory for docker
+WORKDIR /usr/src/app
+
+# copy all dependencies into the working directory
+copy . .
+
+RUN cd template_renderer && poetry config virtualenvs.create false && poetry install --no-dev --no-interaction --no-ansi

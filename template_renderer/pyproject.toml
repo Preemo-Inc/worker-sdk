@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "template_renderer"
+version = "0.1.0"
+description = ""
+authors = ["Forrest Moret <forrest@preemo.io>"]
+
+[tool.poetry.dependencies]
+python = "3.10.2"
+jinja2 = "3.0.1"
+
+[tool.poetry.dev-dependencies]
+pip-licenses = "3.5.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

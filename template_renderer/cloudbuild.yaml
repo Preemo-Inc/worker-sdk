@@ -1,0 +1,29 @@
+timeout: 600s
+
+images: []
+
+options:
+  pool:
+    name: 'projects/$PROJECT_ID/locations/us-central1/workerPools/worker-pool-high-cpu-8'
+
+steps:
+  - id: 'build-image'
+    name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '--file',
+      'template_renderer/Dockerfile.build',
+      '--tag',
+      'gcr.io/$PROJECT_ID/template_renderer_test:latest',
+      '.'
+    ]
+
+  # ensure there are no uncommitted ignore template diffs
+  - id: 'check-ignore-template-diffs'
+    name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'run',
+      'gcr.io/$PROJECT_ID/template_renderer_test:latest',
+      'python',
+      'template_renderer/scripts/render_ignore_templates_ensure_no_diff.py'
+    ]
