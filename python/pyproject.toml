@@ -20,6 +20,11 @@ mypy = "0.961"
 pep8-naming = "0.13.0"
 pytest = "7.1.2"
 
+[tool.black]
+exclude = [
+  "src/gen",
+]
+
 [tool.isort]
 profile = "black"
 skip = [
@@ -32,7 +37,7 @@ check_untyped_defs = true
 disallow_any_unimported = true
 disallow_untyped_defs = true
 exclude = [
-  "_pb2\\.py$",
+  "src/gen",
 ]
 no_implicit_optional = true
 show_error_codes = true
