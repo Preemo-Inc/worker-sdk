@@ -22,7 +22,7 @@ pytest = "7.1.2"
 
 [tool.black]
 exclude = [
-  "src/gen/*.py",
+  "src/gen/",
 ]
 
 [tool.isort]
