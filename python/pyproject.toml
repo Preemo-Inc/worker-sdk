@@ -28,7 +28,7 @@ exclude = [
 [tool.isort]
 profile = "black"
 skip = [
-  "src/gen/*.py",
+  "src/gen/",
 ]
 
 # mypy options copied from https://blog.wolt.com/engineering/2021/09/30/professional-grade-mypy-configuration/
