@@ -22,12 +22,18 @@ pytest = "7.1.2"
 
 [tool.isort]
 profile = "black"
+skip = [
+  "src/gen",
+]
 
 # mypy options copied from https://blog.wolt.com/engineering/2021/09/30/professional-grade-mypy-configuration/
 [tool.mypy]
 check_untyped_defs = true
 disallow_any_unimported = true
 disallow_untyped_defs = true
+exclude = [
+  "_pb2\\.py$",
+]
 no_implicit_optional = true
 show_error_codes = true
 warn_return_any = true

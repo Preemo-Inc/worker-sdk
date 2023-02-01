@@ -4,6 +4,7 @@ exclude = [
   __pycache__,
   .mypy_cache,
   .pytest_cache,
+  src/gen/*.py,
 ]
 # options copied from https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#line-length
 extend-ignore = E203, E501
