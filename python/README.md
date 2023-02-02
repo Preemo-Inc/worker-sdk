@@ -55,7 +55,8 @@ worker_sdk/python$ ./bin/dev/lint.sh
 
 ## Generating Protobuf Classes
 
-You can generate the protobuf classes by running:
+In order to generate the protobuf classes, make sure that you have already followed the directions for installing `protobuf` from the root repo.
+Then run the following script:
 
 ```shell
 worker_sdk/python$ ./bin/dev/generate_protos.sh
