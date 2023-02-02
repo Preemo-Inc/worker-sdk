@@ -60,7 +60,3 @@ enum Example {
   ...
 }
 ```
-
-
-<!-- TODO(adrian@preemo.io, 01/01/2023): say something about always using optional -->
-<!-- TODO(adrian@preemo.io, 01/01/2023): explain our proto conventions in this readme. and how to deprecate, update, etc -->
