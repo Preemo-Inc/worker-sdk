@@ -9,6 +9,7 @@ authors = [
 
 [tool.poetry.dependencies]
 protobuf = "4.21.12"
+pydantic = "1.9.1"
 python = "3.10.2"
 
 [tool.poetry.dev-dependencies]

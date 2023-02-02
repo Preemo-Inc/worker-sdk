@@ -218,6 +218,21 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
+name = "pydantic"
+version = "1.9.1"
+description = "Data validation and settings management using python type hints"
+category = "main"
+optional = false
+python-versions = ">=3.6.1"
+
+[package.dependencies]
+typing-extensions = ">=3.7.4.3"
+
+[package.extras]
+dotenv = ["python-dotenv (>=0.10.4)"]
+email = ["email-validator (>=1.0.3)"]
+
+[[package]]
 name = "pyflakes"
 version = "2.4.0"
 description = "passive checker of Python programs"
@@ -258,14 +273,14 @@ python-versions = ">=3.7"
 name = "typing-extensions"
 version = "4.4.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.2"
-content-hash = "559e29fc3990d6e1f5c369eb80d842626a8f5230d50b8799dda5dc95012e2eda"
+content-hash = "1336c460032fe10a7fd24493e496b32561b8d481bff5a43305183a6f794b3af2"
 
 [metadata.files]
 atomicwrites = []
@@ -288,6 +303,7 @@ pluggy = []
 protobuf = []
 py = []
 pycodestyle = []
+pydantic = []
 pyflakes = []
 pytest = []
 tomli = []

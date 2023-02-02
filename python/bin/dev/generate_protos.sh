@@ -5,4 +5,5 @@ if [[ "${0}" != *"bin/dev/generate_protos.sh" ]] || [[ "$(basename $(pwd))" != "
   exit 1
 fi
 
-protoc --proto_path=../protobuf --python_out=src/gen --pyi_out=src/gen ../protobuf/*
+protoc --proto_path=../protobuf --python_out=src/gen --pyi_out=src/gen ../protobuf/*.proto
+# TODO(adrian@preemo.io, 02/01/2023): add build step that ensure that the generated files match what is expected?
