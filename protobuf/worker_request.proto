@@ -5,12 +5,12 @@ message RegisteredFunction {
   optional string namespace = 2;
 }
 
-message RegisterFunctionsRequest {
-  repeated RegisteredFunction functions_to_register = 1;
+message RegisterFunctionRequest {
+  optional RegisteredFunction function_to_register = 1;
 }
 
 message WorkerRequest {
   oneof request {
-    RegisterFunctionsRequest register_functions = 1;
+    RegisterFunctionRequest register_function = 1;
   }
 }
