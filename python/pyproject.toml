@@ -9,6 +9,7 @@ authors = [
 
 [tool.poetry.dependencies]
 python = "3.10.2"
+pyzmq = "25.0.0"
 
 [tool.poetry.dev-dependencies]
 autoflake = "1.4"
