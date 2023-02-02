@@ -1,7 +1,7 @@
 import pytest
 from pytest import MonkeyPatch
 
-from src.worker_sdk.environment.env_manager import get_required_env
+from src.worker_sdk.environment.manager import get_required_env
 
 
 class TestGetRequiredEnv:
