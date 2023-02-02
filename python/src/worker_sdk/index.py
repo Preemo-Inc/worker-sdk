@@ -20,6 +20,11 @@ def register(
     # TODO(adrian@preemo.io, 02/01/2023): do the registering here
     print(f"registering func_name: {function_name}")
 
+    # TODO(adrian@preemo.io, 02/02/2023): handle how an execute command is called
+    # The idea here being that we do something like `python user_file.py function_name params_or_path_to_params`
+    # Then right here we can check sys.argv to see if this function name matches the one passed in.
+    # If so, execute immediately
+
     # def decorator_register(func: Callable) -> Callable:
     #     @functools.wraps(func)
     #     # TODO(adrian@preemo.io, 02/01/2023): can i clean up these types?
