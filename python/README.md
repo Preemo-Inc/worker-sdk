@@ -52,3 +52,11 @@ Once you have formatted your code you can lint your code by running:
 ```shell
 worker_sdk/python$ ./bin/dev/lint.sh
 ```
+
+## Generating Protobuf Classes
+
+You can generate the protobuf classes by running:
+
+```shell
+worker_sdk/python$ ./bin/dev/generate_protos.sh
+```
