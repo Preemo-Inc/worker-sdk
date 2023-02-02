@@ -284,21 +284,10 @@ category = "dev"
 optional = false
 python-versions = ">=3.7"
 
-[[package]]
-name = "zmq"
-version = "0.0.0"
-description = "You are probably looking for pyzmq."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pyzmq = "*"
-
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.2"
-content-hash = "f7e82c97101463a662c29137d88b70678e2e0f937b9d8b555d69c433b1ebdaf1"
+content-hash = "bf78688c693eac8409388ce71294bf4305139233aec58fa0c35e223f4c763036"
 
 [metadata.files]
 atomicwrites = []
@@ -327,4 +316,3 @@ pytest = []
 pyzmq = []
 tomli = []
 typing-extensions = []
-zmq = []
