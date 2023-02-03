@@ -15,7 +15,7 @@ temp_dir=tmp
 trap "rm -rf ${temp_dir}" EXIT
 mkdir "${temp_dir}"
 
-protoc --proto_path="${protobuf_dir}" --python_out="${temp_dir}" --pyi_out="${temp_dir}" "${protobuf_dir}"/*.proto
+protoc --experimental_allow_proto3_optional --proto_path="${protobuf_dir}" --python_out="${temp_dir}" --pyi_out="${temp_dir}" "${protobuf_dir}"/*.proto
 
 # ensure all generated files match expected
 for file in src/gen/*_pb2.py*
