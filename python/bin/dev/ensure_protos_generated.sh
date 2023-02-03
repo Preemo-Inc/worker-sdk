@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [[ "${0}" != *"bin/dev/ensure_protos_generated.sh" ]] || [[ "$(basename $(pwd))" != "python" ]]; then
-  echo "script must be run from the subrepo root: worker-sdk/python"
-  exit 1
+if [[ "${1}" != "--ci" ]]; then
+  if [[ "${0}" != *"bin/dev/ensure_protos_generated.sh" ]] || [[ "$(basename $(pwd))" != "python" ]]; then
+    echo "script must be run from the subrepo root: worker-sdk/python"
+    exit 1
+  fi
 fi
 
 temp_dir=tmp
