@@ -4,6 +4,9 @@ ENV PROJECT_DIR=python
 ENV IMAGE_DIR=/usr/src/app/python_worker_sdk
 
 RUN pip install poetry==1.1.13
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    protobuf-compiler
 
 # define working directory for docker
 WORKDIR $IMAGE_DIR
