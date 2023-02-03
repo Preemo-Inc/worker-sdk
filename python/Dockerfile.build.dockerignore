@@ -6,11 +6,13 @@
 *
 
 # inject dep exclusions here
-!python/.flake8
-!python/bin/**
-!python/Dockerfile.build
-!python/Dockerfile.build.dockerignore
-!python/Dockerfile.build.dockerignore.jinja2
-!python/poetry.lock
-!python/pyproject.toml
-!python/src/**
+# prove that the dockerignore file does nothing
+# !python/.flake8
+# !python/bin/**
+# !python/Dockerfile.build
+# !python/Dockerfile.build.dockerignore
+# !python/Dockerfile.build.dockerignore.jinja2
+# !python/poetry.lock
+# !python/pyproject.toml
+# !python/src/**
+# !protobuf/**

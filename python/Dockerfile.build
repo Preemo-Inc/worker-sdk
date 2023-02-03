@@ -26,6 +26,8 @@ COPY $PROJECT_DIR/bin $IMAGE_DIR/bin
 RUN poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi
 
+RUN echo $(protoc --version)
+RUN bash -c 'echo -e blah'
 # run static release checks
 RUN bash -e ./bin/dev/lint.sh
 RUN bash -e ./bin/dev/ensure_protos_generated.sh --ci
