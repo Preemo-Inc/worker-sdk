@@ -23,5 +23,6 @@ RUN poetry config virtualenvs.create false && \
 
 # run static release checks
 RUN bash -e ./bin/dev/lint.sh
+RUN bash -e ./bin/dev/ensure_protos_generated.sh
 RUN pytest ./src/tests/unit
 RUN pytest ./src/tests/integration
