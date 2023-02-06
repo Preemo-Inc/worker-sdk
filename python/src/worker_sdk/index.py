@@ -97,10 +97,10 @@ class Preemo:
         return decorator(outer_function)
 
 
-preemo = Preemo()
-
-# all public methods of Preemo should be added below for ease of use
-register = preemo.register
+# TODO(adrian@preemo.io, 02/06/2023): move this invokation somewhere
+# preemo = Preemo()
+# # all public methods of Preemo should be added below for ease of use
+# register = preemo.register
 
 # TODO(adrian@preemo.io, 02/03/2023): write tests including the following syntaxes
 # @register
