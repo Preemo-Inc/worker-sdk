@@ -1,7 +1,14 @@
+from typing import Protocol
+
 import zmq
 
 from src.gen.worker_request_pb2 import WorkerRequest
 from src.worker_sdk.environment.manager import get_required_env
+
+
+class MessagingClientProtocol(Protocol):
+    def send_worker_request(self, worker_request: WorkerRequest) -> None:
+        pass
 
 
 class MessagingClient:
