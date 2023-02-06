@@ -26,7 +26,7 @@ While proto3 syntax allows `singular` as a field rule, our convention is to alwa
 
 ### Deleting a Field
 
-When deleting a field from a protobuf message, use the `reserved` keyword to reserve the field's name and tag to ensure it is not accidentally re-used.
+When deleting a field from a protobuf message, use the `reserved` keyword to reserve the field's name and tag to ensure it is not accidentally re-used. In addition, comment out the field with an explanation of why it has been removed.
 
 For example, if you start with the following `Example` message:
 ```
@@ -37,12 +37,15 @@ message Example {
 }
 ```
 
-In order to delete `bar`, you would update it as follows:
+In order to delete `bar`, you could update it as follows:
 ```
 message Example {
+  optional string foo = 1;
+
+  // DEPRECATED optional string bar = 2;
   reserved "bar";
   reserved 2;
-  optional string foo = 1;
+
   optional string baz = 3;
 }
 ```
