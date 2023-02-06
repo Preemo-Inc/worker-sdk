@@ -66,3 +66,32 @@ class TestRegister:
             pass
 
         assert send_request_call_count == 5
+
+    def test_nested_decorators(self) -> None:
+        send_request_call_count = 0
+
+        class MockMessagingClient(IMessagingClient):
+            def send_worker_request(self, worker_request: WorkerRequest) -> None:
+                nonlocal send_request_call_count
+                send_request_call_count += 1
+
+                func = worker_request.register_function.function_to_register
+                match send_request_call_count:
+                    case 1:
+                        assert func.name == "inner_func"
+                        assert not func.HasField("namespace")
+                    case _:
+                        raise Exception(
+                            f"unexpected call count: {send_request_call_count}"
+                        )
+
+        messaging_client = MockMessagingClient()
+        preemo = Preemo(messaging_client=messaging_client)
+
+        class InnerClass:
+            @preemo.register
+            @staticmethod
+            def inner_func() -> None:
+                pass
+
+        assert send_request_call_count == 1

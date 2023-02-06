@@ -101,6 +101,3 @@ class Preemo:
 # preemo = Preemo()
 # # all public methods of Preemo should be added below for ease of use
 # register = preemo.register
-
-# TODO(adrian@preemo.io, 02/03/2023): write tests including the following syntaxes
-# nested decorators for all these cases
