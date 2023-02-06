@@ -6,7 +6,7 @@ from src.gen.worker_request_pb2 import (
     RegisterFunctionRequest,
     WorkerRequest,
 )
-from src.worker_sdk.messaging.client import MessagingClient, MessagingClientProtocol
+from src.worker_sdk.messaging.client import IMessagingClient
 
 
 def _construct_register_function_worker_request(
@@ -28,9 +28,8 @@ def _construct_register_function_worker_request(
 
 # TODO(adrian@preemo.io, 02/03/2023): think of more appropriate name for this class
 class Preemo:
-    # def __init__(self, *, messaging_client: MessagingClientProtocol) -> None:
-    def __init__(self) -> None:
-        self._client = MessagingClient()
+    def __init__(self, *, messaging_client: IMessagingClient) -> None:
+        self._client = messaging_client
 
         # TODO(adrian@preemo.io, 02/03/2023): consider the best way to handle globals
         # could also just use uuid locally

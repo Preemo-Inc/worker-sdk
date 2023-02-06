@@ -1,4 +1,4 @@
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 
 import zmq
 
@@ -6,7 +6,8 @@ from src.gen.worker_request_pb2 import WorkerRequest
 from src.worker_sdk.environment.manager import get_required_env
 
 
-class MessagingClientProtocol(Protocol):
+@runtime_checkable
+class IMessagingClient(Protocol):
     def send_worker_request(self, worker_request: WorkerRequest) -> None:
         pass
 
