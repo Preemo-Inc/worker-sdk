@@ -26,8 +26,7 @@ def _construct_register_function_worker_request(
     return worker_request
 
 
-# TODO(adrian@preemo.io, 02/03/2023): think of more appropriate name for this class
-class Preemo:
+class PreemoWorkerClient:
     def __init__(self, *, messaging_client: IMessagingClient) -> None:
         self._client = messaging_client
 
@@ -95,9 +94,3 @@ class Preemo:
             return decorator
 
         return decorator(outer_function)
-
-
-# TODO(adrian@preemo.io, 02/06/2023): move this invokation somewhere
-# preemo = Preemo()
-# # all public methods of Preemo should be added below for ease of use
-# register = preemo.register

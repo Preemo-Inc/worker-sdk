@@ -1,5 +1,5 @@
 from src.gen.worker_request_pb2 import WorkerRequest
-from src.worker_sdk.index import Preemo
+from src.worker_sdk.index import PreemoWorkerClient
 from src.worker_sdk.messaging.client import IMessagingClient
 
 
@@ -35,33 +35,33 @@ class TestRegister:
                         )
 
         messaging_client = MockMessagingClient()
-        preemo = Preemo(messaging_client=messaging_client)
+        worker_client = PreemoWorkerClient(messaging_client=messaging_client)
 
-        @preemo.register
+        @worker_client.register
         def inner_func() -> None:
             pass
 
         assert send_request_call_count == 1
 
-        @preemo.register()
+        @worker_client.register()
         def inner_func2() -> None:
             pass
 
         assert send_request_call_count == 2
 
-        @preemo.register(name="another_name")
+        @worker_client.register(name="another_name")
         def inner_func3() -> None:
             pass
 
         assert send_request_call_count == 3
 
-        @preemo.register(namespace="another_namespace")
+        @worker_client.register(namespace="another_namespace")
         def inner_func4() -> None:
             pass
 
         assert send_request_call_count == 4
 
-        @preemo.register(name="another_name", namespace="another_namespace")
+        @worker_client.register(name="another_name", namespace="another_namespace")
         def inner_func5() -> None:
             pass
 
@@ -86,10 +86,10 @@ class TestRegister:
                         )
 
         messaging_client = MockMessagingClient()
-        preemo = Preemo(messaging_client=messaging_client)
+        worker_client = PreemoWorkerClient(messaging_client=messaging_client)
 
         class InnerClass:
-            @preemo.register
+            @worker_client.register
             @staticmethod
             def inner_func() -> None:
                 pass
