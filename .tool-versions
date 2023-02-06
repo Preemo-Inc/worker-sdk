@@ -1,2 +1,3 @@
 poetry 1.1.13
+protoc 21.12
 python 3.10.2
