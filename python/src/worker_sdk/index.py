@@ -103,9 +103,4 @@ class Preemo:
 # register = preemo.register
 
 # TODO(adrian@preemo.io, 02/03/2023): write tests including the following syntaxes
-# @register
-# @register()
-# @register(name=blah)
-# @register(namespace=blah)
-# @register(name=boo, namespace=blah)
 # nested decorators for all these cases
