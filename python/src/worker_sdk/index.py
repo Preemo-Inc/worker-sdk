@@ -74,9 +74,6 @@ class PreemoWorkerClient:
         self._client = messaging_client
         self._function_registry = FunctionRegistry()
 
-    # TODO(adrian@preemo.io, 02/03/2023): add documentation to the readme explaining how to correctly use this method
-    # explain that name must be included if namespace is?
-    # explain how to correctly "nest" decorators
     def register(
         self,
         outer_function: Optional[Callable] = None,
@@ -101,7 +98,7 @@ class PreemoWorkerClient:
                 )
             )
 
-            # TODO(adrian@preemo.io, 02/03/2023): consider not calling the function
+            # TODO(adrian@preemo.io, 02/15/2023): consider not returning the function
             # that way users cannot call registered functions when registering
             return function
 

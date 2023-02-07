@@ -61,3 +61,24 @@ Then run the following script:
 ```shell
 worker_sdk/python$ ./bin/dev/generate_protos.sh
 ```
+
+## Preemo Worker Client
+
+### Register
+
+In order to register a function with Preemo workers, you can decorate your functions as follows:
+
+```
+@register(name="some_name", namespace="dev")
+def do_something():
+    ...
+```
+
+Both parameters, `name` and `namespace`, are optional. If the name isn't specified, it will default to the name of the function. If the namespace isn't specified, it will default to a global namespace.
+
+```
+@register
+def do_something():
+    # registers with name do_something in the global namespace
+    ...
+```
