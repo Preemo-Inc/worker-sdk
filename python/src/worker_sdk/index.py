@@ -11,16 +11,11 @@ from src.worker_sdk.messaging.client import IMessagingClient
 def _construct_register_function_worker_request(
     *, name: str, namespace: Optional[str]
 ) -> WorkerRequest:
-    function_to_register = RegisteredFunction()
-    function_to_register.name = name
-    if namespace is not None:
-        function_to_register.namespace = namespace
-
-    register_function_request = RegisterFunctionRequest()
-    register_function_request.function_to_register.CopyFrom(function_to_register)
-
-    worker_request = WorkerRequest()
-    worker_request.register_function.CopyFrom(register_function_request)
+    function_to_register = RegisteredFunction(name=name, namespace=namespace)
+    register_function_request = RegisterFunctionRequest(
+        function_to_register=function_to_register
+    )
+    worker_request = WorkerRequest(register_function=register_function_request)
 
     return worker_request
 
