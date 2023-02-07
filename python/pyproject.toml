@@ -20,6 +20,7 @@ isort = "5.10.1"
 mypy = "0.961"
 pep8-naming = "0.13.0"
 pytest = "7.1.2"
+types-protobuf = "4.21.0.4"
 
 [tool.black]
 exclude = [

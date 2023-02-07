@@ -285,6 +285,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "types-protobuf"
+version = "4.21.0.4"
+description = "Typing stubs for protobuf"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.4.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -295,7 +303,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.2"
-content-hash = "a4d366b7e70cd9b31146a1d510a6e094586d0cf6e0e77466f7104b9f779c41ac"
+content-hash = "6dd31cfa605aa50bf5d910dffc55e35e98400a6adde15d3773c00517cebbb7d9"
 
 [metadata.files]
 atomicwrites = []
@@ -324,4 +332,5 @@ pyflakes = []
 pytest = []
 pyzmq = []
 tomli = []
+types-protobuf = []
 typing-extensions = []
