@@ -10,6 +10,9 @@
   "python.formatting.provider": "black",
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
+  "python.linting.ignorePatterns": [
+    "src/gen/*"
+  ],
   "python.linting.lintOnSave": true,
   "python.linting.mypyArgs": [
     "--check-untyped-defs",
@@ -18,7 +21,7 @@
     "--no-implicit-optional",
     "--show-error-codes",
     "--warn-return-any",
-    "--warn-unused-ignores",
+    "--warn-unused-ignores"
   ],
   "python.linting.mypyEnabled": true,
   "python.testing.pytestArgs": [

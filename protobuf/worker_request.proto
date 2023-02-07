@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message RegisteredFunction {
+  optional string name = 1;
+  optional string namespace = 2;
+}
+
+message RegisterFunctionRequest {
+  optional RegisteredFunction function_to_register = 1;
+}
+
+message WorkerRequest {
+  oneof request {
+    RegisterFunctionRequest register_function = 1;
+  }
+}

@@ -205,6 +205,14 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
+name = "protobuf"
+version = "4.21.12"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "py"
 version = "1.11.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
@@ -287,7 +295,7 @@ python-versions = ">=3.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.2"
-content-hash = "bf78688c693eac8409388ce71294bf4305139233aec58fa0c35e223f4c763036"
+content-hash = "a4d366b7e70cd9b31146a1d510a6e094586d0cf6e0e77466f7104b9f779c41ac"
 
 [metadata.files]
 atomicwrites = []
@@ -308,6 +316,7 @@ pathspec = []
 pep8-naming = []
 platformdirs = []
 pluggy = []
+protobuf = []
 py = []
 pycodestyle = []
 pycparser = []
