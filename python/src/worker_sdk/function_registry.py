@@ -7,7 +7,7 @@ class FunctionRegistry:
         self._functions_by_namespace_and_name: Dict[str, Dict[str, Callable]] = {}
 
     def register_function(
-        self, function: Callable, *, name: str, namespace: Optional[str]
+        self, function: Callable, *, name: str, namespace: Optional[str] = None
     ) -> None:
         if namespace is None:
             if name in self._global_functions_by_name:
@@ -28,7 +28,7 @@ class FunctionRegistry:
             )
         functions_by_name[name] = function
 
-    def get_function(self, *, name: str, namespace: Optional[str]) -> Callable:
+    def get_function(self, *, name: str, namespace: Optional[str] = None) -> Callable:
         if namespace is None:
             function = self._global_functions_by_name.get(name)
             if function is None:
