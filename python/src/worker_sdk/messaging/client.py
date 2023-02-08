@@ -14,6 +14,7 @@ class IMessagingClient(Protocol):
 class MessagingClient:
     def __init__(self, *, worker_server_url: str) -> None:
         context = zmq.Context()
+        # TODO(adrian@preemo.io, 02/25/2023): investigate other socket types, such as PUSH/PULL
         self._socket = context.socket(zmq.REQ)
         self._socket.connect(worker_server_url)
         # TODO(adrian@preemo.io, 02/15/2023): send header as first message
