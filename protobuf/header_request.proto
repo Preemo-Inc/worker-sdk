@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-message HeaderRequest {
-  optional string version = 1;
-}
