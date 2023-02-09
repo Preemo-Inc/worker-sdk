@@ -43,11 +43,14 @@ class PreemoWorkerClient:
                 function, name=function_name, namespace=namespace
             )
 
-            self._client.send_worker_request(
+            worker_reply = self._client.send_worker_request(
                 _construct_register_function_worker_request(
                     name=function_name, namespace=namespace
                 )
             )
+
+            # TODO(adrian@preemo.io, 02/08/2023): finish this
+            # if worker_reply.register_function.status !=
 
             return function
 

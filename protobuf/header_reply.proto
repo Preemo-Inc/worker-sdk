@@ -1,6 +1,8 @@
 syntax = "proto3";
 
-// TODO(adrian@preemo.io, 02/08/2023): consider other names
+// TODO(adrian@preemo.io, 02/08/2023): reconsider if the statuses should be the same
+// or perhaps they should both say OK and NOT_OK?
+// or CONTINUE and STOP, so like an instruction?
 enum HeaderStatus {
   HEADER_STATUS_UNSPECIFIED = 0;
   HEADER_STATUS_OK = 1;
@@ -8,4 +10,5 @@ enum HeaderStatus {
 
 message HeaderReply {
   optional HeaderStatus status = 1;
+  optional string message = 2;
 }

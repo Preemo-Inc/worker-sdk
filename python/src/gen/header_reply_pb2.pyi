@@ -8,10 +8,12 @@ HEADER_STATUS_OK: HeaderStatus
 HEADER_STATUS_UNSPECIFIED: HeaderStatus
 
 class HeaderReply(_message.Message):
-    __slots__ = ["status"]
+    __slots__ = ["message", "status"]
+    MESSAGE_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
+    message: str
     status: HeaderStatus
-    def __init__(self, status: _Optional[_Union[HeaderStatus, str]] = ...) -> None: ...
+    def __init__(self, status: _Optional[_Union[HeaderStatus, str]] = ..., message: _Optional[str] = ...) -> None: ...
 
 class HeaderStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []

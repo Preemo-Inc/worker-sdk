@@ -2,32 +2,44 @@ from typing import Protocol, runtime_checkable
 
 import zmq
 
+from src.gen.header_reply_pb2 import HEADER_STATUS_OK, HeaderReply
+from src.gen.header_request_pb2 import HeaderRequest
+from src.gen.worker_reply_pb2 import WorkerReply
 from src.gen.worker_request_pb2 import WorkerRequest
 
 
 @runtime_checkable
 class IMessagingClient(Protocol):
-    def send_worker_request(self, worker_request: WorkerRequest) -> None:
+    def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
         pass
 
 
 class MessagingClient:
-    def __init__(self, *, worker_server_url: str) -> None:
+    def __init__(self, *, version: str, worker_server_url: str) -> None:
         context = zmq.Context()
+
         # TODO(adrian@preemo.io, 02/25/2023): investigate other socket types, such as PUSH/PULL
         self._socket = context.socket(zmq.REQ)
         self._socket.connect(worker_server_url)
-        # TODO(adrian@preemo.io, 02/15/2023): send header as first message
-        # header should contain metadata such as version
+
+        header_reply = self._send_header_request(HeaderRequest(version=version))
+        if header_reply.status != HEADER_STATUS_OK:
+            raise Exception(
+                f"worker server replied to header request with unexpected status: {header_reply.status} and message: {header_reply.message}"
+            )
 
     def _send_message(self, message: bytes) -> bytes:
         self._socket.send(message)
         return self._socket.recv()
 
-    def send_worker_request(self, worker_request: WorkerRequest) -> None:
+    def _send_header_request(self, header_request: HeaderRequest) -> HeaderReply:
+        message = header_request.SerializeToString()
+        reply = self._send_message(message)
+
+        return HeaderReply.FromString(reply)
+
+    def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
         message = worker_request.SerializeToString()
+        reply = self._send_message(message)
 
-        # TODO(adrian@preemo.io, 02/15/2023): validate reply
-        self._send_message(message)
-
-        # TODO(adrian@preemo.io, 02/15/2023): consider returning object indicating success?
+        return WorkerReply.FromString(reply)

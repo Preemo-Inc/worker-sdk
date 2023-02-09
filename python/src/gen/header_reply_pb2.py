@@ -13,15 +13,15 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12header_reply.proto\"<\n\x0bHeaderReply\x12\"\n\x06status\x18\x01 \x01(\x0e\x32\r.HeaderStatusH\x00\x88\x01\x01\x42\t\n\x07_status*C\n\x0cHeaderStatus\x12\x1d\n\x19HEADER_STATUS_UNSPECIFIED\x10\x00\x12\x14\n\x10HEADER_STATUS_OK\x10\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12header_reply.proto\"^\n\x0bHeaderReply\x12\"\n\x06status\x18\x01 \x01(\x0e\x32\r.HeaderStatusH\x00\x88\x01\x01\x12\x14\n\x07message\x18\x02 \x01(\tH\x01\x88\x01\x01\x42\t\n\x07_statusB\n\n\x08_message*C\n\x0cHeaderStatus\x12\x1d\n\x19HEADER_STATUS_UNSPECIFIED\x10\x00\x12\x14\n\x10HEADER_STATUS_OK\x10\x01\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'header_reply_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _HEADERSTATUS._serialized_start=84
-  _HEADERSTATUS._serialized_end=151
+  _HEADERSTATUS._serialized_start=118
+  _HEADERSTATUS._serialized_end=185
   _HEADERREPLY._serialized_start=22
-  _HEADERREPLY._serialized_end=82
+  _HEADERREPLY._serialized_end=116
 # @@protoc_insertion_point(module_scope)
