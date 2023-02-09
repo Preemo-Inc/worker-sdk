@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+enum HeaderStatus {
+  UNSPECIFIED = 0;
+  OK = 1;
+}
+
+message HeaderReply {
+  optional HeaderStatus status = 1;
+}
