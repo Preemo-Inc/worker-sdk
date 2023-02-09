@@ -2,8 +2,9 @@ from typing import Protocol, runtime_checkable
 
 import zmq
 
-from src.gen.header_reply_pb2 import HEADER_STATUS_OK, HeaderReply
+from src.gen.header_reply_pb2 import HeaderReply
 from src.gen.header_request_pb2 import HeaderRequest
+from src.gen.shared.status_pb2 import STATUS_OK
 from src.gen.worker_reply_pb2 import WorkerReply
 from src.gen.worker_request_pb2 import WorkerRequest
 
@@ -23,7 +24,7 @@ class MessagingClient:
         self._socket.connect(worker_server_url)
 
         header_reply = self._send_header_request(HeaderRequest(version=version))
-        if header_reply.status != HEADER_STATUS_OK:
+        if header_reply.status != STATUS_OK:
             raise Exception(
                 f"worker server replied to header request with unexpected status: {header_reply.status} and message: {header_reply.message}"
             )

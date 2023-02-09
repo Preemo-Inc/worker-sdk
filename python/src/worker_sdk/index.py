@@ -1,10 +1,8 @@
 from typing import Callable, Optional
 
-from src.gen.worker_request_pb2 import (
-    RegisteredFunction,
-    RegisterFunctionRequest,
-    WorkerRequest,
-)
+from src.gen.shared.registered_function_pb2 import RegisteredFunction
+from src.gen.shared.status_pb2 import STATUS_OK
+from src.gen.worker_request_pb2 import RegisterFunctionRequest, WorkerRequest
 from src.worker_sdk.function_registry import FunctionRegistry
 from src.worker_sdk.messaging.client import IMessagingClient
 
@@ -49,8 +47,12 @@ class PreemoWorkerClient:
                 )
             )
 
-            # TODO(adrian@preemo.io, 02/08/2023): finish this
-            # if worker_reply.register_function.status !=
+            # TODO(adrian@preemo.io, 02/09/2023): do i need to validate that register_function is set?
+            reply = worker_reply.register_function
+            if reply.status != STATUS_OK:
+                raise Exception(
+                    f"worker server replied to register function request with unexpected status: {reply.status} and message: {reply.message}"
+                )
 
             return function
 
