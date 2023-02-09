@@ -1,14 +1,8 @@
 syntax = "proto3";
 
-// TODO(adrian@preemo.io, 02/08/2023): reconsider if the statuses should be the same
-// or perhaps they should both say OK and NOT_OK?
-// or CONTINUE and STOP, so like an instruction?
-enum HeaderStatus {
-  HEADER_STATUS_UNSPECIFIED = 0;
-  HEADER_STATUS_OK = 1;
-}
+import "shared/status.proto";
 
 message HeaderReply {
-  optional HeaderStatus status = 1;
+  optional Status status = 1;
   optional string message = 2;
 }

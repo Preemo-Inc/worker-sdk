@@ -5,4 +5,4 @@ if [[ "${0}" != *"bin/dev/generate_protos.sh" ]] || [[ "$(basename $(pwd))" != "
   exit 1
 fi
 
-protoc --proto_path=../protobuf --python_out=src/gen --pyi_out=src/gen ../protobuf/*.proto
+protoc --proto_path=../protobuf --python_out=src/gen --pyi_out=src/gen ../protobuf/**/*.proto
