@@ -80,6 +80,15 @@ class TestRegister:
                     case 1:
                         assert func.name == "inner_func"
                         assert not func.HasField("namespace")
+                    case 2:
+                        assert func.name == "inner_func2"
+                        assert not func.HasField("namespace")
+                    case 3:
+                        assert func.name == "second"
+                        assert not func.HasField("namespace")
+                    case 4:
+                        assert func.name == "third"
+                        assert not func.HasField("namespace")
                     case _:
                         raise Exception(
                             f"unexpected call count: {send_request_call_count}"
@@ -95,3 +104,11 @@ class TestRegister:
                 pass
 
         assert send_request_call_count == 1
+
+        @worker_client.register(name="third")
+        @worker_client.register(name="second")
+        @worker_client.register
+        def inner_func2() -> None:
+            pass
+
+        assert send_request_call_count == 4
