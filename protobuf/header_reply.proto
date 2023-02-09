@@ -1,8 +1,9 @@
 syntax = "proto3";
 
+// TODO(adrian@preemo.io, 02/08/2023): consider other names
 enum HeaderStatus {
-  UNSPECIFIED = 0;
-  OK = 1;
+  HEADER_STATUS_UNSPECIFIED = 0;
+  HEADER_STATUS_OK = 1;
 }
 
 message HeaderReply {

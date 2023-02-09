@@ -1,13 +1,14 @@
 syntax = "proto3";
 
-enum WorkerRequestStatus {
-  UNSPECIFIED = 0;
-  SUCCESS = 1;
-  FAILURE = 2;
+// TODO(adrian@preemo.io, 02/08/2023): consider other names
+enum WorkerStatus {
+  WORKER_STATUS_UNSPECIFIED = 0;
+  WORKER_STATUS_SUCCESS = 1;
+  WORKER_STATUS_FAILURE = 2;
 }
 
 message RegisterFunctionReply {
-  optional WorkerRequestStatus status = 1;
+  optional WorkerStatus status = 1;
   optional string message = 2;
 }
 

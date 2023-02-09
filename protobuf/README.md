@@ -52,14 +52,14 @@ message Example {
 
 ### Creating an Enum
 
-Enums must always have an "unspecified" value with the tag 0. This unspecified value will serve as the default value for the enum.
+Enum values use C++ scoping rules, meaning that enum values are siblings of their type, not children of it. So enum values should be prefixed with the name of the enum to keep them unique within the global scope. Additionally, enums must always have an "unspecified" value with the tag 0. This unspecified value will serve as the default value for the enum.
 
 For example:
 ```
 enum Example {
-  UNSPECIFIED = 0;
-  ACTUAL_VALUE_A = 1;
-  ACTUAL_VALUE_B = 2;
+  EXAMPLE_UNSPECIFIED = 0;
+  EXAMPLE_VALUE_A = 1;
+  EXAMPLE_VALUE_B = 2;
   ...
 }
 ```
