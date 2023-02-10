@@ -4,8 +4,8 @@ import zmq
 
 from src.gen.header_pb2 import HeaderReply, HeaderRequest
 from src.gen.shared_pb2 import STATUS_OK
-from src.gen.worker_reply_pb2 import WorkerReply
-from src.gen.worker_request_pb2 import WorkerRequest
+from src.gen.worker.reply_pb2 import WorkerReply
+from src.gen.worker.request_pb2 import WorkerRequest
 
 
 @runtime_checkable

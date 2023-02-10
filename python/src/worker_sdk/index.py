@@ -1,7 +1,7 @@
 from typing import Callable, Optional
 
 from src.gen.shared_pb2 import STATUS_OK, RegisteredFunction
-from src.gen.worker_request_pb2 import RegisterFunctionRequest, WorkerRequest
+from src.gen.worker.request_pb2 import RegisterFunctionRequest, WorkerRequest
 from src.worker_sdk.function_registry import FunctionRegistry
 from src.worker_sdk.messaging.client import IMessagingClient
 
