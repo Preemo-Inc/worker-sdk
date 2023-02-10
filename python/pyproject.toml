@@ -2,9 +2,18 @@
 name = "preemo_worker_sdk"
 version = "0.1.0"
 description = ""
+license = "MIT"
 authors = [
   "Forrest Moret <forrest@preemo.io>",
   "Adrian Miguel <adrian@preemo.io>",
+]
+readme = "README.md"
+homepage = "https://www.preemo.io/"
+repository = "https://github.com/Preemo-Inc/worker-sdk"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
 ]
 
 [tool.poetry.dependencies]
@@ -51,5 +60,5 @@ module = "src.gen.*"
 ignore_errors = true
 
 [build-system]
-build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
