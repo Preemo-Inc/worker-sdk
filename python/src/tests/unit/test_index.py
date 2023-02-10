@@ -1,4 +1,6 @@
-from src.gen.worker_request_pb2 import WorkerRequest
+from src.gen.shared.status_pb2 import STATUS_OK
+from src.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
+from src.gen.worker.request_pb2 import WorkerRequest
 from src.worker_sdk.index import PreemoWorkerClient
 from src.worker_sdk.messaging.client import IMessagingClient
 
@@ -8,7 +10,7 @@ class TestRegister:
         send_request_call_count = 0
 
         class MockMessagingClient(IMessagingClient):
-            def send_worker_request(self, worker_request: WorkerRequest) -> None:
+            def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
                 nonlocal send_request_call_count
                 send_request_call_count += 1
 
@@ -33,6 +35,10 @@ class TestRegister:
                         raise Exception(
                             f"unexpected call count: {send_request_call_count}"
                         )
+
+                return WorkerReply(
+                    register_function=RegisterFunctionReply(status=STATUS_OK)
+                )
 
         messaging_client = MockMessagingClient()
         worker_client = PreemoWorkerClient(messaging_client=messaging_client)
@@ -71,7 +77,7 @@ class TestRegister:
         send_request_call_count = 0
 
         class MockMessagingClient(IMessagingClient):
-            def send_worker_request(self, worker_request: WorkerRequest) -> None:
+            def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
                 nonlocal send_request_call_count
                 send_request_call_count += 1
 
@@ -93,6 +99,10 @@ class TestRegister:
                         raise Exception(
                             f"unexpected call count: {send_request_call_count}"
                         )
+
+                return WorkerReply(
+                    register_function=RegisterFunctionReply(status=STATUS_OK)
+                )
 
         messaging_client = MockMessagingClient()
         worker_client = PreemoWorkerClient(messaging_client=messaging_client)
