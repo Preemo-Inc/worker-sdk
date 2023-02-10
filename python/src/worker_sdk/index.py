@@ -46,7 +46,6 @@ class PreemoWorkerClient:
                 )
             )
 
-            # TODO(adrian@preemo.io, 02/09/2023): do i need to validate that register_function is set?
             reply = worker_reply.register_function
             if reply.status != STATUS_OK:
                 raise Exception(

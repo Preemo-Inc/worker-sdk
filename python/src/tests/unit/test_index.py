@@ -1,4 +1,6 @@
-from src.gen.shared_pb2 import STATUS_OK
+import pytest
+
+from src.gen.shared_pb2 import STATUS_ERROR, STATUS_OK
 from src.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
 from src.gen.worker.request_pb2 import WorkerRequest
 from src.worker_sdk.index import PreemoWorkerClient
@@ -40,8 +42,7 @@ class TestRegister:
                     register_function=RegisterFunctionReply(status=STATUS_OK)
                 )
 
-        messaging_client = MockMessagingClient()
-        worker_client = PreemoWorkerClient(messaging_client=messaging_client)
+        worker_client = PreemoWorkerClient(messaging_client=MockMessagingClient())
 
         @worker_client.register
         def inner_func() -> None:
@@ -104,8 +105,7 @@ class TestRegister:
                     register_function=RegisterFunctionReply(status=STATUS_OK)
                 )
 
-        messaging_client = MockMessagingClient()
-        worker_client = PreemoWorkerClient(messaging_client=messaging_client)
+        worker_client = PreemoWorkerClient(messaging_client=MockMessagingClient())
 
         class InnerClass:
             @worker_client.register
@@ -122,3 +122,21 @@ class TestRegister:
             pass
 
         assert send_request_call_count == 4
+
+    def test_receiving_non_ok_reply(self) -> None:
+        class MockMessagingClient(IMessagingClient):
+            def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
+                return WorkerReply(
+                    register_function=RegisterFunctionReply(status=STATUS_ERROR)
+                )
+
+        worker_client = PreemoWorkerClient(messaging_client=MockMessagingClient())
+
+        with pytest.raises(
+            Exception,
+            match="worker server replied to register function request with unexpected status",
+        ):
+
+            @worker_client.register
+            def inner_func() -> None:
+                pass
