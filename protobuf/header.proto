@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "shared.proto";
+import "src/gen/shared.proto";
 
 message HeaderRequest {
   optional string version = 1;

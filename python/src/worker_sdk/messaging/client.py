@@ -2,9 +2,8 @@ from typing import Protocol, runtime_checkable
 
 import zmq
 
-from src.gen.header_reply_pb2 import HeaderReply
-from src.gen.header_request_pb2 import HeaderRequest
-from src.gen.shared.status_pb2 import STATUS_OK
+from src.gen.header_pb2 import HeaderReply, HeaderRequest
+from src.gen.shared_pb2 import STATUS_OK
 from src.gen.worker_reply_pb2 import WorkerReply
 from src.gen.worker_request_pb2 import WorkerRequest
 

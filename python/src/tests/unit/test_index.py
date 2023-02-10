@@ -1,6 +1,6 @@
-from src.gen.shared.status_pb2 import STATUS_OK
-from src.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
-from src.gen.worker.request_pb2 import WorkerRequest
+from src.gen.shared_pb2 import STATUS_OK
+from src.gen.worker_reply_pb2 import RegisterFunctionReply, WorkerReply
+from src.gen.worker_request_pb2 import WorkerRequest
 from src.worker_sdk.index import PreemoWorkerClient
 from src.worker_sdk.messaging.client import IMessagingClient
 
