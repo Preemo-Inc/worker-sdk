@@ -5,4 +5,5 @@ if [[ "${0}" != *"bin/dev/build_package.sh" ]] || [[ "$(basename $(pwd))" != "py
   exit 1
 fi
 
+rm -rf dist
 python3 -m build

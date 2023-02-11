@@ -15,6 +15,10 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
 ]
+packages = [
+  { include = "src" },
+]
+# TODO(adrian@preemo.io, 02/10/2023): consider excluding tests from python wheel
 
 [tool.poetry.dependencies]
 protobuf = "4.21.12"
@@ -30,6 +34,7 @@ isort = "5.10.1"
 mypy = "1.0.0"
 pep8-naming = "0.13.0"
 pytest = "7.1.2"
+twine = "4.0.2"
 types-protobuf = "4.21.0.4"
 
 [tool.black]
