@@ -11,7 +11,7 @@ Download and install Homebrew from https://brew.sh/ and set it up for your envir
 Run the following script to install widely used development dependencies:
 
 ```shell
-worker-sdk$ ./setup.sh
+worker-sdk$ ./bin/dev/setup.sh
 ```
 
 ### asdf
