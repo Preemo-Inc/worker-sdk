@@ -2,6 +2,8 @@
 
 This subrepo contains the python implementation of the Preemo Worker SDK.
 
+<!-- TODO(adrian@preemo.io, 02/10/2023): add those links that all the pypi projects have at the top of their readme -->
+
 ## Getting Started
 
 Make sure that you have already followed the directions for installing `poetry` and `python` from the root repo.

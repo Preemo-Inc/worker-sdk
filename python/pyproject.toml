@@ -16,7 +16,7 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 packages = [
-  { include = "src" },
+  { include = "preemo" },
 ]
 # TODO(adrian@preemo.io, 02/10/2023): consider excluding tests from python wheel
 

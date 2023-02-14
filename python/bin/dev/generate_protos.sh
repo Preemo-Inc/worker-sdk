@@ -5,4 +5,5 @@ if [[ "${0}" != *"bin/dev/generate_protos.sh" ]] || [[ "$(basename $(pwd))" != "
   exit 1
 fi
 
+# TODO(adrian@preemo.io, 02/13/2023): rework this into preemo/worker/
 protoc --proto_path src/gen=../protobuf --python_out=. --pyi_out=. $(find ../protobuf -iname "*.proto")
