@@ -1,9 +1,9 @@
 from typing import Callable, Optional
 
+from preemo.worker.function.registry import FunctionRegistry
+from preemo.worker.messaging.client import IMessagingClient
 from src.gen.shared_pb2 import STATUS_OK, RegisteredFunction
 from src.gen.worker.request_pb2 import RegisterFunctionRequest, WorkerRequest
-from src.worker_sdk.function_registry import FunctionRegistry
-from src.worker_sdk.messaging.client import IMessagingClient
 
 
 def _construct_register_function_worker_request(

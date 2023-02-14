@@ -1,6 +1,6 @@
 import pytest
 
-from src.worker_sdk.function_registry import FunctionRegistry
+from preemo.worker.function.registry import FunctionRegistry
 
 
 class TestFunctionRegistry:
