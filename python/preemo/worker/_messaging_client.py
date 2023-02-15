@@ -4,7 +4,7 @@ import zmq
 
 from preemo.gen.header_pb2 import HeaderReply, HeaderRequest
 from preemo.gen.shared.status_pb2 import STATUS_OK
-from preemo.gen.worker.reply_pb2 import WorkerReply
+from preemo.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
 from preemo.gen.worker.request_pb2 import WorkerRequest
 
 
@@ -14,12 +14,14 @@ class IMessagingClient(Protocol):
         pass
 
 
+# Instantiating this class will hang if it cannot connect to a valid server
 class MessagingClient:
     def __init__(self, *, version: str, worker_server_url: str) -> None:
         context = zmq.Context()
 
         # TODO(adrian@preemo.io, 02/25/2023): investigate other socket types, such as PUSH/PULL
         self._socket = context.socket(zmq.REQ)
+        # TODO(adrian@preemo.io, 02/15/2023): add logging indicating attempting to connect and successful connection
         self._socket.connect(worker_server_url)
 
         header_reply = self._send_header_request(HeaderRequest(version=version))
@@ -43,3 +45,11 @@ class MessagingClient:
         reply = self._send_message(message)
 
         return WorkerReply.FromString(reply)
+
+
+# This class is intended to be used for tests and local development
+class LocalMessagingClient:
+    def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
+        print(f"sending worker request: {worker_request}")
+        # TODO(adrian@preemo.io, 02/15/2023): have this send a different reply for different request types
+        return WorkerReply(register_function=RegisterFunctionReply(status=STATUS_OK))
