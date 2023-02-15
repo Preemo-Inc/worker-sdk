@@ -2,6 +2,7 @@ from typing import Protocol, runtime_checkable
 
 import zmq
 
+from preemo import __version__
 from preemo.gen.header_pb2 import HeaderReply, HeaderRequest
 from preemo.gen.shared.status_pb2 import STATUS_OK
 from preemo.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
@@ -16,7 +17,7 @@ class IMessagingClient(Protocol):
 
 # Instantiating this class will hang if it cannot connect to a valid server
 class MessagingClient:
-    def __init__(self, *, version: str, worker_server_url: str) -> None:
+    def __init__(self, *, worker_server_url: str) -> None:
         context = zmq.Context()
 
         # TODO(adrian@preemo.io, 02/25/2023): investigate other socket types, such as PUSH/PULL
@@ -24,7 +25,7 @@ class MessagingClient:
         # TODO(adrian@preemo.io, 02/15/2023): add logging indicating attempting to connect and successful connection
         self._socket.connect(worker_server_url)
 
-        header_reply = self._send_header_request(HeaderRequest(version=version))
+        header_reply = self._send_header_request(HeaderRequest(version=__version__))
         if header_reply.status != STATUS_OK:
             raise Exception(
                 f"worker server replied to header request with unexpected status: {header_reply.status} and message: {header_reply.message}"
