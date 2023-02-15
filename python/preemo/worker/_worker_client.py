@@ -19,7 +19,7 @@ def _construct_register_function_worker_request(
     return worker_request
 
 
-class PreemoWorkerClient:
+class WorkerClient:
     def __init__(self, *, messaging_client: IMessagingClient) -> None:
         self._client = messaging_client
         self._function_registry = FunctionRegistry()

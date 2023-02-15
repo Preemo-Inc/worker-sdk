@@ -626,12 +626,31 @@ rich = ">=12.0.0"
 urllib3 = ">=1.26.0"
 
 [[package]]
+name = "types-docutils"
+version = "0.19.1.4"
+description = "Typing stubs for docutils"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "types-protobuf"
 version = "4.21.0.4"
 description = "Typing stubs for protobuf"
 category = "dev"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "types-setuptools"
+version = "67.3.0.1"
+description = "Typing stubs for setuptools"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+types-docutils = "*"
 
 [[package]]
 name = "typing-extensions"
@@ -677,7 +696,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10.2"
-content-hash = "bd3c7727316cc0058292f68c9f03642905ac43c12edc64c63e5da8c0582913bb"
+content-hash = "fb3556a0fc4ea0b2fd05fc390099fc3efc45407cc8a780dcb7b86dab511d769c"
 
 [metadata.files]
 atomicwrites = []
@@ -732,7 +751,9 @@ secretstorage = []
 six = []
 tomli = []
 twine = []
+types-docutils = []
 types-protobuf = []
+types-setuptools = []
 typing-extensions = []
 urllib3 = []
 webencodings = []

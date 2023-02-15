@@ -4,7 +4,7 @@ from preemo.gen.shared.status_pb2 import STATUS_ERROR, STATUS_OK
 from preemo.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
 from preemo.gen.worker.request_pb2 import WorkerRequest
 from preemo.worker._messaging_client import IMessagingClient
-from preemo.worker._worker_client import PreemoWorkerClient
+from preemo.worker._worker_client import WorkerClient
 
 
 class TestRegister:
@@ -42,7 +42,7 @@ class TestRegister:
                     register_function=RegisterFunctionReply(status=STATUS_OK)
                 )
 
-        worker_client = PreemoWorkerClient(messaging_client=MockMessagingClient())
+        worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
         @worker_client.register
         def inner_func() -> None:
@@ -105,7 +105,7 @@ class TestRegister:
                     register_function=RegisterFunctionReply(status=STATUS_OK)
                 )
 
-        worker_client = PreemoWorkerClient(messaging_client=MockMessagingClient())
+        worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
         class InnerClass:
             @worker_client.register
@@ -130,7 +130,7 @@ class TestRegister:
                     register_function=RegisterFunctionReply(status=STATUS_ERROR)
                 )
 
-        worker_client = PreemoWorkerClient(messaging_client=MockMessagingClient())
+        worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
         with pytest.raises(
             Exception,
