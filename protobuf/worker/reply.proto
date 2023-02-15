@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "shared.proto";
+import "shared/status.proto";
 
 message RegisterFunctionReply {
   optional Status status = 1;

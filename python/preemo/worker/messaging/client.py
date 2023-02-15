@@ -3,7 +3,7 @@ from typing import Protocol, runtime_checkable
 import zmq
 
 from preemo.gen.header_pb2 import HeaderReply, HeaderRequest
-from preemo.gen.shared_pb2 import STATUS_OK
+from preemo.gen.shared.status_pb2 import STATUS_OK
 from preemo.gen.worker.reply_pb2 import WorkerReply
 from preemo.gen.worker.request_pb2 import WorkerRequest
 

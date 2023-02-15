@@ -11,18 +11,18 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-import shared_pb2 as shared__pb2
+from shared import status_pb2 as shared_dot_status__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cheader.proto\x1a\x0cshared.proto\"1\n\rHeaderRequest\x12\x14\n\x07version\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_version\"X\n\x0bHeaderReply\x12\x1c\n\x06status\x18\x01 \x01(\x0e\x32\x07.StatusH\x00\x88\x01\x01\x12\x14\n\x07message\x18\x02 \x01(\tH\x01\x88\x01\x01\x42\t\n\x07_statusB\n\n\x08_messageb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cheader.proto\x1a\x13shared/status.proto\"1\n\rHeaderRequest\x12\x14\n\x07version\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_version\"X\n\x0bHeaderReply\x12\x1c\n\x06status\x18\x01 \x01(\x0e\x32\x07.StatusH\x00\x88\x01\x01\x12\x14\n\x07message\x18\x02 \x01(\tH\x01\x88\x01\x01\x42\t\n\x07_statusB\n\n\x08_messageb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'header_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _HEADERREQUEST._serialized_start=30
-  _HEADERREQUEST._serialized_end=79
-  _HEADERREPLY._serialized_start=81
-  _HEADERREPLY._serialized_end=169
+  _HEADERREQUEST._serialized_start=37
+  _HEADERREQUEST._serialized_end=86
+  _HEADERREPLY._serialized_start=88
+  _HEADERREPLY._serialized_end=176
 # @@protoc_insertion_point(module_scope)

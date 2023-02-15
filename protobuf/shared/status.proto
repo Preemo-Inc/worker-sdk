@@ -1,10 +1,5 @@
 syntax = "proto3";
 
-message RegisteredFunction {
-  optional string name = 1;
-  optional string namespace = 2;
-}
-
 enum Status {
   STATUS_UNSPECIFIED = 0;
   STATUS_OK = 1;
