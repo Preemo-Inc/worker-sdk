@@ -13,4 +13,5 @@
 !python/Dockerfile.build.dockerignore.jinja2
 !python/poetry.lock
 !python/pyproject.toml
-!python/src/**
+!python/preemo/**
+!python/tests/**
