@@ -26,16 +26,25 @@ python = "3.10.2"
 pyzmq = "25.0.0"
 
 [tool.poetry.dev-dependencies]
-autoflake = "1.4"
+autoflake = "2.0.1"
 black = "22.3.0"
 build = "0.10.0"
-flake8 = "4.0.1"
+flake8 = "6.0.0"
 isort = "5.10.1"
 mypy = "1.0.0"
 pep8-naming = "0.13.0"
 pytest = "7.1.2"
 twine = "4.0.2"
 types-protobuf = "4.21.0.4"
+
+[tool.autoflake]
+check = true
+exclude = "preemo/gen"
+ignore-init-module-imports = true
+in-place = true
+recursive = true
+remove-all-unused-imports = true
+remove-unused-variables = true
 
 [tool.black]
 exclude = [
