@@ -23,6 +23,5 @@ RUN poetry config virtualenvs.create false && \
     poetry install --no-interaction --no-ansi
 
 # run static release checks
-RUN bash -e ./bin/dev/lint.sh
-RUN pytest ./src/tests/unit
-RUN pytest ./src/tests/integration
+RUN bash -e bin/dev/lint.sh
+RUN pytest tests
