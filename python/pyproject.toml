@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "preemo_worker_sdk"
-version = "0.1.0"
+# TODO(adrian@preemo.io, 02/10/2023): revert version back to 0.1.0
+version = "0.1.1"
 description = ""
 license = "MIT"
 authors = [
