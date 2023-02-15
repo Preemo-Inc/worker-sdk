@@ -2,10 +2,10 @@ from typing import Protocol, runtime_checkable
 
 import zmq
 
-from src.gen.header_pb2 import HeaderReply, HeaderRequest
-from src.gen.shared_pb2 import STATUS_OK
-from src.gen.worker.reply_pb2 import WorkerReply
-from src.gen.worker.request_pb2 import WorkerRequest
+from preemo.gen.header_pb2 import HeaderReply, HeaderRequest
+from preemo.gen.shared_pb2 import STATUS_OK
+from preemo.gen.worker.reply_pb2 import WorkerReply
+from preemo.gen.worker.request_pb2 import WorkerRequest
 
 
 @runtime_checkable
