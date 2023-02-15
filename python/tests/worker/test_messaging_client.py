@@ -1,4 +1,4 @@
-from preemo.worker.messaging.client import IMessagingClient, MessagingClient
+from preemo.worker._messaging_client import IMessagingClient, MessagingClient
 
 
 class TestMessagingClient:

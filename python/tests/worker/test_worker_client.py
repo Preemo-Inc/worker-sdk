@@ -3,8 +3,8 @@ import pytest
 from preemo.gen.shared.status_pb2 import STATUS_ERROR, STATUS_OK
 from preemo.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
 from preemo.gen.worker.request_pb2 import WorkerRequest
-from preemo.worker.client import PreemoWorkerClient
-from preemo.worker.messaging.client import IMessagingClient
+from preemo.worker._messaging_client import IMessagingClient
+from preemo.worker._worker_client import PreemoWorkerClient
 
 
 class TestRegister:

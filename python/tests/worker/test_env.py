@@ -1,6 +1,6 @@
 import pytest
 
-from preemo.worker.environment.manager import get_required_env
+from preemo.worker._env import get_required_env
 
 
 class TestGetRequiredEnv:
