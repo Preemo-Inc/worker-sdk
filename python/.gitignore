@@ -2,6 +2,7 @@
 .env*
 secrets.env
 .*-env
+*.env
 
 # package files
 dist/
