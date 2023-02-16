@@ -11,8 +11,6 @@ rm -rf dist
 python3 -m build
 
 # must have valid ~/.pypirc file to upload
-# TODO(adrian@preemo.io, 02/15/2023): remove the repository line
 python3 -m twine upload \
   --non-interactive \
-  --repository testpypi \
   dist/*
