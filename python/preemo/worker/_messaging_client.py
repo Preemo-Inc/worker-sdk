@@ -23,6 +23,11 @@ class MessagingClient:
         # TODO(adrian@preemo.io, 02/25/2023): investigate other socket types, such as PUSH/PULL
         self._socket = context.socket(zmq.REQ)
         # TODO(adrian@preemo.io, 02/15/2023): add logging indicating attempting to connect and successful connection
+        # TODO(adrian@preemo.io, 02/15/2023): add timeout, like Promise.race (python threads)
+        # TODO(adrian@preemo.io, 02/16/2023): investigate which, if any of these timeouts are useful
+        # self._socket.setsockopt(zmq.CONNECT_TIMEOUT, 1_000)
+        # self._socket.setsockopt(zmq.SNDTIMEO, 1_000)
+        # self._socket.setsockopt(zmq.RCVTIMEO, 1_000)
         self._socket.connect(worker_server_url)
 
         header_reply = self._send_header_request(HeaderRequest(version=__version__))
