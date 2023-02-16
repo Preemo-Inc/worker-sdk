@@ -9,19 +9,22 @@ RUN pip install poetry==1.1.13
 WORKDIR $IMAGE_DIR
 
 # copy installation dependencies, source files, caches, and configuration files
-COPY $PROJECT_DIR/poetry.lock \
-     $PROJECT_DIR/pyproject.toml \
-     $PROJECT_DIR/.flake8 \
-     $IMAGE_DIR/
+COPY \
+  $PROJECT_DIR/.flake8 \
+  $PROJECT_DIR/poetry.lock \
+  $PROJECT_DIR/pyproject.toml \
+  $PROJECT_DIR/README.md \
+  $IMAGE_DIR/
 
-COPY $PROJECT_DIR/src $IMAGE_DIR/src
 COPY $PROJECT_DIR/bin $IMAGE_DIR/bin
+COPY $PROJECT_DIR/preemo $IMAGE_DIR/preemo
+COPY $PROJECT_DIR/tests $IMAGE_DIR/tests
 
 # install dependencies
-RUN poetry config virtualenvs.create false && \
-    poetry install --no-interaction --no-ansi
+RUN \
+  poetry config virtualenvs.create false && \
+  poetry install --no-interaction --no-ansi
 
 # run static release checks
-RUN bash -e ./bin/dev/lint.sh
-RUN pytest ./src/tests/unit
-RUN pytest ./src/tests/integration
+RUN bash -e bin/dev/lint.sh
+RUN pytest tests

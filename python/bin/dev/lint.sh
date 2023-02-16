@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-mypy src
-black --check src
-isort --check-only src
-flake8 src
+mypy preemo tests
+isort --check-only preemo tests
+black --check preemo tests
+flake8 preemo tests

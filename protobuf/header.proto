@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+import "shared/status.proto";
+
+message HeaderRequest {
+  optional string version = 1;
+}
+
+message HeaderReply {
+  optional Status status = 1;
+  optional string message = 2;
+}
