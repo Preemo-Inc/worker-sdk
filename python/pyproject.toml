@@ -9,8 +9,7 @@ authors = [
   "Forrest Moret <forrest@preemo.io>",
   "Adrian Miguel <adrian@preemo.io>",
 ]
-# TODO(adrian@preemo.io, 02/10/2023): add readme back
-# readme = "README.md"
+readme = "README.md"
 homepage = "https://www.preemo.io/"
 repository = "https://github.com/Preemo-Inc/worker-sdk"
 classifiers = [
