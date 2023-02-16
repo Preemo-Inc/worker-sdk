@@ -2,7 +2,7 @@
 # TODO(adrian@preemo.io, 02/10/2023): revert name back to preemo_worker_sdk
 name = "preemo_worker_sdk3"
 # TODO(adrian@preemo.io, 02/10/2023): revert version back to 0.1.0
-version = "0.1.4"
+version = "0.1.5"
 description = ""
 license = "MIT"
 authors = [
