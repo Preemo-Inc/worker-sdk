@@ -664,7 +664,7 @@ python-versions = "*"
 
 [[package]]
 name = "zipp"
-version = "3.13.0"
+version = "3.14.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "dev"
 optional = false
@@ -676,8 +676,8 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.10.2"
-content-hash = "bd3c7727316cc0058292f68c9f03642905ac43c12edc64c63e5da8c0582913bb"
+python-versions = "^3.10"
+content-hash = "9402a4d8affe0871b94246823454562daf194c556758d101b9daa89b11ffb7c7"
 
 [metadata.files]
 atomicwrites = []

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "preemo_worker_sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 license = "MIT"
 authors = [
@@ -21,7 +21,8 @@ packages = [
 
 [tool.poetry.dependencies]
 protobuf = "4.21.12"
-python = "3.10.2"
+# TODO(adrian@preemo.io, 02/20/2023): can probably lower this requirement
+python = "^3.10"
 pyzmq = "25.0.0"
 
 [tool.poetry.dev-dependencies]
