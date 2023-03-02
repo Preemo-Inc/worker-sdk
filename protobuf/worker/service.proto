@@ -4,5 +4,5 @@ import "worker/reply.proto";
 import "worker/request.proto";
 
 service Worker {
-  HandleWorkerRequest (WorkerRequest) returns (WorkerReply) {}
+  rpc HandleWorkerRequest (WorkerRequest) returns (WorkerReply) {}
 }

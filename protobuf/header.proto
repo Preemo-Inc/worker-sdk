@@ -12,5 +12,5 @@ message HeaderReply {
 }
 
 service Header {
-  CheckHeader (HeaderRequest) returns (HeaderReply) {}
+  rpc CheckHeader (HeaderRequest) returns (HeaderReply) {}
 }
