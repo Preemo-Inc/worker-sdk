@@ -37,6 +37,7 @@ To setup the TODO shortcut in VSCode:
 1. Click `Code` > `Preferences` > `User Snippets`.
 2. Select the global snippets file.
 3. Copy and paste this into the existing object:
+
 ```
 "TODO": {
   "prefix": "todo",
@@ -46,4 +47,9 @@ To setup the TODO shortcut in VSCode:
   "description": "Insert TODO comment with expected date of completion"
 }
 ```
+
 4. Replace `<your_email_address>` with your email address.
+
+#### To open as a multi root project
+
+`Open workspace from file...` on `.vscode/monorepo.code-workspace`
