@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+import "worker/reply.proto";
+import "worker/request.proto";
+
+service Worker {
+  HandleWorkerRequest (WorkerRequest) returns (WorkerReply) {}
+}

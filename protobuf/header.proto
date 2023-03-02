@@ -10,3 +10,7 @@ message HeaderReply {
   optional Status status = 1;
   optional string message = 2;
 }
+
+service Header {
+  CheckHeader (HeaderRequest) returns (HeaderReply) {}
+}
