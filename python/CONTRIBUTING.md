@@ -24,7 +24,7 @@ worker-sdk/python$ exit
 
 ### Working in VSCode
 
-In order to get this subrepo working in VSCode, you must open a new window with `worker-sdk/python` as the root of the project.
+In order to get this subrepo working in VSCode, you should [work with the multiroot workspace](/README.md#to-open-as-a-multi-root-project).
 
 ## Code Style
 
