@@ -183,6 +183,17 @@ pycodestyle = ">=2.10.0,<2.11.0"
 pyflakes = ">=3.0.0,<3.1.0"
 
 [[package]]
+name = "grpc-stubs"
+version = "1.24.12"
+description = "Mypy stubs for gRPC"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+grpcio = "*"
+
+[[package]]
 name = "grpcio"
 version = "1.51.3"
 description = "HTTP/2-based RPC framework"
@@ -700,7 +711,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "83dc304a699e0d09a032c1b9e18c9ca75ea0b61cf076ae5cfa74a27183500cdb"
+content-hash = "0e9da4fa22fae0e9b4d6acd48fbb91ce82d32444db7b2f0b70329fbda46534a2"
 
 [metadata.files]
 attrs = []
@@ -717,6 +728,7 @@ cryptography = []
 docutils = []
 exceptiongroup = []
 flake8 = []
+grpc-stubs = []
 grpcio = []
 idna = []
 importlib-metadata = []
