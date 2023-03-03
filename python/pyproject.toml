@@ -20,6 +20,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
+grpcio = "1.51.3"
 protobuf = "4.21.12"
 python = "^3.8.1"
 pyzmq = "25.0.0"
