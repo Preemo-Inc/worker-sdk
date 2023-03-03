@@ -32,8 +32,13 @@ mkdir "${genDir}"
 
 protoc \
   --proto_path "${protobufDir}" \
-  --python_out "${genDir}" \
   --pyi_out "${genDir}" \
-  $(find "${protobufDir}" -name "*.proto")
+  --python_out "${genDir}" \
+  $(find "${protobufDir}" -name "*.proto" -not -path "${protobufDir}/services/*")
+
+python3 -m grpc_tools.protoc \
+  --proto_path "${protobufDir}" \
+  --grpc_python_out "${genDir}" \
+  $(find "${protobufDir}/services" -name "*.proto")
 
 generateInitFiles "${genDir}"
