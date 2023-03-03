@@ -205,6 +205,18 @@ python-versions = ">=3.7"
 protobuf = ["grpcio-tools (>=1.51.3)"]
 
 [[package]]
+name = "grpcio-tools"
+version = "1.51.3"
+description = "Protobuf code generator for gRPC"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+grpcio = ">=1.51.3"
+protobuf = ">=4.21.6,<5.0dev"
+
+[[package]]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -711,7 +723,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "0e9da4fa22fae0e9b4d6acd48fbb91ce82d32444db7b2f0b70329fbda46534a2"
+content-hash = "e616b8f8ffd442db1d34bd83d4105225b9ab62d787830f653a1a889c748367d3"
 
 [metadata.files]
 attrs = []
@@ -730,6 +742,7 @@ exceptiongroup = []
 flake8 = []
 grpc-stubs = []
 grpcio = []
+grpcio-tools = []
 idna = []
 importlib-metadata = []
 importlib-resources = []
