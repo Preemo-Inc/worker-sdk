@@ -41,10 +41,10 @@ class MessagingClient:
         return self._worker_service.RegisterFunction(request)  # type: ignore
 
 
-# TODO(adrian@preemo.io, 03/03/2023): do we need this?
-# # This class is intended to be used for tests and local development
-# class LocalMessagingClient:
-#     def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
-#         print(f"sending worker request: {worker_request}")
-#         # TODO(adrian@preemo.io, 02/15/2023): have this send a different reply for different request types
-#         return WorkerReply(register_function=RegisterFunctionReply(status=STATUS_OK))
+# This class is intended to be used for tests and local development
+class LocalMessagingClient:
+    def register_function(
+        self, request: RegisterFunctionRequest
+    ) -> RegisterFunctionResponse:
+        print(f"sending register function request: {request}")
+        return RegisterFunctionResponse(status=STATUS_OK)
