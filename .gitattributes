@@ -1,4 +1,4 @@
 .tool-versions text eol=lf
 
-*/preemo/gen/* linguist-generated=true
+*/preemo/gen/**/* linguist-generated=true
 *.lock linguist-generated=true
