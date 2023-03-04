@@ -1,7 +1,7 @@
 syntax = "proto3";
 
-import "requests/header.proto";
-import "requests/register_function.proto";
+import "endpoints/header.proto";
+import "endpoints/register_function.proto";
 
 service WorkerService {
   rpc Initiate(HeaderRequest) returns (HeaderResponse);

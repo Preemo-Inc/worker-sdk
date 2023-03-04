@@ -3,12 +3,12 @@ from typing import Protocol, runtime_checkable
 import grpc
 
 from preemo import __version__
-from preemo.gen.models.status_pb2 import STATUS_OK
-from preemo.gen.requests.header_pb2 import HeaderRequest, HeaderResponse
-from preemo.gen.requests.register_function_pb2 import (
+from preemo.gen.endpoints.header_pb2 import HeaderRequest, HeaderResponse
+from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
+from preemo.gen.models.status_pb2 import STATUS_OK
 from preemo.gen.services.worker_pb2_grpc import WorkerServiceStub
 
 

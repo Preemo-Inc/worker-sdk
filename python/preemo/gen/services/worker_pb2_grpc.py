@@ -2,8 +2,8 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from requests import header_pb2 as requests_dot_header__pb2
-from requests import register_function_pb2 as requests_dot_register__function__pb2
+from endpoints import header_pb2 as endpoints_dot_header__pb2
+from endpoints import register_function_pb2 as endpoints_dot_register__function__pb2
 
 
 class WorkerServiceStub(object):
@@ -17,13 +17,13 @@ class WorkerServiceStub(object):
         """
         self.Initiate = channel.unary_unary(
                 '/WorkerService/Initiate',
-                request_serializer=requests_dot_header__pb2.HeaderRequest.SerializeToString,
-                response_deserializer=requests_dot_header__pb2.HeaderResponse.FromString,
+                request_serializer=endpoints_dot_header__pb2.HeaderRequest.SerializeToString,
+                response_deserializer=endpoints_dot_header__pb2.HeaderResponse.FromString,
                 )
         self.RegisterFunction = channel.unary_unary(
                 '/WorkerService/RegisterFunction',
-                request_serializer=requests_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
-                response_deserializer=requests_dot_register__function__pb2.RegisterFunctionResponse.FromString,
+                request_serializer=endpoints_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
+                response_deserializer=endpoints_dot_register__function__pb2.RegisterFunctionResponse.FromString,
                 )
 
 
@@ -47,13 +47,13 @@ def add_WorkerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Initiate': grpc.unary_unary_rpc_method_handler(
                     servicer.Initiate,
-                    request_deserializer=requests_dot_header__pb2.HeaderRequest.FromString,
-                    response_serializer=requests_dot_header__pb2.HeaderResponse.SerializeToString,
+                    request_deserializer=endpoints_dot_header__pb2.HeaderRequest.FromString,
+                    response_serializer=endpoints_dot_header__pb2.HeaderResponse.SerializeToString,
             ),
             'RegisterFunction': grpc.unary_unary_rpc_method_handler(
                     servicer.RegisterFunction,
-                    request_deserializer=requests_dot_register__function__pb2.RegisterFunctionRequest.FromString,
-                    response_serializer=requests_dot_register__function__pb2.RegisterFunctionResponse.SerializeToString,
+                    request_deserializer=endpoints_dot_register__function__pb2.RegisterFunctionRequest.FromString,
+                    response_serializer=endpoints_dot_register__function__pb2.RegisterFunctionResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -77,8 +77,8 @@ class WorkerService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/WorkerService/Initiate',
-            requests_dot_header__pb2.HeaderRequest.SerializeToString,
-            requests_dot_header__pb2.HeaderResponse.FromString,
+            endpoints_dot_header__pb2.HeaderRequest.SerializeToString,
+            endpoints_dot_header__pb2.HeaderResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -94,7 +94,7 @@ class WorkerService(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/WorkerService/RegisterFunction',
-            requests_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
-            requests_dot_register__function__pb2.RegisterFunctionResponse.FromString,
+            endpoints_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
+            endpoints_dot_register__function__pb2.RegisterFunctionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

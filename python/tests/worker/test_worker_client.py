@@ -1,8 +1,10 @@
 import pytest
 
-from preemo.gen.shared.status_pb2 import STATUS_ERROR, STATUS_OK
-from preemo.gen.worker.reply_pb2 import RegisterFunctionReply, WorkerReply
-from preemo.gen.worker.request_pb2 import WorkerRequest
+from preemo.gen.endpoints.register_function_pb2 import (
+    RegisterFunctionRequest,
+    RegisterFunctionResponse,
+)
+from preemo.gen.models.status_pb2 import STATUS_ERROR, STATUS_OK
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
@@ -12,11 +14,13 @@ class TestRegister:
         send_request_call_count = 0
 
         class MockMessagingClient(IMessagingClient):
-            def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
+            def register_function(
+                self, request: RegisterFunctionRequest
+            ) -> RegisterFunctionResponse:
                 nonlocal send_request_call_count
                 send_request_call_count += 1
 
-                func = worker_request.register_function.function_to_register
+                func = request.function_to_register
                 match send_request_call_count:
                     case 1:
                         assert func.name == "inner_func"
@@ -38,9 +42,7 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return WorkerReply(
-                    register_function=RegisterFunctionReply(status=STATUS_OK)
-                )
+                return RegisterFunctionResponse(status=STATUS_OK)
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
@@ -78,11 +80,13 @@ class TestRegister:
         send_request_call_count = 0
 
         class MockMessagingClient(IMessagingClient):
-            def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
+            def register_function(
+                self, request: RegisterFunctionRequest
+            ) -> RegisterFunctionResponse:
                 nonlocal send_request_call_count
                 send_request_call_count += 1
 
-                func = worker_request.register_function.function_to_register
+                func = request.function_to_register
                 match send_request_call_count:
                     case 1:
                         assert func.name == "inner_func"
@@ -101,9 +105,7 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return WorkerReply(
-                    register_function=RegisterFunctionReply(status=STATUS_OK)
-                )
+                return RegisterFunctionResponse(status=STATUS_OK)
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
@@ -125,10 +127,10 @@ class TestRegister:
 
     def test_receiving_non_ok_reply(self) -> None:
         class MockMessagingClient(IMessagingClient):
-            def send_worker_request(self, worker_request: WorkerRequest) -> WorkerReply:
-                return WorkerReply(
-                    register_function=RegisterFunctionReply(status=STATUS_ERROR)
-                )
+            def register_function(
+                self, request: RegisterFunctionRequest
+            ) -> RegisterFunctionResponse:
+                return RegisterFunctionResponse(status=STATUS_ERROR)
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
