@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-import "shared/status.proto";
+import "models/status.proto";
 
 message HeaderRequest {
   optional string version = 1;
 }
 
-message HeaderReply {
+message HeaderResponse {
   optional Status status = 1;
   optional string message = 2;
 }

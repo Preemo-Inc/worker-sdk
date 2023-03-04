@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+import "requests/header.proto";
+import "requests/register_function.proto";
+
+service WorkerService {
+  rpc Initiate(HeaderRequest) returns (HeaderResponse);
+  rpc RegisterFunction(RegisterFunctionRequest) returns (RegisterFunctionResponse);
+}
