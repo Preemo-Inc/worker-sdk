@@ -95,7 +95,7 @@ python-versions = ">=3.6"
 name = "cffi"
 version = "1.15.1"
 description = "Foreign Function Interface for Python calling C code."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -479,7 +479,7 @@ python-versions = ">=3.6"
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -540,17 +540,6 @@ description = ""
 category = "dev"
 optional = false
 python-versions = "*"
-
-[[package]]
-name = "pyzmq"
-version = "25.0.0"
-description = "Python bindings for 0MQ"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-cffi = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "readme-renderer"
@@ -723,7 +712,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "e616b8f8ffd442db1d34bd83d4105225b9ab62d787830f653a1a889c748367d3"
+content-hash = "80b8518f40dd7bbc0338e3422e0831785b070faf13e1cb95013bb12971dcd08d"
 
 [metadata.files]
 attrs = []
@@ -771,7 +760,6 @@ pygments = []
 pyproject-hooks = []
 pytest = []
 pywin32-ctypes = []
-pyzmq = []
 readme-renderer = []
 requests = []
 requests-toolbelt = []

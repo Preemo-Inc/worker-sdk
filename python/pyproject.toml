@@ -23,7 +23,6 @@ packages = [
 grpcio = "1.51.3"
 protobuf = "4.21.12"
 python = "^3.8.1"
-pyzmq = "25.0.0"
 
 [tool.poetry.dev-dependencies]
 autoflake = "2.0.1"
