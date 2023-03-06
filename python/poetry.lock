@@ -104,11 +104,11 @@ pycparser = "*"
 
 [[package]]
 name = "charset-normalizer"
-version = "3.0.1"
+version = "3.1.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
 category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7.0"
 
 [[package]]
 name = "click"
@@ -398,6 +398,18 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "mypy-protobuf"
+version = "3.4.0"
+description = "Generate mypy stub files from protobuf specs"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+protobuf = ">=4.21.8"
+types-protobuf = ">=3.20.4"
+
+[[package]]
 name = "packaging"
 version = "23.0"
 description = "Core utilities for Python packages"
@@ -599,15 +611,15 @@ idna2008 = ["idna"]
 
 [[package]]
 name = "rich"
-version = "13.3.1"
+version = "13.3.2"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 
 [package.dependencies]
-markdown-it-py = ">=2.1.0,<3.0.0"
-pygments = ">=2.14.0,<3.0.0"
+markdown-it-py = ">=2.2.0,<3.0.0"
+pygments = ">=2.13.0,<3.0.0"
 typing-extensions = {version = ">=4.0.0,<5.0", markers = "python_version < \"3.9\""}
 
 [package.extras]
@@ -712,7 +724,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "80b8518f40dd7bbc0338e3422e0831785b070faf13e1cb95013bb12971dcd08d"
+content-hash = "251ec2886edb5d96585f9d530a45534e396d5f8845b27062af10ce38c83fd8ca"
 
 [metadata.files]
 attrs = []
@@ -746,6 +758,7 @@ mdurl = []
 more-itertools = []
 mypy = []
 mypy-extensions = []
+mypy-protobuf = []
 packaging = []
 pathspec = []
 pep8-naming = []

@@ -32,13 +32,13 @@ class MessagingClient:
             )
 
     def _initiate(self, request: HeaderRequest) -> HeaderResponse:
-        return self._worker_service.Initiate(request)  # type: ignore
+        response = self._worker_service.Initiate("whatever i want")
+        return response
 
     def register_function(
         self, request: RegisterFunctionRequest
     ) -> RegisterFunctionResponse:
-        # TODO(adrian@preemo.io, 03/03/2023): can we do better with the types?
-        return self._worker_service.RegisterFunction(request)  # type: ignore
+        return self._worker_service.RegisterFunction(request)
 
 
 # This class is intended to be used for tests and local development
