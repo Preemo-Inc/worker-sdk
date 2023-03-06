@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package models;
+
 enum Status {
   STATUS_UNSPECIFIED = 0;
   STATUS_OK = 1;
