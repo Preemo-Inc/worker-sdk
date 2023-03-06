@@ -1,49 +1,38 @@
 from typing import Protocol, runtime_checkable
 
-from grpclib.client import Channel
+import grpc
 
 from preemo import __version__
-from preemo.gen.endpoints import (
-    HeaderRequest,
-    HeaderResponse,
+from preemo.gen.endpoints.header_pb2 import HeaderRequest, HeaderResponse
+from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
-from preemo.gen.models import Status
-from preemo.gen.services import WorkerServiceStub
+from preemo.gen.models.status_pb2 import STATUS_OK
+from preemo.gen.services.worker_pb2_grpc import WorkerServiceStub
 
 
 @runtime_checkable
 class IMessagingClient(Protocol):
-    async def register_function(
+    def register_function(
         self, request: RegisterFunctionRequest
     ) -> RegisterFunctionResponse:
         pass
 
 
 class MessagingClient:
-    # TODO(adrian@preemo.io, 03/06/2023): add something to prevent users from calling constructor?
-    def __init__(self, *, worker_server_host: str, worker_server_port: int) -> None:
-        self._channel = Channel(host=worker_server_host, port=worker_server_port)
+    def __init__(self, *, worker_server_url: str) -> None:
+        self._channel = grpc.insecure_channel(target=worker_server_url)
         self._worker_service = WorkerServiceStub(self._channel)
 
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(get_chat_id("django"))
-
-    @classmethod
-    async def create(cls, *, worker_server_host: str, worker_server_port: int):
-        a = cls(
-            worker_server_host=worker_server_host, worker_server_port=worker_server_port
-        )
-        header_response = a._initiate(HeaderRequest(version=__version__))
-        if header_response.status != Status.STATUS_OK:
+        header_response = self._initiate(HeaderRequest(version=__version__))
+        if header_response.status != STATUS_OK:
             raise Exception(
                 f"worker server replied to header request with unexpected status: {header_response.status} and message: {header_response.message}"
             )
 
-    async def _initiate(self, request: HeaderRequest) -> HeaderResponse:
-        return await self._worker_service.initiate(request)
+    def _initiate(self, request: HeaderRequest) -> HeaderResponse:
+        return self._worker_service.Initiate(request)  # type: ignore
 
     def register_function(
         self, request: RegisterFunctionRequest

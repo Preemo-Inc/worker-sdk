@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-package models;
-
 message RegisteredFunction {
   optional string name = 1;
   optional string namespace = 2;

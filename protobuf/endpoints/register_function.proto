@@ -1,15 +1,13 @@
 syntax = "proto3";
 
-package endpoints;
-
 import "models/registered_function.proto";
 import "models/status.proto";
 
 message RegisterFunctionRequest {
-  optional models.RegisteredFunction function_to_register = 1;
+  optional RegisteredFunction function_to_register = 1;
 }
 
 message RegisterFunctionResponse {
-  optional models.Status status = 1;
+  optional Status status = 1;
   optional string message = 2;
 }

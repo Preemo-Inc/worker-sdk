@@ -20,11 +20,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-betterproto = {extras = ["compiler"], version = "2.0.0b5"}
 grpcio = "1.51.3"
-grpclib = "0.4.3"
 protobuf = "4.21.12"
-pydantic = "1.10.5"
 python = "^3.8.1"
 
 [tool.poetry.dev-dependencies]

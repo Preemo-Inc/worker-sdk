@@ -1,7 +1,8 @@
 from typing import Callable, Optional
 
-from preemo.gen.endpoints import RegisterFunctionRequest
-from preemo.gen.models import RegisteredFunction, Status
+from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
+from preemo.gen.models.registered_function_pb2 import RegisteredFunction
+from preemo.gen.models.status_pb2 import STATUS_OK
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 
@@ -11,7 +12,7 @@ class WorkerClient:
         self._client = messaging_client
         self._function_registry = FunctionRegistry()
 
-    async def register(
+    def register(
         self,
         outer_function: Optional[Callable] = None,
         *,
@@ -28,7 +29,7 @@ class WorkerClient:
                 function, name=function_name, namespace=namespace
             )
 
-            response = await self._client.register_function(
+            response = self._client.register_function(
                 RegisterFunctionRequest(
                     function_to_register=RegisteredFunction(
                         name=function_name, namespace=namespace
@@ -36,7 +37,7 @@ class WorkerClient:
                 )
             )
 
-            if response.status != Status.STATUS_OK:
+            if response.status != STATUS_OK:
                 raise Exception(
                     f"worker server replied to register function request with unexpected status: {response.status} and message: {response.message}"
                 )

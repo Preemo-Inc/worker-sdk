@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-package endpoints;
-
 import "models/status.proto";
 
 message HeaderRequest {
@@ -9,6 +7,6 @@ message HeaderRequest {
 }
 
 message HeaderResponse {
-  optional models.Status status = 1;
+  optional Status status = 1;
   optional string message = 2;
 }
