@@ -5,7 +5,7 @@ isort:skip_file
 import builtins
 import google.protobuf.descriptor
 import google.protobuf.message
-import models.status_pb2
+import preemo.gen.models.status_pb2
 import sys
 import typing
 
@@ -39,12 +39,12 @@ class HeaderResponse(google.protobuf.message.Message):
 
     STATUS_FIELD_NUMBER: builtins.int
     MESSAGE_FIELD_NUMBER: builtins.int
-    status: models.status_pb2.Status.ValueType
+    status: preemo.gen.models.status_pb2.Status.ValueType
     message: builtins.str
     def __init__(
         self,
         *,
-        status: models.status_pb2.Status.ValueType | None = ...,
+        status: preemo.gen.models.status_pb2.Status.ValueType | None = ...,
         message: builtins.str | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["_message", b"_message", "_status", b"_status", "message", b"message", "status", b"status"]) -> builtins.bool: ...

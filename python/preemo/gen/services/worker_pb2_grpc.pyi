@@ -3,33 +3,33 @@
 isort:skip_file
 """
 import abc
-import endpoints.header_pb2
-import endpoints.register_function_pb2
+import preemo.gen.endpoints.header_pb2
+import preemo.gen.endpoints.register_function_pb2
 import grpc
 
 class WorkerServiceStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
     Initiate: grpc.UnaryUnaryMultiCallable[
-        endpoints.header_pb2.HeaderRequest,
-        endpoints.header_pb2.HeaderResponse,
+        preemo.gen.endpoints.header_pb2.HeaderRequest,
+        preemo.gen.endpoints.header_pb2.HeaderResponse,
     ]
     RegisterFunction: grpc.UnaryUnaryMultiCallable[
-        endpoints.register_function_pb2.RegisterFunctionRequest,
-        endpoints.register_function_pb2.RegisterFunctionResponse,
+        preemo.gen.endpoints.register_function_pb2.RegisterFunctionRequest,
+        preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse,
     ]
 
 class WorkerServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def Initiate(
         self,
-        request: endpoints.header_pb2.HeaderRequest,
+        request: preemo.gen.endpoints.header_pb2.HeaderRequest,
         context: grpc.ServicerContext,
-    ) -> endpoints.header_pb2.HeaderResponse: ...
+    ) -> preemo.gen.endpoints.header_pb2.HeaderResponse: ...
     @abc.abstractmethod
     def RegisterFunction(
         self,
-        request: endpoints.register_function_pb2.RegisterFunctionRequest,
+        request: preemo.gen.endpoints.register_function_pb2.RegisterFunctionRequest,
         context: grpc.ServicerContext,
-    ) -> endpoints.register_function_pb2.RegisterFunctionResponse: ...
+    ) -> preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse: ...
 
 def add_WorkerServiceServicer_to_server(servicer: WorkerServiceServicer, server: grpc.Server) -> None: ...

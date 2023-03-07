@@ -5,8 +5,8 @@ isort:skip_file
 import builtins
 import google.protobuf.descriptor
 import google.protobuf.message
-import models.registered_function_pb2
-import models.status_pb2
+import preemo.gen.models.registered_function_pb2
+import preemo.gen.models.status_pb2
 import sys
 import typing
 
@@ -23,11 +23,11 @@ class RegisterFunctionRequest(google.protobuf.message.Message):
 
     FUNCTION_TO_REGISTER_FIELD_NUMBER: builtins.int
     @property
-    def function_to_register(self) -> models.registered_function_pb2.RegisteredFunction: ...
+    def function_to_register(self) -> preemo.gen.models.registered_function_pb2.RegisteredFunction: ...
     def __init__(
         self,
         *,
-        function_to_register: models.registered_function_pb2.RegisteredFunction | None = ...,
+        function_to_register: preemo.gen.models.registered_function_pb2.RegisteredFunction | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["_function_to_register", b"_function_to_register", "function_to_register", b"function_to_register"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing_extensions.Literal["_function_to_register", b"_function_to_register", "function_to_register", b"function_to_register"]) -> None: ...
@@ -41,12 +41,12 @@ class RegisterFunctionResponse(google.protobuf.message.Message):
 
     STATUS_FIELD_NUMBER: builtins.int
     MESSAGE_FIELD_NUMBER: builtins.int
-    status: models.status_pb2.Status.ValueType
+    status: preemo.gen.models.status_pb2.Status.ValueType
     message: builtins.str
     def __init__(
         self,
         *,
-        status: models.status_pb2.Status.ValueType | None = ...,
+        status: preemo.gen.models.status_pb2.Status.ValueType | None = ...,
         message: builtins.str | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["_message", b"_message", "_status", b"_status", "message", b"message", "status", b"status"]) -> builtins.bool: ...

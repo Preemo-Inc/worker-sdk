@@ -32,8 +32,7 @@ class MessagingClient:
             )
 
     def _initiate(self, request: HeaderRequest) -> HeaderResponse:
-        response = self._worker_service.Initiate("whatever i want")
-        return response
+        return self._worker_service.Initiate(request)
 
     def register_function(
         self, request: RegisterFunctionRequest
