@@ -55,7 +55,7 @@ function fixPyiImports {
 rm -rf "${GEN_DIR}"
 mkdir "${GEN_DIR}"
 
-protoc \
+python3 -m grpc_tools.protoc \
   --mypy_out="${GEN_DIR}" \
   --proto_path "${PROTOBUF_DIR}" \
   --python_out="${GEN_DIR}" \
