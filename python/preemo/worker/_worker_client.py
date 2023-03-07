@@ -2,9 +2,10 @@ from typing import Callable, Optional
 
 from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
-from preemo.gen.models.status_pb2 import STATUS_OK
+from preemo.gen.models.status_pb2 import STATUS_ERROR, STATUS_OK, Status
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
+from preemo.worker._types import assert_never
 
 
 class WorkerClient:
@@ -37,10 +38,19 @@ class WorkerClient:
                 )
             )
 
-            if response.status != STATUS_OK:
-                raise Exception(
-                    f"worker server replied to register function request with unexpected status: {response.status} and message: {response.message}"
-                )
+            match response.status:
+                case Status.STATUS_OK:
+                    pass
+                case Status.STATUS_ERROR | Status.STATUS_UNSPECIFIED:
+                    raise Exception(
+                        f"worker server replied to register function request with unexpected status: {response.status} and message: {response.message}"
+                    )
+                case _:
+                    assert_never(response.status)
+            # if response.status != STATUS_OK:
+            #     raise Exception(
+            #         f"worker server replied to register function request with unexpected status: {response.status} and message: {response.message}"
+            #     )
 
             return function
 
