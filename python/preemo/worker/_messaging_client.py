@@ -8,7 +8,7 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
-from preemo.gen.models.status_pb2 import STATUS_OK
+from preemo.gen.models.status_pb2 import Status
 from preemo.gen.services.worker_pb2_grpc import WorkerServiceStub
 
 
@@ -26,7 +26,7 @@ class MessagingClient:
         self._worker_service = WorkerServiceStub(self._channel)
 
         header_response = self._initiate(HeaderRequest(version=__version__))
-        if header_response.status != STATUS_OK:
+        if header_response.status != Status.STATUS_OK:
             raise Exception(
                 f"worker server replied to header request with unexpected status: {header_response.status} and message: {header_response.message}"
             )
@@ -46,4 +46,4 @@ class LocalMessagingClient:
         self, request: RegisterFunctionRequest
     ) -> RegisterFunctionResponse:
         print(f"sending register function request: {request}")
-        return RegisterFunctionResponse(status=STATUS_OK)
+        return RegisterFunctionResponse(status=Status.STATUS_OK)

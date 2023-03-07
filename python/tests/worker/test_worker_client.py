@@ -4,7 +4,7 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
-from preemo.gen.models.status_pb2 import STATUS_ERROR, STATUS_OK
+from preemo.gen.models.status_pb2 import Status
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
@@ -42,7 +42,7 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return RegisterFunctionResponse(status=STATUS_OK)
+                return RegisterFunctionResponse(status=Status.STATUS_OK)
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
@@ -105,7 +105,7 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return RegisterFunctionResponse(status=STATUS_OK)
+                return RegisterFunctionResponse(status=Status.STATUS_OK)
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
@@ -130,7 +130,7 @@ class TestRegister:
             def register_function(
                 self, request: RegisterFunctionRequest
             ) -> RegisterFunctionResponse:
-                return RegisterFunctionResponse(status=STATUS_ERROR)
+                return RegisterFunctionResponse(status=Status.STATUS_ERROR)
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
