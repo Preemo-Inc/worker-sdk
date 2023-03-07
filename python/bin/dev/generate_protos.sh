@@ -32,27 +32,16 @@ genDir="preemo/gen"
 rm -rf "${genDir}"
 mkdir "${genDir}"
 
-# protoc \
-#   --proto_path "${protobufDir}" \
-#   --mypy_out "${genDir}" \
-#   --python_out "${genDir}" \
-#   $(find "${protobufDir}" -name "*.proto" -not -path "${protobufDir}/services/*")
-
-#   # --mypy_grpc_out "${genDir}" \
-#   # --pyi_out "${genDir}" \
-
-# python3 -m grpc_tools.protoc \
-#   --proto_path "${protobufDir}" \
-#   --grpc_python_out "${genDir}" \
-#   --mypy_grpc_out "${genDir}" \
-#   $(find "${protobufDir}/services" -name "*.proto")
-
-# generateInitFiles "${genDir}"
-
-python3 -m grpc_tools.protoc \
+protoc \
+  --mypy_out="${genDir}" \
   --proto_path "${protobufDir}" \
   --python_out="${genDir}" \
-  --mypy_out="${genDir}" \
+  $(find "${protobufDir}" -name "*.proto" -not -path "${protobufDir}/services/*")
+
+python3 -m grpc_tools.protoc \
   --grpc_python_out="${genDir}" \
   --mypy_grpc_out="${genDir}" \
-  $(find "${protobufDir}" -name "*.proto")
+  --proto_path "${protobufDir}" \
+  $(find "${protobufDir}/services" -name "*.proto")
+
+generateInitFiles "${genDir}"
