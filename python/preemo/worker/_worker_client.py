@@ -1,22 +1,10 @@
 from typing import Callable, Optional
 
-from preemo.gen.shared.registered_function_pb2 import RegisteredFunction
-from preemo.gen.shared.status_pb2 import STATUS_OK
-from preemo.gen.worker.request_pb2 import RegisterFunctionRequest, WorkerRequest
+from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
+from preemo.gen.models.registered_function_pb2 import RegisteredFunction
+from preemo.gen.models.status_pb2 import Status
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
-
-
-def _construct_register_function_worker_request(
-    *, name: str, namespace: Optional[str]
-) -> WorkerRequest:
-    function_to_register = RegisteredFunction(name=name, namespace=namespace)
-    register_function_request = RegisterFunctionRequest(
-        function_to_register=function_to_register
-    )
-    worker_request = WorkerRequest(register_function=register_function_request)
-
-    return worker_request
 
 
 class WorkerClient:
@@ -41,16 +29,17 @@ class WorkerClient:
                 function, name=function_name, namespace=namespace
             )
 
-            worker_reply = self._client.send_worker_request(
-                _construct_register_function_worker_request(
-                    name=function_name, namespace=namespace
+            response = self._client.register_function(
+                RegisterFunctionRequest(
+                    function_to_register=RegisteredFunction(
+                        name=function_name, namespace=namespace
+                    )
                 )
             )
 
-            reply = worker_reply.register_function
-            if reply.status != STATUS_OK:
+            if response.status != Status.STATUS_OK:
                 raise Exception(
-                    f"worker server replied to register function request with unexpected status: {reply.status} and message: {reply.message}"
+                    f"worker server replied to register function request with unexpected status: {response.status} and message: {response.message}"
                 )
 
             return function

@@ -1,2 +1,4 @@
 .tool-versions text eol=lf
-*_pb2.py* linguist-generated
+
+*/preemo/gen/**/* linguist-generated=true
+*.lock linguist-generated=true

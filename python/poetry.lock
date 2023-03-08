@@ -95,7 +95,7 @@ python-versions = ">=3.6"
 name = "cffi"
 version = "1.15.1"
 description = "Foreign Function Interface for Python calling C code."
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -104,11 +104,11 @@ pycparser = "*"
 
 [[package]]
 name = "charset-normalizer"
-version = "3.0.1"
+version = "3.1.0"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
 category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7.0"
 
 [[package]]
 name = "click"
@@ -131,7 +131,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7
 
 [[package]]
 name = "cryptography"
-version = "39.0.1"
+version = "39.0.2"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
 category = "dev"
 optional = false
@@ -181,6 +181,40 @@ python-versions = ">=3.8.1"
 mccabe = ">=0.7.0,<0.8.0"
 pycodestyle = ">=2.10.0,<2.11.0"
 pyflakes = ">=3.0.0,<3.1.0"
+
+[[package]]
+name = "grpc-stubs"
+version = "1.24.12"
+description = "Mypy stubs for gRPC"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+grpcio = "*"
+
+[[package]]
+name = "grpcio"
+version = "1.51.3"
+description = "HTTP/2-based RPC framework"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+protobuf = ["grpcio-tools (>=1.51.3)"]
+
+[[package]]
+name = "grpcio-tools"
+version = "1.51.3"
+description = "Protobuf code generator for gRPC"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+grpcio = ">=1.51.3"
+protobuf = ">=4.21.6,<5.0dev"
 
 [[package]]
 name = "idna"
@@ -364,6 +398,18 @@ optional = false
 python-versions = ">=3.5"
 
 [[package]]
+name = "mypy-protobuf"
+version = "3.4.0"
+description = "Generate mypy stub files from protobuf specs"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+protobuf = ">=4.21.8"
+types-protobuf = ">=3.20.4"
+
+[[package]]
 name = "packaging"
 version = "23.0"
 description = "Core utilities for Python packages"
@@ -403,7 +449,7 @@ testing = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "platformdirs"
-version = "3.0.0"
+version = "3.1.0"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "dev"
 optional = false
@@ -445,7 +491,7 @@ python-versions = ">=3.6"
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -508,17 +554,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "pyzmq"
-version = "25.0.0"
-description = "Python bindings for 0MQ"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[package.dependencies]
-cffi = {version = "*", markers = "implementation_name == \"pypy\""}
-
-[[package]]
 name = "readme-renderer"
 version = "37.3"
 description = "readme_renderer is a library for rendering \"readme\" descriptions for Warehouse"
@@ -576,15 +611,15 @@ idna2008 = ["idna"]
 
 [[package]]
 name = "rich"
-version = "13.3.1"
+version = "13.3.2"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 
 [package.dependencies]
-markdown-it-py = ">=2.1.0,<3.0.0"
-pygments = ">=2.14.0,<3.0.0"
+markdown-it-py = ">=2.2.0,<3.0.0"
+pygments = ">=2.13.0,<3.0.0"
 typing-extensions = {version = ">=4.0.0,<5.0", markers = "python_version < \"3.9\""}
 
 [package.extras]
@@ -689,7 +724,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.1"
-content-hash = "985cb47d74353e87a92f3c4ac228913b143cb4988df007d0cf3068d63dd37e30"
+content-hash = "251ec2886edb5d96585f9d530a45534e396d5f8845b27062af10ce38c83fd8ca"
 
 [metadata.files]
 attrs = []
@@ -706,6 +741,9 @@ cryptography = []
 docutils = []
 exceptiongroup = []
 flake8 = []
+grpc-stubs = []
+grpcio = []
+grpcio-tools = []
 idna = []
 importlib-metadata = []
 importlib-resources = []
@@ -720,6 +758,7 @@ mdurl = []
 more-itertools = []
 mypy = []
 mypy-extensions = []
+mypy-protobuf = []
 packaging = []
 pathspec = []
 pep8-naming = []
@@ -734,7 +773,6 @@ pygments = []
 pyproject-hooks = []
 pytest = []
 pywin32-ctypes = []
-pyzmq = []
 readme-renderer = []
 requests = []
 requests-toolbelt = []
