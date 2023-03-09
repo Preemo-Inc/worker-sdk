@@ -8,10 +8,8 @@ import google.protobuf.descriptor
 import google.protobuf.internal.containers
 import google.protobuf.message
 import preemo.gen.models.registered_function_pb2
-import preemo.gen.models.status_pb2
 import preemo.gen.models.value_pb2
 import sys
-import typing
 
 if sys.version_info >= (3, 8):
     import typing as typing_extensions
@@ -46,25 +44,14 @@ global___ExecuteFunctionRequest = ExecuteFunctionRequest
 class ExecuteFunctionResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    STATUS_FIELD_NUMBER: builtins.int
-    MESSAGE_FIELD_NUMBER: builtins.int
     FUNCTION_RESULTS_FIELD_NUMBER: builtins.int
-    status: preemo.gen.models.status_pb2.Status.ValueType
-    message: builtins.str
     @property
     def function_results(self) -> google.protobuf.internal.containers.RepeatedCompositeFieldContainer[preemo.gen.models.value_pb2.Value]: ...
     def __init__(
         self,
         *,
-        status: preemo.gen.models.status_pb2.Status.ValueType | None = ...,
-        message: builtins.str | None = ...,
         function_results: collections.abc.Iterable[preemo.gen.models.value_pb2.Value] | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_message", b"_message", "_status", b"_status", "message", b"message", "status", b"status"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_message", b"_message", "_status", b"_status", "function_results", b"function_results", "message", b"message", "status", b"status"]) -> None: ...
-    @typing.overload
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_message", b"_message"]) -> typing_extensions.Literal["message"] | None: ...
-    @typing.overload
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_status", b"_status"]) -> typing_extensions.Literal["status"] | None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["function_results", b"function_results"]) -> None: ...
 
 global___ExecuteFunctionResponse = ExecuteFunctionResponse

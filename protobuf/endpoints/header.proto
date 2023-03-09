@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "models/status.proto";
-
 // Initial request that should be made to establish connection.
 // Intended to contain any and all metadata the server might need.
 message HeaderRequest {
@@ -9,6 +7,4 @@ message HeaderRequest {
 }
 
 message HeaderResponse {
-  optional Status status = 1;
-  optional string message = 2;
 }

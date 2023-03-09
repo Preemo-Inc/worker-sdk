@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "models/registered_function.proto";
-import "models/status.proto";
 import "models/value.proto";
 
 message ExecuteFunctionRequest {
@@ -10,7 +9,5 @@ message ExecuteFunctionRequest {
 }
 
 message ExecuteFunctionResponse {
-  optional Status status = 1;
-  optional string message = 2;
   repeated Value function_results = 3;
 }
