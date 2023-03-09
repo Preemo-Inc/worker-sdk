@@ -21,7 +21,7 @@ In order to register a function with Preemo workers, you can use `register` to d
 from preemo.worker import register
 
 @register(name="some_name", namespace="dev")
-def do_something():
+def do_something(params: str):
     ...
 ```
 
@@ -29,7 +29,7 @@ Both parameters, `name` and `namespace`, are optional. If the name isn't specifi
 
 ```python
 @register
-def do_something():
+def do_something(params: str):
     # registers with name do_something in the global namespace
     ...
 ```
@@ -43,7 +43,7 @@ from preemo.worker import get_function
 
 if __name__ == "__main__":
     do_something = get_function(name="some_name", namespace="dev")
-    result = do_something()
+    result = do_something("params")
     ...
 ```
 
@@ -55,7 +55,7 @@ from preemo.worker import get_function
 if __name__ == "__main__":
     # gets the function named do_something in the global namespace
     do_something = get_function("do_something")
-    result = do_something()
+    result = do_something("params")
     ...
 ```
 
