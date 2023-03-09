@@ -3,6 +3,7 @@
 isort:skip_file
 """
 import abc
+import preemo.gen.endpoints.execute_function_pb2
 import preemo.gen.endpoints.header_pb2
 import preemo.gen.endpoints.register_function_pb2
 import grpc
@@ -16,6 +17,10 @@ class WorkerServiceStub:
     RegisterFunction: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.register_function_pb2.RegisterFunctionRequest,
         preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse,
+    ]
+    ExecuteFunction: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
+        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse,
     ]
 
 class WorkerServiceServicer(metaclass=abc.ABCMeta):
@@ -31,5 +36,11 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         request: preemo.gen.endpoints.register_function_pb2.RegisterFunctionRequest,
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse: ...
+    @abc.abstractmethod
+    def ExecuteFunction(
+        self,
+        request: preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse: ...
 
 def add_WorkerServiceServicer_to_server(servicer: WorkerServiceServicer, server: grpc.Server) -> None: ...

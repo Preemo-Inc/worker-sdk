@@ -18,6 +18,10 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
 class HeaderRequest(google.protobuf.message.Message):
+    """Initial request that should be made to establish connection.
+    Intended to contain any and all metadata the server might need.
+    """
+
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     VERSION_FIELD_NUMBER: builtins.int
