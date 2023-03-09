@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+// TODO(adrian@preemo.io, 03/08/2023): figure out a better name for this message
+message Value {
+  // If value is not set, that indicates a null value.
+  oneof value {
+    // Indicates the file path on a shared volume.
+    string file_path = 1;
+    string string_value = 2;
+  }
+}
