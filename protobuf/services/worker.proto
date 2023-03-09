@@ -1,11 +1,13 @@
 syntax = "proto3";
 
+package services;
+
 import "endpoints/execute_function.proto";
 import "endpoints/header.proto";
 import "endpoints/register_function.proto";
 
 service WorkerService {
-  rpc Initiate(HeaderRequest) returns (HeaderResponse);
-  rpc RegisterFunction(RegisterFunctionRequest) returns (RegisterFunctionResponse);
-  rpc ExecuteFunction(ExecuteFunctionRequest) returns (ExecuteFunctionResponse);
+  rpc Initiate(endpoints.HeaderRequest) returns (endpoints.HeaderResponse);
+  rpc RegisterFunction(endpoints.RegisterFunctionRequest) returns (endpoints.RegisterFunctionResponse);
+  rpc ExecuteFunction(endpoints.ExecuteFunctionRequest) returns (endpoints.ExecuteFunctionResponse);
 }

@@ -14,15 +14,15 @@ _sym_db = _symbol_database.Default()
 from models import registered_function_pb2 as models_dot_registered__function__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n!endpoints/register_function.proto\x1a models/registered_function.proto\"j\n\x17RegisterFunctionRequest\x12\x36\n\x14\x66unction_to_register\x18\x01 \x01(\x0b\x32\x13.RegisteredFunctionH\x00\x88\x01\x01\x42\x17\n\x15_function_to_register\"\x1a\n\x18RegisterFunctionResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n!endpoints/register_function.proto\x12\tendpoints\x1a models/registered_function.proto\"q\n\x17RegisterFunctionRequest\x12=\n\x14\x66unction_to_register\x18\x01 \x01(\x0b\x32\x1a.models.RegisteredFunctionH\x00\x88\x01\x01\x42\x17\n\x15_function_to_register\"\x1a\n\x18RegisterFunctionResponseb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'endpoints.register_function_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _REGISTERFUNCTIONREQUEST._serialized_start=71
-  _REGISTERFUNCTIONREQUEST._serialized_end=177
-  _REGISTERFUNCTIONRESPONSE._serialized_start=179
-  _REGISTERFUNCTIONRESPONSE._serialized_end=205
+  _REGISTERFUNCTIONREQUEST._serialized_start=82
+  _REGISTERFUNCTIONREQUEST._serialized_end=195
+  _REGISTERFUNCTIONRESPONSE._serialized_start=197
+  _REGISTERFUNCTIONRESPONSE._serialized_end=223
 # @@protoc_insertion_point(module_scope)

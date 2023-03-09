@@ -15,15 +15,23 @@ from models import registered_function_pb2 as models_dot_registered__function__p
 from models import value_pb2 as models_dot_value__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n endpoints/execute_function.proto\x1a models/registered_function.proto\x1a\x12models/value.proto\"\x8c\x01\n\x16\x45xecuteFunctionRequest\x12\x35\n\x13\x66unction_to_execute\x18\x01 \x01(\x0b\x32\x13.RegisteredFunctionH\x00\x88\x01\x01\x12#\n\x13\x66unction_parameters\x18\x02 \x03(\x0b\x32\x06.ValueB\x16\n\x14_function_to_execute\";\n\x17\x45xecuteFunctionResponse\x12 \n\x10\x66unction_results\x18\x03 \x03(\x0b\x32\x06.Valueb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n endpoints/execute_function.proto\x12\tendpoints\x1a models/registered_function.proto\x1a\x12models/value.proto\"\xa7\x02\n\x16\x45xecuteFunctionRequest\x12<\n\x13\x66unction_to_execute\x18\x01 \x01(\x0b\x32\x1a.models.RegisteredFunctionH\x00\x88\x01\x01\x12\x66\n\x1c\x66unction_parameters_by_index\x18\x02 \x03(\x0b\x32@.endpoints.ExecuteFunctionRequest.FunctionParametersByIndexEntry\x1aO\n\x1e\x46unctionParametersByIndexEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.models.Value:\x02\x38\x01\x42\x16\n\x14_function_to_execute\"\xca\x01\n\x17\x45xecuteFunctionResponse\x12\x61\n\x19\x66unction_results_by_index\x18\x01 \x03(\x0b\x32>.endpoints.ExecuteFunctionResponse.FunctionResultsByIndexEntry\x1aL\n\x1b\x46unctionResultsByIndexEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x1c\n\x05value\x18\x02 \x01(\x0b\x32\r.models.Value:\x02\x38\x01\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'endpoints.execute_function_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _EXECUTEFUNCTIONREQUEST._serialized_start=91
-  _EXECUTEFUNCTIONREQUEST._serialized_end=231
-  _EXECUTEFUNCTIONRESPONSE._serialized_start=233
-  _EXECUTEFUNCTIONRESPONSE._serialized_end=292
+  _EXECUTEFUNCTIONREQUEST_FUNCTIONPARAMETERSBYINDEXENTRY._options = None
+  _EXECUTEFUNCTIONREQUEST_FUNCTIONPARAMETERSBYINDEXENTRY._serialized_options = b'8\001'
+  _EXECUTEFUNCTIONRESPONSE_FUNCTIONRESULTSBYINDEXENTRY._options = None
+  _EXECUTEFUNCTIONRESPONSE_FUNCTIONRESULTSBYINDEXENTRY._serialized_options = b'8\001'
+  _EXECUTEFUNCTIONREQUEST._serialized_start=102
+  _EXECUTEFUNCTIONREQUEST._serialized_end=397
+  _EXECUTEFUNCTIONREQUEST_FUNCTIONPARAMETERSBYINDEXENTRY._serialized_start=294
+  _EXECUTEFUNCTIONREQUEST_FUNCTIONPARAMETERSBYINDEXENTRY._serialized_end=373
+  _EXECUTEFUNCTIONRESPONSE._serialized_start=400
+  _EXECUTEFUNCTIONRESPONSE._serialized_end=602
+  _EXECUTEFUNCTIONRESPONSE_FUNCTIONRESULTSBYINDEXENTRY._serialized_start=526
+  _EXECUTEFUNCTIONRESPONSE_FUNCTIONRESULTSBYINDEXENTRY._serialized_end=602
 # @@protoc_insertion_point(module_scope)

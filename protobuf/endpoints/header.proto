@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package endpoints;
+
 // Initial request that should be made to establish connection.
 // Intended to contain any and all metadata the server might need.
 message HeaderRequest {

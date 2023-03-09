@@ -17,17 +17,17 @@ class WorkerServiceStub(object):
             channel: A grpc.Channel.
         """
         self.Initiate = channel.unary_unary(
-                '/WorkerService/Initiate',
+                '/services.WorkerService/Initiate',
                 request_serializer=endpoints_dot_header__pb2.HeaderRequest.SerializeToString,
                 response_deserializer=endpoints_dot_header__pb2.HeaderResponse.FromString,
                 )
         self.RegisterFunction = channel.unary_unary(
-                '/WorkerService/RegisterFunction',
+                '/services.WorkerService/RegisterFunction',
                 request_serializer=endpoints_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
                 response_deserializer=endpoints_dot_register__function__pb2.RegisterFunctionResponse.FromString,
                 )
         self.ExecuteFunction = channel.unary_unary(
-                '/WorkerService/ExecuteFunction',
+                '/services.WorkerService/ExecuteFunction',
                 request_serializer=endpoints_dot_execute__function__pb2.ExecuteFunctionRequest.SerializeToString,
                 response_deserializer=endpoints_dot_execute__function__pb2.ExecuteFunctionResponse.FromString,
                 )
@@ -74,7 +74,7 @@ def add_WorkerServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'WorkerService', rpc_method_handlers)
+            'services.WorkerService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -93,7 +93,7 @@ class WorkerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/WorkerService/Initiate',
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/Initiate',
             endpoints_dot_header__pb2.HeaderRequest.SerializeToString,
             endpoints_dot_header__pb2.HeaderResponse.FromString,
             options, channel_credentials,
@@ -110,7 +110,7 @@ class WorkerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/WorkerService/RegisterFunction',
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/RegisterFunction',
             endpoints_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
             endpoints_dot_register__function__pb2.RegisterFunctionResponse.FromString,
             options, channel_credentials,
@@ -127,7 +127,7 @@ class WorkerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/WorkerService/ExecuteFunction',
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/ExecuteFunction',
             endpoints_dot_execute__function__pb2.ExecuteFunctionRequest.SerializeToString,
             endpoints_dot_execute__function__pb2.ExecuteFunctionResponse.FromString,
             options, channel_credentials,

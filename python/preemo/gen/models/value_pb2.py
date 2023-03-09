@@ -13,13 +13,13 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12models/value.proto\"=\n\x05Value\x12\x13\n\tfile_path\x18\x01 \x01(\tH\x00\x12\x16\n\x0cstring_value\x18\x02 \x01(\tH\x00\x42\x07\n\x05valueb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12models/value.proto\x12\x06models\"=\n\x05Value\x12\x13\n\tfile_path\x18\x01 \x01(\tH\x00\x12\x16\n\x0cstring_value\x18\x02 \x01(\tH\x00\x42\x07\n\x05valueb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'models.value_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _VALUE._serialized_start=22
-  _VALUE._serialized_end=83
+  _VALUE._serialized_start=30
+  _VALUE._serialized_end=91
 # @@protoc_insertion_point(module_scope)
