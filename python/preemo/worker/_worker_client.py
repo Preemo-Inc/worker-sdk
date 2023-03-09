@@ -2,7 +2,6 @@ from typing import Callable, Optional
 
 from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
-from preemo.gen.models.status_pb2 import Status
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 
@@ -51,18 +50,13 @@ class WorkerClient:
                 function, name=function_name, namespace=namespace
             )
 
-            response = self._client.register_function(
+            self._client.register_function(
                 RegisterFunctionRequest(
                     function_to_register=RegisteredFunction(
                         name=function_name, namespace=namespace
                     )
                 )
             )
-
-            if response.status != Status.STATUS_OK:
-                raise Exception(
-                    f"worker server replied to register function request with unexpected status: {response.status} and message: {response.message}"
-                )
 
             return function
 

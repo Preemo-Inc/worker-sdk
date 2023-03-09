@@ -1,10 +1,7 @@
-import pytest
-
 from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
-from preemo.gen.models.status_pb2 import Status
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
@@ -42,7 +39,7 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return RegisterFunctionResponse(status=Status.STATUS_OK)
+                return RegisterFunctionResponse()
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
@@ -105,7 +102,7 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return RegisterFunctionResponse(status=Status.STATUS_OK)
+                return RegisterFunctionResponse()
 
         worker_client = WorkerClient(messaging_client=MockMessagingClient())
 
@@ -124,21 +121,3 @@ class TestRegister:
             pass
 
         assert send_request_call_count == 4
-
-    def test_receiving_non_ok_reply(self) -> None:
-        class MockMessagingClient(IMessagingClient):
-            def register_function(
-                self, request: RegisterFunctionRequest
-            ) -> RegisterFunctionResponse:
-                return RegisterFunctionResponse(status=Status.STATUS_ERROR)
-
-        worker_client = WorkerClient(messaging_client=MockMessagingClient())
-
-        with pytest.raises(
-            Exception,
-            match="worker server replied to register function request with unexpected status",
-        ):
-
-            @worker_client.register
-            def inner_func() -> None:
-                pass
