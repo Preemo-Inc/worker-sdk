@@ -8,6 +8,7 @@ message Value {
   oneof kind {
     google.protobuf.NullValue null_value = 1;
 
+    // Unique identifier for a file stored in the cloud.
     string artifact_id = 2;
   }
 }
