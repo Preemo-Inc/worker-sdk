@@ -11,15 +11,16 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12models/value.proto\x12\x06models\"=\n\x05Value\x12\x13\n\tfile_path\x18\x01 \x01(\tH\x00\x12\x16\n\x0cstring_value\x18\x02 \x01(\tH\x00\x42\x07\n\x05valueb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12models/value.proto\x12\x06models\x1a\x1cgoogle/protobuf/struct.proto\"X\n\x05Value\x12\x30\n\nnull_value\x18\x01 \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x12\x15\n\x0b\x61rtifact_id\x18\x02 \x01(\tH\x00\x42\x06\n\x04kindb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'models.value_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _VALUE._serialized_start=30
-  _VALUE._serialized_end=91
+  _VALUE._serialized_start=60
+  _VALUE._serialized_end=148
 # @@protoc_insertion_point(module_scope)

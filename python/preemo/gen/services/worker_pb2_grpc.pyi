@@ -3,13 +3,27 @@
 isort:skip_file
 """
 import abc
+import preemo.gen.endpoints.create_artifact_pb2
 import preemo.gen.endpoints.execute_function_pb2
+import preemo.gen.endpoints.get_artifact_pb2
 import preemo.gen.endpoints.header_pb2
 import preemo.gen.endpoints.register_function_pb2
 import grpc
 
 class WorkerServiceStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
+    CreateArtifact: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.create_artifact_pb2.CreateArtifactRequest,
+        preemo.gen.endpoints.create_artifact_pb2.CreateArtifactResponse,
+    ]
+    ExecuteFunction: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
+        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse,
+    ]
+    GetArtifact: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.get_artifact_pb2.GetArtifactRequest,
+        preemo.gen.endpoints.get_artifact_pb2.GetArtifactResponse,
+    ]
     Initiate: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.header_pb2.HeaderRequest,
         preemo.gen.endpoints.header_pb2.HeaderResponse,
@@ -18,12 +32,26 @@ class WorkerServiceStub:
         preemo.gen.endpoints.register_function_pb2.RegisterFunctionRequest,
         preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse,
     ]
-    ExecuteFunction: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
-        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse,
-    ]
 
 class WorkerServiceServicer(metaclass=abc.ABCMeta):
+    @abc.abstractmethod
+    def CreateArtifact(
+        self,
+        request: preemo.gen.endpoints.create_artifact_pb2.CreateArtifactRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.create_artifact_pb2.CreateArtifactResponse: ...
+    @abc.abstractmethod
+    def ExecuteFunction(
+        self,
+        request: preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse: ...
+    @abc.abstractmethod
+    def GetArtifact(
+        self,
+        request: preemo.gen.endpoints.get_artifact_pb2.GetArtifactRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.get_artifact_pb2.GetArtifactResponse: ...
     @abc.abstractmethod
     def Initiate(
         self,
@@ -36,11 +64,5 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         request: preemo.gen.endpoints.register_function_pb2.RegisterFunctionRequest,
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse: ...
-    @abc.abstractmethod
-    def ExecuteFunction(
-        self,
-        request: preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
-        context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse: ...
 
 def add_WorkerServiceServicer_to_server(servicer: WorkerServiceServicer, server: grpc.Server) -> None: ...

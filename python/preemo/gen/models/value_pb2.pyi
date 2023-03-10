@@ -5,6 +5,7 @@ isort:skip_file
 import builtins
 import google.protobuf.descriptor
 import google.protobuf.message
+import google.protobuf.struct_pb2
 import sys
 
 if sys.version_info >= (3, 8):
@@ -16,23 +17,20 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
 class Value(google.protobuf.message.Message):
-    """TODO(adrian@preemo.io, 03/08/2023): figure out a better name for this message"""
-
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    FILE_PATH_FIELD_NUMBER: builtins.int
-    STRING_VALUE_FIELD_NUMBER: builtins.int
-    file_path: builtins.str
-    """Indicates the file path on a shared volume."""
-    string_value: builtins.str
+    NULL_VALUE_FIELD_NUMBER: builtins.int
+    ARTIFACT_ID_FIELD_NUMBER: builtins.int
+    null_value: google.protobuf.struct_pb2.NullValue.ValueType
+    artifact_id: builtins.str
     def __init__(
         self,
         *,
-        file_path: builtins.str = ...,
-        string_value: builtins.str = ...,
+        null_value: google.protobuf.struct_pb2.NullValue.ValueType = ...,
+        artifact_id: builtins.str = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["file_path", b"file_path", "string_value", b"string_value", "value", b"value"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["file_path", b"file_path", "string_value", b"string_value", "value", b"value"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["value", b"value"]) -> typing_extensions.Literal["file_path", "string_value"] | None: ...
+    def HasField(self, field_name: typing_extensions.Literal["artifact_id", b"artifact_id", "kind", b"kind", "null_value", b"null_value"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["artifact_id", b"artifact_id", "kind", b"kind", "null_value", b"null_value"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["kind", b"kind"]) -> typing_extensions.Literal["null_value", "artifact_id"] | None: ...
 
 global___Value = Value

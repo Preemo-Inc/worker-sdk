@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package endpoints;
+
+message GetArtifactRequest {
+  optional string artifact_id = 1;
+}
+
+message GetArtifactResponse {
+  optional string download_signed_url = 1;
+}

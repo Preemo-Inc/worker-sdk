@@ -5,6 +5,7 @@ package models;
 message RegisteredFunction {
   // Required field that should be unique within the namespace.
   optional string name = 1;
+
   // Optional field that defaults to a global namespace if unspecified.
   optional string namespace = 2;
 }

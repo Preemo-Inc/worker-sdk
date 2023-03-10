@@ -2,12 +2,20 @@ syntax = "proto3";
 
 package services;
 
+import "endpoints/create_artifact.proto";
 import "endpoints/execute_function.proto";
+import "endpoints/get_artifact.proto";
 import "endpoints/header.proto";
 import "endpoints/register_function.proto";
 
 service WorkerService {
-  rpc Initiate(endpoints.HeaderRequest) returns (endpoints.HeaderResponse);
-  rpc RegisterFunction(endpoints.RegisterFunctionRequest) returns (endpoints.RegisterFunctionResponse);
+  rpc CreateArtifact(endpoints.CreateArtifactRequest) returns (endpoints.CreateArtifactResponse);
+
   rpc ExecuteFunction(endpoints.ExecuteFunctionRequest) returns (endpoints.ExecuteFunctionResponse);
+
+  rpc GetArtifact(endpoints.GetArtifactRequest) returns (endpoints.GetArtifactResponse);
+
+  rpc Initiate(endpoints.HeaderRequest) returns (endpoints.HeaderResponse);
+
+  rpc RegisterFunction(endpoints.RegisterFunctionRequest) returns (endpoints.RegisterFunctionResponse);
 }
