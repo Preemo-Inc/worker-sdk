@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package endpoints;
+
+message ArtifactParts {
+  // Required field indicating the file parts to retrieve.
+  // The initial file part for an artifact is 1.
+  repeated int32 parts = 1;
+}
+
+message BatchGetArtifactPartRequest {
+  map<string, ArtifactParts> parts_by_artifact_id = 1;
+}
+
+message BatchGetArtifactPartResponse {
+  map<string, string> string download_signed_url = 2;
+
+  oneof artifact {
+    SingletonArtifact singleton = 1;
+    MultipartArtifact multipart = 2;
+  }
+}

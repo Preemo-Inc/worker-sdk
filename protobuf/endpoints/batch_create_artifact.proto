@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package endpoints;
+
+// This config is included for potential future use.
+// In the future it may include part count, expiration, or other metadata.
+message CreateArtifactConfig {
+}
+
+message BatchCreateArtifactRequest {
+  map<int32, CreateArtifactConfig> configs_by_index = 1;
+}
+
+message CreateArtifactResult {
+  optional string artifact_id = 1;
+}
+
+message BatchCreateArtifactResponse {
+  map<int32, CreateArtifactResult> results_by_index = 1;
+}
