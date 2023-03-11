@@ -3,26 +3,36 @@
 isort:skip_file
 """
 import abc
-import preemo.gen.endpoints.create_artifact_pb2
+import preemo.gen.endpoints.batch_create_artifact_part_pb2
+import preemo.gen.endpoints.batch_create_artifact_pb2
+import preemo.gen.endpoints.batch_get_artifact_part_pb2
+import preemo.gen.endpoints.batch_get_artifact_pb2
 import preemo.gen.endpoints.execute_function_pb2
-import preemo.gen.endpoints.get_artifact_pb2
 import preemo.gen.endpoints.header_pb2
 import preemo.gen.endpoints.register_function_pb2
 import grpc
 
 class WorkerServiceStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
-    CreateArtifact: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.create_artifact_pb2.CreateArtifactRequest,
-        preemo.gen.endpoints.create_artifact_pb2.CreateArtifactResponse,
+    BatchCreateArtifact: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_create_artifact_pb2.BatchCreateArtifactRequest,
+        preemo.gen.endpoints.batch_create_artifact_pb2.BatchCreateArtifactResponse,
+    ]
+    BatchCreateArtifactPart: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartRequest,
+        preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartResponse,
+    ]
+    BatchGetArtifact: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_get_artifact_pb2.BatchGetArtifactRequest,
+        preemo.gen.endpoints.batch_get_artifact_pb2.BatchGetArtifactResponse,
+    ]
+    BatchGetArtifactPart: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartRequest,
+        preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartResponse,
     ]
     ExecuteFunction: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
         preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse,
-    ]
-    GetArtifact: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.get_artifact_pb2.GetArtifactRequest,
-        preemo.gen.endpoints.get_artifact_pb2.GetArtifactResponse,
     ]
     Initiate: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.header_pb2.HeaderRequest,
@@ -35,23 +45,35 @@ class WorkerServiceStub:
 
 class WorkerServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def CreateArtifact(
+    def BatchCreateArtifact(
         self,
-        request: preemo.gen.endpoints.create_artifact_pb2.CreateArtifactRequest,
+        request: preemo.gen.endpoints.batch_create_artifact_pb2.BatchCreateArtifactRequest,
         context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.create_artifact_pb2.CreateArtifactResponse: ...
+    ) -> preemo.gen.endpoints.batch_create_artifact_pb2.BatchCreateArtifactResponse: ...
+    @abc.abstractmethod
+    def BatchCreateArtifactPart(
+        self,
+        request: preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartResponse: ...
+    @abc.abstractmethod
+    def BatchGetArtifact(
+        self,
+        request: preemo.gen.endpoints.batch_get_artifact_pb2.BatchGetArtifactRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.batch_get_artifact_pb2.BatchGetArtifactResponse: ...
+    @abc.abstractmethod
+    def BatchGetArtifactPart(
+        self,
+        request: preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartResponse: ...
     @abc.abstractmethod
     def ExecuteFunction(
         self,
         request: preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse: ...
-    @abc.abstractmethod
-    def GetArtifact(
-        self,
-        request: preemo.gen.endpoints.get_artifact_pb2.GetArtifactRequest,
-        context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.get_artifact_pb2.GetArtifactResponse: ...
     @abc.abstractmethod
     def Initiate(
         self,

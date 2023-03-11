@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package endpoints;
+
+// TODO(adrian@preemo.io, 03/10/2023): is there another name for this object? should it just be removed?
+// This config is included for potential future use.
+message CreateArtifactPartConfigMetadata {
+}
+
+message CreateArtifactPartConfig {
+  map<int32, CreateArtifactPartConfigMetadata> metadatas_by_part_number = 1;
+}
+
+message BatchCreateArtifactPartRequest {
+  map<string, CreateArtifactPartConfig> configs_by_artifact_id = 1;
+}
+
+message CreateArtifactPartResultMetadata {
+  optional string upload_signed_url = 1;
+}
+
+message CreateArtifactPartResult {
+  map<int32, CreateArtifactPartResultMetadata> metadatas_by_part_number = 1;
+}
+
+message BatchCreateArtifactPartResponse {
+  map<string, CreateArtifactPartResult> results_by_artifact_id = 1;
+}

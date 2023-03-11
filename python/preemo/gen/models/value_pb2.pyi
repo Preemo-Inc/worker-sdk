@@ -23,6 +23,7 @@ class Value(google.protobuf.message.Message):
     ARTIFACT_ID_FIELD_NUMBER: builtins.int
     null_value: google.protobuf.struct_pb2.NullValue.ValueType
     artifact_id: builtins.str
+    """Unique identifier for a file stored in the cloud."""
     def __init__(
         self,
         *,

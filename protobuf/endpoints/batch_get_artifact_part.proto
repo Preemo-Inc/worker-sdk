@@ -2,21 +2,27 @@ syntax = "proto3";
 
 package endpoints;
 
-message ArtifactParts {
-  // Required field indicating the file parts to retrieve.
-  // The initial file part for an artifact is 1.
-  repeated int32 parts = 1;
+// TODO(adrian@preemo.io, 03/10/2023): is there another name for this object? should it just be removed?
+// This config is included for potential future use.
+message GetArtifactPartConfigMetadata {
+}
+
+message GetArtifactPartConfig {
+  map<int32, GetArtifactPartConfigMetadata> metadatas_by_part_number = 1;
 }
 
 message BatchGetArtifactPartRequest {
-  map<string, ArtifactParts> parts_by_artifact_id = 1;
+  map<string, GetArtifactPartConfig> config_by_artifact_id = 1;
+}
+
+message GetArtifactPartResultMetadata {
+  optional string download_signed_url = 1;
+}
+
+message GetArtifactPartResult {
+  map<int32, GetArtifactPartResultMetadata> metadatas_by_part_number = 1;
 }
 
 message BatchGetArtifactPartResponse {
-  map<string, string> string download_signed_url = 2;
-
-  oneof artifact {
-    SingletonArtifact singleton = 1;
-    MultipartArtifact multipart = 2;
-  }
+  map<string, GetArtifactPartResult> results_by_artifact_id = 1;
 }
