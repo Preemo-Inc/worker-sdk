@@ -22,7 +22,9 @@ class RegisteredFunction(google.protobuf.message.Message):
     NAME_FIELD_NUMBER: builtins.int
     NAMESPACE_FIELD_NUMBER: builtins.int
     name: builtins.str
+    """Required field that should be unique within the namespace."""
     namespace: builtins.str
+    """Optional field that defaults to a global namespace if unspecified."""
     def __init__(
         self,
         *,

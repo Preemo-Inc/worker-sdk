@@ -16,7 +16,7 @@ else:
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
-class RegisterFunctionRequest(google.protobuf.message.Message):
+class CheckFunctionRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     FUNCTION_TO_REGISTER_FIELD_NUMBER: builtins.int
@@ -31,14 +31,18 @@ class RegisterFunctionRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal["_function_to_register", b"_function_to_register", "function_to_register", b"function_to_register"]) -> None: ...
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_function_to_register", b"_function_to_register"]) -> typing_extensions.Literal["function_to_register"] | None: ...
 
-global___RegisterFunctionRequest = RegisterFunctionRequest
+global___CheckFunctionRequest = CheckFunctionRequest
 
 @typing_extensions.final
-class RegisterFunctionResponse(google.protobuf.message.Message):
+class CheckFunctionResponse(google.protobuf.message.Message):
+    """A successful response indicates existence.
+    If the function does not exist a NOT_FOUND status will be thrown.
+    """
+
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     def __init__(
         self,
     ) -> None: ...
 
-global___RegisterFunctionResponse = RegisterFunctionResponse
+global___CheckFunctionResponse = CheckFunctionResponse

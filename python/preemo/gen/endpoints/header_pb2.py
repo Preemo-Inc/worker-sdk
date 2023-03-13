@@ -11,18 +11,17 @@ from google.protobuf import symbol_database as _symbol_database
 _sym_db = _symbol_database.Default()
 
 
-from models import status_pb2 as models_dot_status__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x65ndpoints/header.proto\x1a\x13models/status.proto\"1\n\rHeaderRequest\x12\x14\n\x07version\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_version\"[\n\x0eHeaderResponse\x12\x1c\n\x06status\x18\x01 \x01(\x0e\x32\x07.StatusH\x00\x88\x01\x01\x12\x14\n\x07message\x18\x02 \x01(\tH\x01\x88\x01\x01\x42\t\n\x07_statusB\n\n\x08_messageb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x65ndpoints/header.proto\x12\tendpoints\"1\n\rHeaderRequest\x12\x14\n\x07version\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_version\"\x10\n\x0eHeaderResponseb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'endpoints.header_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _HEADERREQUEST._serialized_start=47
-  _HEADERREQUEST._serialized_end=96
-  _HEADERRESPONSE._serialized_start=98
-  _HEADERRESPONSE._serialized_end=189
+  _HEADERREQUEST._serialized_start=37
+  _HEADERREQUEST._serialized_end=86
+  _HEADERRESPONSE._serialized_start=88
+  _HEADERRESPONSE._serialized_end=104
 # @@protoc_insertion_point(module_scope)
