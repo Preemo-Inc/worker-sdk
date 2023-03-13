@@ -7,6 +7,7 @@ import preemo.gen.endpoints.batch_create_artifact_part_pb2
 import preemo.gen.endpoints.batch_create_artifact_pb2
 import preemo.gen.endpoints.batch_get_artifact_part_pb2
 import preemo.gen.endpoints.batch_get_artifact_pb2
+import preemo.gen.endpoints.check_function_pb2
 import preemo.gen.endpoints.execute_function_pb2
 import preemo.gen.endpoints.header_pb2
 import preemo.gen.endpoints.register_function_pb2
@@ -29,6 +30,10 @@ class WorkerServiceStub:
     BatchGetArtifactPart: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartRequest,
         preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartResponse,
+    ]
+    CheckFunction: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.check_function_pb2.CheckFunctionRequest,
+        preemo.gen.endpoints.check_function_pb2.CheckFunctionResponse,
     ]
     ExecuteFunction: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
@@ -68,6 +73,12 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         request: preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartRequest,
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.batch_get_artifact_part_pb2.BatchGetArtifactPartResponse: ...
+    @abc.abstractmethod
+    def CheckFunction(
+        self,
+        request: preemo.gen.endpoints.check_function_pb2.CheckFunctionRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.check_function_pb2.CheckFunctionResponse: ...
     @abc.abstractmethod
     def ExecuteFunction(
         self,

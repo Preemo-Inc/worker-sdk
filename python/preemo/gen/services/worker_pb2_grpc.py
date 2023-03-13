@@ -6,6 +6,7 @@ from endpoints import batch_create_artifact_part_pb2 as endpoints_dot_batch__cre
 from endpoints import batch_create_artifact_pb2 as endpoints_dot_batch__create__artifact__pb2
 from endpoints import batch_get_artifact_part_pb2 as endpoints_dot_batch__get__artifact__part__pb2
 from endpoints import batch_get_artifact_pb2 as endpoints_dot_batch__get__artifact__pb2
+from endpoints import check_function_pb2 as endpoints_dot_check__function__pb2
 from endpoints import execute_function_pb2 as endpoints_dot_execute__function__pb2
 from endpoints import header_pb2 as endpoints_dot_header__pb2
 from endpoints import register_function_pb2 as endpoints_dot_register__function__pb2
@@ -39,6 +40,11 @@ class WorkerServiceStub(object):
                 '/services.WorkerService/BatchGetArtifactPart',
                 request_serializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartRequest.SerializeToString,
                 response_deserializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartResponse.FromString,
+                )
+        self.CheckFunction = channel.unary_unary(
+                '/services.WorkerService/CheckFunction',
+                request_serializer=endpoints_dot_check__function__pb2.CheckFunctionRequest.SerializeToString,
+                response_deserializer=endpoints_dot_check__function__pb2.CheckFunctionResponse.FromString,
                 )
         self.ExecuteFunction = channel.unary_unary(
                 '/services.WorkerService/ExecuteFunction',
@@ -84,6 +90,12 @@ class WorkerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def CheckFunction(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def ExecuteFunction(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -124,6 +136,11 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     servicer.BatchGetArtifactPart,
                     request_deserializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartRequest.FromString,
                     response_serializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartResponse.SerializeToString,
+            ),
+            'CheckFunction': grpc.unary_unary_rpc_method_handler(
+                    servicer.CheckFunction,
+                    request_deserializer=endpoints_dot_check__function__pb2.CheckFunctionRequest.FromString,
+                    response_serializer=endpoints_dot_check__function__pb2.CheckFunctionResponse.SerializeToString,
             ),
             'ExecuteFunction': grpc.unary_unary_rpc_method_handler(
                     servicer.ExecuteFunction,
@@ -215,6 +232,23 @@ class WorkerService(object):
         return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactPart',
             endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartRequest.SerializeToString,
             endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def CheckFunction(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/CheckFunction',
+            endpoints_dot_check__function__pb2.CheckFunctionRequest.SerializeToString,
+            endpoints_dot_check__function__pb2.CheckFunctionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

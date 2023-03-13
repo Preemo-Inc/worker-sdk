@@ -19,6 +19,10 @@ from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
     BatchGetArtifactResponse,
 )
+from preemo.gen.endpoints.check_function_pb2 import (
+    CheckFunctionRequest,
+    CheckFunctionResponse,
+)
 from preemo.gen.endpoints.execute_function_pb2 import (
     ExecuteFunctionRequest,
     ExecuteFunctionResponse,
@@ -51,6 +55,9 @@ class IMessagingClient(Protocol):
     def batch_get_artifact_part(
         self, request: BatchGetArtifactPartRequest
     ) -> BatchGetArtifactPartResponse:
+        pass
+
+    def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
         pass
 
     def execute_function(
@@ -95,6 +102,9 @@ class MessagingClient:
     ) -> BatchGetArtifactPartResponse:
         return self._worker_service.BatchGetArtifactPart(request)
 
+    def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
+        return self._worker_service.CheckFunction(request)
+
     def execute_function(
         self, request: ExecuteFunctionRequest
     ) -> ExecuteFunctionResponse:
@@ -131,6 +141,10 @@ class LocalMessagingClient:
     ) -> BatchGetArtifactPartResponse:
         print(f"sending batch get artifact part request: {request}")
         return BatchGetArtifactPartResponse()
+
+    def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
+        print(f"sending check function request: {request}")
+        return CheckFunctionResponse()
 
     def execute_function(
         self, request: ExecuteFunctionRequest

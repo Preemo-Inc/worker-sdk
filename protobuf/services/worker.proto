@@ -6,6 +6,7 @@ import "endpoints/batch_create_artifact.proto";
 import "endpoints/batch_create_artifact_part.proto";
 import "endpoints/batch_get_artifact.proto";
 import "endpoints/batch_get_artifact_part.proto";
+import "endpoints/check_function.proto";
 import "endpoints/execute_function.proto";
 import "endpoints/header.proto";
 import "endpoints/register_function.proto";
@@ -18,6 +19,8 @@ service WorkerService {
   rpc BatchGetArtifact(endpoints.BatchGetArtifactRequest) returns (endpoints.BatchGetArtifactResponse);
 
   rpc BatchGetArtifactPart(endpoints.BatchGetArtifactPartRequest) returns (endpoints.BatchGetArtifactPartResponse);
+
+  rpc CheckFunction(endpoints.CheckFunctionRequest) returns (endpoints.CheckFunctionResponse);
 
   rpc ExecuteFunction(endpoints.ExecuteFunctionRequest) returns (endpoints.ExecuteFunctionResponse);
 
