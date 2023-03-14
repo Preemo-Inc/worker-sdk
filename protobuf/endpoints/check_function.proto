@@ -5,7 +5,7 @@ package endpoints;
 import "models/registered_function.proto";
 
 message CheckFunctionRequest {
-  optional models.RegisteredFunction function_to_register = 1;
+  optional models.RegisteredFunction registered_function = 1;
 }
 
 // A successful response indicates existence.

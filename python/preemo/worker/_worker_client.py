@@ -1,5 +1,6 @@
 from typing import Callable, Optional
 
+from preemo.gen.endpoints.check_function_pb2 import CheckFunctionRequest
 from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
 from preemo.worker._function_registry import FunctionRegistry
@@ -17,9 +18,14 @@ class Function:
         self._ensure_function_is_registered()
 
     def _ensure_function_is_registered(self) -> None:
-        # TODO(adrian@preemo.io, 03/08/2023):
-        # ask worker if registered function exists
-        raise Exception("not yet implemented")
+        # check_function raises an error if the function is not found
+        self._client.check_function(
+            CheckFunctionRequest(
+                registered_function=RegisteredFunction(
+                    name=self._name, namespace=self._namespace
+                )
+            )
+        )
 
     def __call__(self, params: str) -> Optional[str]:
         # TODO(adrian@preemo.io, 03/08/2023):
@@ -66,9 +72,6 @@ class WorkerClient:
         return decorator(outer_function)
 
     def get_function(self, name: str, *, namespace: Optional[str] = None) -> Function:
-        # TODO(adrian@preemo.io, 03/08/2023): ensure that function is not in local registry
-        # TODO(adrian@preemo.io, 03/08/2023): in void code job, don't allow users to call a function with the same job config?
-
         return Function(messaging_client=self._client, name=name, namespace=namespace)
 
     def parallelize(self, function: Function, params: list[str]) -> list[Optional[str]]:
