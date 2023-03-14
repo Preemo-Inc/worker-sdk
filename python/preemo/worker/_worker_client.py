@@ -191,4 +191,33 @@ class WorkerClient:
 
         # TODO(adrian@preemo.io, 03/08/2023):
         # ask worker to parallelize function with params
+        # should do as batch?
+
+        # create a bunch of artifacts
+        configs_by_index = {i: CreateArtifactConfig() for i in range(len(params))}
+        response = self._client.batch_create_artifact(
+            BatchCreateArtifactRequest(configs_by_index=configs_by_index)
+        )
+
+        if len(response.results_by_index) != len(params):
+            # TODO(adrian@preemo.io, 03/14/2023): is this check redundant with the key match?
+            raise ValueError("expected the param count and result count to match")
+
+        # TODO(adrian@preemo.io, 03/14/2023): does this work as expected?
+        if response.results_by_index.keys() != configs_by_index.keys():
+            raise ValueError(
+                "expected results_by_index key set to match configs_by_index key set"
+            )
+
+        # TODO(adrian@preemo.io, 03/14/2023): merge params with create artifact result
+        # { index: { params: '', artifact_id: '' } }
+
+        # TODO(adrian@preemo.io, 03/14/2023): figure out size for creating multiple parts
+        self._client.batch_create_artifact_part(
+            BatchCreateArtifactPartRequest(configs_by_artifact_id={})
+        )
+
+        # TODO(adrian@preemo.io, 03/14/2023): might need to make an artifact_manager or some class
+        # to manage the artifacts and parts, etc
+
         raise Exception("not yet implemented")
