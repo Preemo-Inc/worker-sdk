@@ -27,7 +27,11 @@ class Function:
             )
         )
 
-    def __call__(self, params: str) -> Optional[str]:
+    def __call__(self, params: Optional[str] = None) -> Optional[str]:
+        if params is not None:
+            # TODO(adrian@preemo.io, 03/08/2023): create thing
+            pass
+
         # TODO(adrian@preemo.io, 03/08/2023):
         # send request to worker to execute request
         # wait for response and return it

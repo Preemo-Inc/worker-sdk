@@ -1,3 +1,27 @@
+from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
+    BatchCreateArtifactPartRequest,
+    BatchCreateArtifactPartResponse,
+)
+from preemo.gen.endpoints.batch_create_artifact_pb2 import (
+    BatchCreateArtifactRequest,
+    BatchCreateArtifactResponse,
+)
+from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
+    BatchGetArtifactPartRequest,
+    BatchGetArtifactPartResponse,
+)
+from preemo.gen.endpoints.batch_get_artifact_pb2 import (
+    BatchGetArtifactRequest,
+    BatchGetArtifactResponse,
+)
+from preemo.gen.endpoints.check_function_pb2 import (
+    CheckFunctionRequest,
+    CheckFunctionResponse,
+)
+from preemo.gen.endpoints.execute_function_pb2 import (
+    ExecuteFunctionRequest,
+    ExecuteFunctionResponse,
+)
 from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
@@ -6,11 +30,46 @@ from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
 
+class DoNothingMessagingClient(IMessagingClient):
+    def batch_create_artifact(
+        self, request: BatchCreateArtifactRequest
+    ) -> BatchCreateArtifactResponse:
+        raise Exception("no call expected")
+
+    def batch_create_artifact_part(
+        self, request: BatchCreateArtifactPartRequest
+    ) -> BatchCreateArtifactPartResponse:
+        raise Exception("no call expected")
+
+    def batch_get_artifact(
+        self, request: BatchGetArtifactRequest
+    ) -> BatchGetArtifactResponse:
+        raise Exception("no call expected")
+
+    def batch_get_artifact_part(
+        self, request: BatchGetArtifactPartRequest
+    ) -> BatchGetArtifactPartResponse:
+        raise Exception("no call expected")
+
+    def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
+        raise Exception("no call expected")
+
+    def execute_function(
+        self, request: ExecuteFunctionRequest
+    ) -> ExecuteFunctionResponse:
+        raise Exception("no call expected")
+
+    def register_function(
+        self, request: RegisterFunctionRequest
+    ) -> RegisterFunctionResponse:
+        raise Exception("no call expected")
+
+
 class TestRegister:
     def test_param_variations(self) -> None:
         send_request_call_count = 0
 
-        class MockMessagingClient(IMessagingClient):
+        class MockMessagingClient(DoNothingMessagingClient):
             def register_function(
                 self, request: RegisterFunctionRequest
             ) -> RegisterFunctionResponse:
@@ -76,7 +135,7 @@ class TestRegister:
     def test_nested_decorators(self) -> None:
         send_request_call_count = 0
 
-        class MockMessagingClient(IMessagingClient):
+        class MockMessagingClient(DoNothingMessagingClient):
             def register_function(
                 self, request: RegisterFunctionRequest
             ) -> RegisterFunctionResponse:
