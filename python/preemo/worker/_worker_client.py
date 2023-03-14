@@ -10,8 +10,10 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     CreateArtifactConfig,
 )
 from preemo.gen.endpoints.check_function_pb2 import CheckFunctionRequest
+from preemo.gen.endpoints.execute_function_pb2 import ExecuteFunctionRequest
 from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
+from preemo.gen.models.value_pb2 import Value
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 
@@ -95,7 +97,10 @@ class Function:
         return metadata.upload_signed_url
 
     def __call__(self, params: Optional[str] = None) -> Optional[str]:
-        if params is not None:
+        if params is None:
+            # TODO(adrian@preemo.io, 03/14/2023): import google null value
+            function_parameter = Value(null_value=NullValue())
+        else:
             artifact_id = self._create_single_artifact()
             upload_signed_url = self._create_single_part_for_artifact(
                 artifact_id, part_number=1
@@ -104,11 +109,39 @@ class Function:
             # TODO(adrian@preemo.io, 03/08/2023): upload params
             # and decide size for multipart upload
             # and decide best way to get size of params len() for now, maybe sys.getsizeof at some point?
-            pass
+            function_parameter = Value(artifact_id=artifact_id)
 
         # TODO(adrian@preemo.io, 03/08/2023):
         # send request to worker to execute request
         # wait for response and return it
+        response = self._client.execute_function(
+            ExecuteFunctionRequest(
+                function_to_execute=RegisteredFunction(
+                    name=self._name, namespace=self._namespace
+                ),
+                function_parameters_by_index={0: function_parameter},
+            )
+        )
+
+        if len(response.function_results_by_index) != 1:
+            raise ValueError("expected exactly one function result")
+
+        if 0 not in response.function_results_by_index:
+            raise ValueError("expected 0 to be a key in function_results_by_index")
+
+        function_result = response.function_results_by_index[0]
+
+        match function_result.WhichOneof("kind"):
+            case "null_value":
+                return None
+            case "artifact_id":
+                # TODO(adrian@preemo.io, 03/14/2023): retrieve artifact
+                pass
+            case _:
+                raise Exception(
+                    f"received unexpected function_result: {function_result}"
+                )
+
         raise Exception("not yet implemented")
 
 
