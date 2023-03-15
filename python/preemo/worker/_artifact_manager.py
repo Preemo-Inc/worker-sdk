@@ -11,6 +11,7 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
 )
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import StringValue
+from preemo.worker._validation import ensure_keys_match
 
 
 class ArtifactId(StringValue):
@@ -22,7 +23,6 @@ class IArtifactManager(Protocol):
     def create_artifact(self, content: str) -> ArtifactId:
         pass
 
-    # TODO(adrian@preemo.io, 03/14/2023): consider taking and returning map with arbitrary keys?
     def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
         pass
 
@@ -69,24 +69,16 @@ class ArtifactManager:
             )
         )
 
-        if response.results_by_artifact_id.keys() != configs_by_artifact_id.keys():
-            raise ValueError(
-                "expected results_by_artifact_id key set to match configs_by_artifact_id key set"
-            )
-
         # TODO(adrian@preemo.io, 03/14/2023): should upload in parallel
         for i, content in enumerate(contents):
             artifact_id = artifact_ids[i].value
             config = configs_by_artifact_id[artifact_id]
             result = response.results_by_artifact_id[artifact_id]
 
-            if (
-                result.metadatas_by_part_number.keys()
-                != config.metadatas_by_part_number.keys()
-            ):
-                raise ValueError(
-                    "expected result metadatas_by_part_number key set to match config metadatas_by_part_number key set"
-                )
+            ensure_keys_match(
+                expected=config.metadatas_by_part_number,
+                actual=result.metadatas_by_part_number,
+            )
 
             # TODO(adrian@preemo.io, 03/14/2023): should work for multi-part:
             metadata = result.metadatas_by_part_number[1]
