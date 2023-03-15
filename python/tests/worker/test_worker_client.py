@@ -6,6 +6,10 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
     BatchCreateArtifactResponse,
 )
+from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
+    BatchFinalizeArtifactRequest,
+    BatchFinalizeArtifactResponse,
+)
 from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
     BatchGetArtifactPartRequest,
     BatchGetArtifactPartResponse,
@@ -39,6 +43,11 @@ class DoNothingMessagingClient(IMessagingClient):
     def batch_create_artifact_part(
         self, request: BatchCreateArtifactPartRequest
     ) -> BatchCreateArtifactPartResponse:
+        raise Exception("no call expected")
+
+    def batch_finalize_artifact(
+        self, request: BatchFinalizeArtifactRequest
+    ) -> BatchFinalizeArtifactResponse:
         raise Exception("no call expected")
 
     def batch_get_artifact(

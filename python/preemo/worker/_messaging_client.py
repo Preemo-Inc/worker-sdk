@@ -11,6 +11,10 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
     BatchCreateArtifactResponse,
 )
+from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
+    BatchFinalizeArtifactRequest,
+    BatchFinalizeArtifactResponse,
+)
 from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
     BatchGetArtifactPartRequest,
     BatchGetArtifactPartResponse,
@@ -45,6 +49,11 @@ class IMessagingClient(Protocol):
     def batch_create_artifact_part(
         self, request: BatchCreateArtifactPartRequest
     ) -> BatchCreateArtifactPartResponse:
+        pass
+
+    def batch_finalize_artifact(
+        self, request: BatchFinalizeArtifactRequest
+    ) -> BatchFinalizeArtifactResponse:
         pass
 
     def batch_get_artifact(
@@ -92,6 +101,11 @@ class MessagingClient:
     ) -> BatchCreateArtifactPartResponse:
         return self._worker_service.BatchCreateArtifactPart(request)
 
+    def batch_finalize_artifact(
+        self, request: BatchFinalizeArtifactRequest
+    ) -> BatchFinalizeArtifactResponse:
+        return self._worker_service.BatchFinalizeArtifact(request)
+
     def batch_get_artifact(
         self, request: BatchGetArtifactRequest
     ) -> BatchGetArtifactResponse:
@@ -129,6 +143,12 @@ class LocalMessagingClient:
     ) -> BatchCreateArtifactPartResponse:
         print(f"sending batch create artifact part request: {request}")
         return BatchCreateArtifactPartResponse()
+
+    def batch_finalize_artifact(
+        self, request: BatchFinalizeArtifactRequest
+    ) -> BatchFinalizeArtifactResponse:
+        print(f"sending batch finalize artifact request: {request}")
+        return BatchFinalizeArtifactResponse()
 
     def batch_get_artifact(
         self, request: BatchGetArtifactRequest
