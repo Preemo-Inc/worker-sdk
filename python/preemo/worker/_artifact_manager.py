@@ -26,6 +26,12 @@ class IArtifactManager(Protocol):
     def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
         pass
 
+    def get_artifact(self, artifact_id: ArtifactId) -> str:
+        pass
+
+    def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+        pass
+
 
 class ArtifactManager:
     def __init__(self, *, messaging_client: IMessagingClient) -> None:
@@ -56,6 +62,7 @@ class ArtifactManager:
 
         # TODO(adrian@preemo.io, 03/14/2023): handle multipart file upload
         # TODO(adrian@preemo.io, 03/14/2023): figure out size for creating multiple parts
+        # and decide best way to get size of content len() for now, maybe sys.getsizeof at some point?
         configs_by_artifact_id = {
             artifact_id.value: CreateArtifactPartConfig(
                 metadatas_by_part_number={1: CreateArtifactPartConfigMetadata()}
@@ -80,10 +87,10 @@ class ArtifactManager:
                 actual=result.metadatas_by_part_number,
             )
 
-            # TODO(adrian@preemo.io, 03/14/2023): should work for multi-part:
+            # TODO(adrian@preemo.io, 03/14/2023): will need to change for multi-part upload
             metadata = result.metadatas_by_part_number[1]
             if not metadata.HasField("upload_signed_url"):
-                raise ValueError("expected result metadata to have upload_signed_url")
+                raise Exception("expected result metadata to have upload_signed_url")
 
             # TODO(adrian@preemo.io, 03/14/2023): actually upload to artifact with signed url
             # upload_content(content, signed_url)
@@ -91,6 +98,17 @@ class ArtifactManager:
         # TODO(adrian@preemo.io, 03/14/2023): batch finalize artifacts
 
         return artifact_ids
+
+    def get_artifact(self, artifact_id: ArtifactId) -> str:
+        contents = self.get_artifacts([artifact_id])
+        if len(contents) != 1:
+            raise Exception("expected exactly one artifact to be retrieved")
+
+        return contents[0]
+
+    def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+        # TODO(adrian@preemo.io, 03/15/2023): implement
+        raise Exception("not yet implemented")
 
 
 # TODO(adrian@preemo.io, 03/14/2023): do we want/need this?
