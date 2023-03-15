@@ -1,5 +1,7 @@
 from typing import Callable, Optional
 
+from google.protobuf.struct_pb2 import NULL_VALUE
+
 from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
     BatchCreateArtifactPartRequest,
     CreateArtifactPartConfig,
@@ -99,7 +101,7 @@ class Function:
     def __call__(self, params: Optional[str] = None) -> Optional[str]:
         if params is None:
             # TODO(adrian@preemo.io, 03/14/2023): import google null value
-            function_parameter = Value(null_value=NullValue())
+            function_parameter = Value(null_value=NULL_VALUE)
         else:
             artifact_id = self._create_single_artifact()
             upload_signed_url = self._create_single_part_for_artifact(
