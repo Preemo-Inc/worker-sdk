@@ -4,6 +4,7 @@ import grpc
 
 from endpoints import batch_create_artifact_part_pb2 as endpoints_dot_batch__create__artifact__part__pb2
 from endpoints import batch_create_artifact_pb2 as endpoints_dot_batch__create__artifact__pb2
+from endpoints import batch_finalize_artifact_pb2 as endpoints_dot_batch__finalize__artifact__pb2
 from endpoints import batch_get_artifact_part_pb2 as endpoints_dot_batch__get__artifact__part__pb2
 from endpoints import batch_get_artifact_pb2 as endpoints_dot_batch__get__artifact__pb2
 from endpoints import check_function_pb2 as endpoints_dot_check__function__pb2
@@ -30,6 +31,11 @@ class WorkerServiceStub(object):
                 '/services.WorkerService/BatchCreateArtifactPart',
                 request_serializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.SerializeToString,
                 response_deserializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.FromString,
+                )
+        self.BatchFinalizeArtifact = channel.unary_unary(
+                '/services.WorkerService/BatchFinalizeArtifact',
+                request_serializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.SerializeToString,
+                response_deserializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactResponse.FromString,
                 )
         self.BatchGetArtifact = channel.unary_unary(
                 '/services.WorkerService/BatchGetArtifact',
@@ -73,6 +79,12 @@ class WorkerServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def BatchCreateArtifactPart(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def BatchFinalizeArtifact(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -126,6 +138,11 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     servicer.BatchCreateArtifactPart,
                     request_deserializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.FromString,
                     response_serializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.SerializeToString,
+            ),
+            'BatchFinalizeArtifact': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchFinalizeArtifact,
+                    request_deserializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.FromString,
+                    response_serializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactResponse.SerializeToString,
             ),
             'BatchGetArtifact': grpc.unary_unary_rpc_method_handler(
                     servicer.BatchGetArtifact,
@@ -198,6 +215,23 @@ class WorkerService(object):
         return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchCreateArtifactPart',
             endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.SerializeToString,
             endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def BatchFinalizeArtifact(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchFinalizeArtifact',
+            endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.SerializeToString,
+            endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

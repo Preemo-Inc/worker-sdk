@@ -5,6 +5,7 @@ isort:skip_file
 import abc
 import preemo.gen.endpoints.batch_create_artifact_part_pb2
 import preemo.gen.endpoints.batch_create_artifact_pb2
+import preemo.gen.endpoints.batch_finalize_artifact_pb2
 import preemo.gen.endpoints.batch_get_artifact_part_pb2
 import preemo.gen.endpoints.batch_get_artifact_pb2
 import preemo.gen.endpoints.check_function_pb2
@@ -22,6 +23,10 @@ class WorkerServiceStub:
     BatchCreateArtifactPart: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartRequest,
         preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartResponse,
+    ]
+    BatchFinalizeArtifact: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactRequest,
+        preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactResponse,
     ]
     BatchGetArtifact: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.batch_get_artifact_pb2.BatchGetArtifactRequest,
@@ -61,6 +66,12 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         request: preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartRequest,
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartResponse: ...
+    @abc.abstractmethod
+    def BatchFinalizeArtifact(
+        self,
+        request: preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactResponse: ...
     @abc.abstractmethod
     def BatchGetArtifact(
         self,
