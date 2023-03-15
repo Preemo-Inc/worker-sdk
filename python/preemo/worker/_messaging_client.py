@@ -37,6 +37,7 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionResponse,
 )
 from preemo.gen.services.worker_pb2_grpc import WorkerServiceStub
+from preemo.worker._validation import ensure_keys_match
 
 
 @runtime_checkable
@@ -80,6 +81,9 @@ class IMessagingClient(Protocol):
         pass
 
 
+# TODO(adrian@preemo.io, 03/15/2023): move to helper file like _types?
+
+
 class MessagingClient:
     def __init__(self, *, worker_server_url: str) -> None:
         # TODO(adrian@preemo.io, 03/15/2023): investigate whether it makes sense to use secure_channel instead
@@ -94,27 +98,56 @@ class MessagingClient:
     def batch_create_artifact(
         self, request: BatchCreateArtifactRequest
     ) -> BatchCreateArtifactResponse:
-        return self._worker_service.BatchCreateArtifact(request)
+        response = self._worker_service.BatchCreateArtifact(request)
+        ensure_keys_match(
+            expected=request.configs_by_index, actual=response.results_by_index
+        )
+
+        return response
 
     def batch_create_artifact_part(
         self, request: BatchCreateArtifactPartRequest
     ) -> BatchCreateArtifactPartResponse:
-        return self._worker_service.BatchCreateArtifactPart(request)
+        response = self._worker_service.BatchCreateArtifactPart(request)
+        ensure_keys_match(
+            expected=request.configs_by_artifact_id,
+            actual=response.results_by_artifact_id,
+        )
+
+        return response
 
     def batch_finalize_artifact(
         self, request: BatchFinalizeArtifactRequest
     ) -> BatchFinalizeArtifactResponse:
-        return self._worker_service.BatchFinalizeArtifact(request)
+        response = self._worker_service.BatchFinalizeArtifact(request)
+        ensure_keys_match(
+            expected=request.configs_by_artifact_id,
+            actual=response.results_by_artifact_id,
+        )
+
+        return response
 
     def batch_get_artifact(
         self, request: BatchGetArtifactRequest
     ) -> BatchGetArtifactResponse:
-        return self._worker_service.BatchGetArtifact(request)
+        response = self._worker_service.BatchGetArtifact(request)
+        ensure_keys_match(
+            expected=request.configs_by_artifact_id,
+            actual=response.results_by_artifact_id,
+        )
+
+        return response
 
     def batch_get_artifact_part(
         self, request: BatchGetArtifactPartRequest
     ) -> BatchGetArtifactPartResponse:
-        return self._worker_service.BatchGetArtifactPart(request)
+        response = self._worker_service.BatchGetArtifactPart(request)
+        ensure_keys_match(
+            expected=request.config_by_artifact_id,
+            actual=response.results_by_artifact_id,
+        )
+
+        return response
 
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
         return self._worker_service.CheckFunction(request)
@@ -122,7 +155,13 @@ class MessagingClient:
     def execute_function(
         self, request: ExecuteFunctionRequest
     ) -> ExecuteFunctionResponse:
-        return self._worker_service.ExecuteFunction(request)
+        response = self._worker_service.ExecuteFunction(request)
+        ensure_keys_match(
+            expected=request.function_parameters_by_index,
+            actual=response.function_results_by_index,
+        )
+
+        return response
 
     def register_function(
         self, request: RegisterFunctionRequest

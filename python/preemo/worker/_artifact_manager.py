@@ -37,27 +37,24 @@ class ArtifactManager:
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
         )
 
-        # TODO(adrian@preemo.io, 03/14/2023): does this work as expected?
-        if response.results_by_index.keys() != configs_by_index.keys():
-            raise ValueError(
-                "expected results_by_index key set to match configs_by_index key set"
-            )
-
         return list(
             map(
-                lambda x: ArtifactId(x[1].artifact_id),
+                lambda x: ArtifactId(value=x[1].artifact_id),
                 sorted(response.results_by_index.items(), key=lambda x: x[0]),
             )
         )
 
     def create_artifact(self, content: str) -> ArtifactId:
-        # TODO(adrian@preemo.io, 03/14/2023): implement using batch call
-        raise Exception("not yet implemented")
+        artifact_ids = self.create_artifacts([content])
+        if len(artifact_ids) != 1:
+            raise Exception("expected exactly one artifact to be created")
+
+        return artifact_ids[0]
 
     def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
-        # TODO(adrian@preemo.io, 03/14/2023): handle multipart file upload
         artifact_ids = self._create_artifacts(count=len(contents))
 
+        # TODO(adrian@preemo.io, 03/14/2023): handle multipart file upload
         # TODO(adrian@preemo.io, 03/14/2023): figure out size for creating multiple parts
         configs_by_artifact_id = {
             artifact_id.value: CreateArtifactPartConfig(
