@@ -1,5 +1,7 @@
 from typing import NoReturn
 
+from pydantic import BaseModel, StrictStr
+
 _ASSERT_NEVER_REPR_MAX_LENGTH = 100
 
 
@@ -24,3 +26,12 @@ def assert_never(arg: NoReturn, /) -> NoReturn:
     if len(value) > _ASSERT_NEVER_REPR_MAX_LENGTH:
         value = value[:_ASSERT_NEVER_REPR_MAX_LENGTH] + "..."
     raise AssertionError(f"Expected code to be unreachable, but got: {value}")
+
+
+class ImmutableModel(BaseModel):
+    class Config:
+        allow_mutation = False
+
+
+class StringValue(ImmutableModel):
+    value: StrictStr

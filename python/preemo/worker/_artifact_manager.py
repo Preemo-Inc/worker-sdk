@@ -10,12 +10,7 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     CreateArtifactConfig,
 )
 from preemo.worker._messaging_client import IMessagingClient
-
-
-# TODO(adrian@preemo.io, 03/14/2023): use pydantic?
-class StringValue:
-    def __init__(self, value: str, /) -> None:
-        self.value = value
+from preemo.worker._types import StringValue
 
 
 class ArtifactId(StringValue):
