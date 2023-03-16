@@ -30,8 +30,23 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
+from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
+
+
+class DoNothingArtifactManager(IArtifactManager):
+    def create_artifact(self, content: str) -> ArtifactId:
+        raise Exception("no call expected")
+
+    def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
+        raise Exception("no call expected")
+
+    def get_artifact(self, artifact_id: ArtifactId) -> str:
+        raise Exception("no call expected")
+
+    def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+        raise Exception("no call expected")
 
 
 class DoNothingMessagingClient(IMessagingClient):
@@ -109,7 +124,10 @@ class TestRegister:
 
                 return RegisterFunctionResponse()
 
-        worker_client = WorkerClient(messaging_client=MockMessagingClient())
+        worker_client = WorkerClient(
+            artifact_manager=DoNothingArtifactManager(),
+            messaging_client=MockMessagingClient(),
+        )
 
         @worker_client.register
         def inner_func() -> None:
@@ -172,7 +190,10 @@ class TestRegister:
 
                 return RegisterFunctionResponse()
 
-        worker_client = WorkerClient(messaging_client=MockMessagingClient())
+        worker_client = WorkerClient(
+            artifact_manager=DoNothingArtifactManager(),
+            messaging_client=MockMessagingClient(),
+        )
 
         class InnerClass:
             @worker_client.register

@@ -60,8 +60,8 @@ class ArtifactManager:
     def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
         artifact_ids = self._create_artifacts(count=len(contents))
 
-        # TODO(adrian@preemo.io, 03/14/2023): handle multipart file upload
-        # TODO(adrian@preemo.io, 03/14/2023): figure out size for creating multiple parts
+        # TODO(adrian@preemo.io, 03/20/2023): handle multipart file upload
+        # figure out size for creating multiple parts (100MB?)
         # and decide best way to get size of content len() for now, maybe sys.getsizeof at some point?
         configs_by_artifact_id = {
             artifact_id.value: CreateArtifactPartConfig(
