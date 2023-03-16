@@ -2,13 +2,13 @@ syntax = "proto3";
 
 package endpoints;
 
-// TODO(adrian@preemo.io, 03/10/2023): is there another name for this object? should it just be removed?
 // This config is included for potential future use.
 message CreateArtifactPartConfigMetadata {
 }
 
 message CreateArtifactPartConfig {
-  map<int32, CreateArtifactPartConfigMetadata> metadatas_by_part_number = 1;
+  // For an artifact, part numbers must be sequential positive integers starting with 1.
+  map<uint32, CreateArtifactPartConfigMetadata> metadatas_by_part_number = 1;
 }
 
 message BatchCreateArtifactPartRequest {
@@ -20,7 +20,7 @@ message CreateArtifactPartResultMetadata {
 }
 
 message CreateArtifactPartResult {
-  map<int32, CreateArtifactPartResultMetadata> metadatas_by_part_number = 1;
+  map<uint32, CreateArtifactPartResultMetadata> metadatas_by_part_number = 1;
 }
 
 message BatchCreateArtifactPartResponse {

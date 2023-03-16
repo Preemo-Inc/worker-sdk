@@ -23,7 +23,7 @@ class ExecuteFunctionRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     @typing_extensions.final
-    class FunctionParametersByIndexEntry(google.protobuf.message.Message):
+    class ParametersByIndexEntry(google.protobuf.message.Message):
         DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
         KEY_FIELD_NUMBER: builtins.int
@@ -41,19 +41,19 @@ class ExecuteFunctionRequest(google.protobuf.message.Message):
         def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
 
     FUNCTION_TO_EXECUTE_FIELD_NUMBER: builtins.int
-    FUNCTION_PARAMETERS_BY_INDEX_FIELD_NUMBER: builtins.int
+    PARAMETERS_BY_INDEX_FIELD_NUMBER: builtins.int
     @property
     def function_to_execute(self) -> preemo.gen.models.registered_function_pb2.RegisteredFunction: ...
     @property
-    def function_parameters_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, preemo.gen.models.value_pb2.Value]: ...
+    def parameters_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, preemo.gen.models.value_pb2.Value]: ...
     def __init__(
         self,
         *,
         function_to_execute: preemo.gen.models.registered_function_pb2.RegisteredFunction | None = ...,
-        function_parameters_by_index: collections.abc.Mapping[builtins.int, preemo.gen.models.value_pb2.Value] | None = ...,
+        parameters_by_index: collections.abc.Mapping[builtins.int, preemo.gen.models.value_pb2.Value] | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["_function_to_execute", b"_function_to_execute", "function_to_execute", b"function_to_execute"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_function_to_execute", b"_function_to_execute", "function_parameters_by_index", b"function_parameters_by_index", "function_to_execute", b"function_to_execute"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_function_to_execute", b"_function_to_execute", "function_to_execute", b"function_to_execute", "parameters_by_index", b"parameters_by_index"]) -> None: ...
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_function_to_execute", b"_function_to_execute"]) -> typing_extensions.Literal["function_to_execute"] | None: ...
 
 global___ExecuteFunctionRequest = ExecuteFunctionRequest
@@ -63,7 +63,7 @@ class ExecuteFunctionResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     @typing_extensions.final
-    class FunctionResultsByIndexEntry(google.protobuf.message.Message):
+    class ResultsByIndexEntry(google.protobuf.message.Message):
         DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
         KEY_FIELD_NUMBER: builtins.int
@@ -80,14 +80,14 @@ class ExecuteFunctionResponse(google.protobuf.message.Message):
         def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
         def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
 
-    FUNCTION_RESULTS_BY_INDEX_FIELD_NUMBER: builtins.int
+    RESULTS_BY_INDEX_FIELD_NUMBER: builtins.int
     @property
-    def function_results_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, preemo.gen.models.value_pb2.Value]: ...
+    def results_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, preemo.gen.models.value_pb2.Value]: ...
     def __init__(
         self,
         *,
-        function_results_by_index: collections.abc.Mapping[builtins.int, preemo.gen.models.value_pb2.Value] | None = ...,
+        results_by_index: collections.abc.Mapping[builtins.int, preemo.gen.models.value_pb2.Value] | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["function_results_by_index", b"function_results_by_index"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["results_by_index", b"results_by_index"]) -> None: ...
 
 global___ExecuteFunctionResponse = ExecuteFunctionResponse

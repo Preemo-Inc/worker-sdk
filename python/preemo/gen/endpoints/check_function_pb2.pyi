@@ -19,24 +19,24 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 class CheckFunctionRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    REGISTERED_FUNCTION_FIELD_NUMBER: builtins.int
+    FUNCTION_TO_CHECK_FIELD_NUMBER: builtins.int
     @property
-    def registered_function(self) -> preemo.gen.models.registered_function_pb2.RegisteredFunction: ...
+    def function_to_check(self) -> preemo.gen.models.registered_function_pb2.RegisteredFunction: ...
     def __init__(
         self,
         *,
-        registered_function: preemo.gen.models.registered_function_pb2.RegisteredFunction | None = ...,
+        function_to_check: preemo.gen.models.registered_function_pb2.RegisteredFunction | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_registered_function", b"_registered_function", "registered_function", b"registered_function"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_registered_function", b"_registered_function", "registered_function", b"registered_function"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_registered_function", b"_registered_function"]) -> typing_extensions.Literal["registered_function"] | None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_function_to_check", b"_function_to_check", "function_to_check", b"function_to_check"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_function_to_check", b"_function_to_check", "function_to_check", b"function_to_check"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_function_to_check", b"_function_to_check"]) -> typing_extensions.Literal["function_to_check"] | None: ...
 
 global___CheckFunctionRequest = CheckFunctionRequest
 
 @typing_extensions.final
 class CheckFunctionResponse(google.protobuf.message.Message):
-    """A successful response indicates existence.
-    If the function does not exist a NOT_FOUND status will be thrown.
+    """A successful response indicates the function is registered.
+    If the function is not regsitered, a NOT_FOUND status will be thrown.
     """
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor

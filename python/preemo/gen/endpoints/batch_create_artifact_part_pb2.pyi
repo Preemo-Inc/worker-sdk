@@ -18,9 +18,7 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
 class CreateArtifactPartConfigMetadata(google.protobuf.message.Message):
-    """TODO(adrian@preemo.io, 03/10/2023): is there another name for this object? should it just be removed?
-    This config is included for potential future use.
-    """
+    """This config is included for potential future use."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
@@ -54,7 +52,8 @@ class CreateArtifactPartConfig(google.protobuf.message.Message):
 
     METADATAS_BY_PART_NUMBER_FIELD_NUMBER: builtins.int
     @property
-    def metadatas_by_part_number(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___CreateArtifactPartConfigMetadata]: ...
+    def metadatas_by_part_number(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___CreateArtifactPartConfigMetadata]:
+        """For an artifact, part numbers must be sequential positive integers starting with 1."""
     def __init__(
         self,
         *,

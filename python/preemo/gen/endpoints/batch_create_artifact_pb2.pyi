@@ -54,7 +54,10 @@ class BatchCreateArtifactRequest(google.protobuf.message.Message):
 
     CONFIGS_BY_INDEX_FIELD_NUMBER: builtins.int
     @property
-    def configs_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___CreateArtifactConfig]: ...
+    def configs_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___CreateArtifactConfig]:
+        """This field is a map instead of an array to avoid depending on the
+        response array being in the same order as the request array.
+        """
     def __init__(
         self,
         *,

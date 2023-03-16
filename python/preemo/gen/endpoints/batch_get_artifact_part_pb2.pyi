@@ -18,9 +18,7 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
 class GetArtifactPartConfigMetadata(google.protobuf.message.Message):
-    """TODO(adrian@preemo.io, 03/10/2023): is there another name for this object? should it just be removed?
-    This config is included for potential future use.
-    """
+    """This config is included for potential future use."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 

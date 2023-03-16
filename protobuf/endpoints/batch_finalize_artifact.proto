@@ -4,7 +4,6 @@ package endpoints;
 
 // This config is included for potential future use.
 message FinalizeArtifactConfig {
-  // TODO(adrian@preemo.io, 03/14/2023): include expected part count?
 }
 
 message BatchFinalizeArtifactRequest {
@@ -13,7 +12,6 @@ message BatchFinalizeArtifactRequest {
 
 // This result is included for potential future use.
 message FinalizeArtifactResult {
-  // TODO(adrian@preemo.io, 03/14/2023): include actual part count?
 }
 
 message BatchFinalizeArtifactResponse {

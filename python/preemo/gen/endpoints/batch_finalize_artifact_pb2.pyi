@@ -18,9 +18,7 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
 class FinalizeArtifactConfig(google.protobuf.message.Message):
-    """This config is included for potential future use.
-    TODO(adrian@preemo.io, 03/14/2023): include expected part count?
-    """
+    """This config is included for potential future use."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
@@ -66,9 +64,7 @@ global___BatchFinalizeArtifactRequest = BatchFinalizeArtifactRequest
 
 @typing_extensions.final
 class FinalizeArtifactResult(google.protobuf.message.Message):
-    """This result is included for potential future use.
-    TODO(adrian@preemo.io, 03/14/2023): include actual part count?
-    """
+    """This result is included for potential future use."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 

@@ -10,7 +10,7 @@ message CreateArtifactConfig {
 message BatchCreateArtifactRequest {
   // This field is a map instead of an array to avoid depending on the
   // response array being in the same order as the request array.
-  map<int32, CreateArtifactConfig> configs_by_index = 1;
+  map<uint32, CreateArtifactConfig> configs_by_index = 1;
 }
 
 message CreateArtifactResult {
@@ -18,5 +18,5 @@ message CreateArtifactResult {
 }
 
 message BatchCreateArtifactResponse {
-  map<int32, CreateArtifactResult> results_by_index = 1;
+  map<uint32, CreateArtifactResult> results_by_index = 1;
 }
