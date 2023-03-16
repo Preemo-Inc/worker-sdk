@@ -9,6 +9,11 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
     CreateArtifactConfig,
 )
+from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
+    BatchFinalizeArtifactRequest,
+    BatchFinalizeArtifactResponse,
+    FinalizeArtifactConfig,
+)
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import StringValue
 from preemo.worker._validation import ensure_keys_match
@@ -35,11 +40,11 @@ class IArtifactManager(Protocol):
 
 class ArtifactManager:
     def __init__(self, *, messaging_client: IMessagingClient) -> None:
-        self._client = messaging_client
+        self._messaging_client = messaging_client
 
     def _create_artifacts(self, *, count: int) -> list[ArtifactId]:
         configs_by_index = {i: CreateArtifactConfig() for i in range(count)}
-        response = self._client.batch_create_artifact(
+        response = self._messaging_client.batch_create_artifact(
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
         )
 
@@ -62,7 +67,7 @@ class ArtifactManager:
 
         # TODO(adrian@preemo.io, 03/20/2023): handle multipart file upload
         # figure out size for creating multiple parts (100MB?)
-        # and decide best way to get size of content len() for now, maybe sys.getsizeof at some point?
+        # and decide best way to get size of content len() for now, maybe sys.getsizeof at some point
         configs_by_artifact_id = {
             artifact_id.value: CreateArtifactPartConfig(
                 metadatas_by_part_number={1: CreateArtifactPartConfigMetadata()}
@@ -70,13 +75,13 @@ class ArtifactManager:
             for artifact_id in artifact_ids
         }
 
-        response = self._client.batch_create_artifact_part(
+        response = self._messaging_client.batch_create_artifact_part(
             BatchCreateArtifactPartRequest(
                 configs_by_artifact_id=configs_by_artifact_id
             )
         )
 
-        # TODO(adrian@preemo.io, 03/14/2023): should upload in parallel
+        # TODO(adrian@preemo.io, 03/20/2023): should upload in parallel
         for i, content in enumerate(contents):
             artifact_id = artifact_ids[i].value
             config = configs_by_artifact_id[artifact_id]
@@ -87,15 +92,22 @@ class ArtifactManager:
                 actual=result.metadatas_by_part_number,
             )
 
-            # TODO(adrian@preemo.io, 03/14/2023): will need to change for multi-part upload
+            # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
             metadata = result.metadatas_by_part_number[1]
             if not metadata.HasField("upload_signed_url"):
                 raise Exception("expected result metadata to have upload_signed_url")
 
-            # TODO(adrian@preemo.io, 03/14/2023): actually upload to artifact with signed url
-            # upload_content(content, signed_url)
+            # TODO(adrian@preemo.io, 03/20/2023): actually upload to artifact with signed url
+            # something like upload_content(content, signed_url)
 
-        # TODO(adrian@preemo.io, 03/14/2023): batch finalize artifacts
+        self._messaging_client.batch_finalize_artifact(
+            BatchFinalizeArtifactRequest(
+                configs_by_artifact_id={
+                    artifact_id.value: FinalizeArtifactConfig()
+                    for artifact_id in artifact_ids
+                }
+            )
+        )
 
         return artifact_ids
 
