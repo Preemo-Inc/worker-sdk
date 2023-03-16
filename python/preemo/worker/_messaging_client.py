@@ -81,9 +81,6 @@ class IMessagingClient(Protocol):
         pass
 
 
-# TODO(adrian@preemo.io, 03/15/2023): move to helper file like _types?
-
-
 class MessagingClient:
     def __init__(self, *, worker_server_url: str) -> None:
         # TODO(adrian@preemo.io, 03/15/2023): investigate whether it makes sense to use secure_channel instead
@@ -157,8 +154,8 @@ class MessagingClient:
     ) -> ExecuteFunctionResponse:
         response = self._worker_service.ExecuteFunction(request)
         ensure_keys_match(
-            expected=request.function_parameters_by_index,
-            actual=response.function_results_by_index,
+            expected=request.parameters_by_index,
+            actual=response.results_by_index,
         )
 
         return response

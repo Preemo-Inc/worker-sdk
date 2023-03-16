@@ -36,7 +36,7 @@ class Function:
         # check_function raises an error if the function is not found
         self._client.check_function(
             CheckFunctionRequest(
-                registered_function=RegisteredFunction(
+                function_to_check=RegisteredFunction(
                     name=self.name, namespace=self.namespace
                 )
             )
@@ -54,11 +54,11 @@ class Function:
                 function_to_execute=RegisteredFunction(
                     name=self.name, namespace=self.namespace
                 ),
-                function_parameters_by_index={0: function_parameter},
+                parameters_by_index={0: function_parameter},
             )
         )
 
-        function_result = response.function_results_by_index[0]
+        function_result = response.results_by_index[0]
 
         match function_result.WhichOneof("kind"):
             case "null_value":
@@ -138,7 +138,7 @@ class WorkerClient:
                 function_to_execute=RegisteredFunction(
                     name=function.name, namespace=function.namespace
                 ),
-                function_parameters_by_index=function_parameters_by_index,
+                parameters_by_index=function_parameters_by_index,
             )
         )
 
@@ -146,7 +146,7 @@ class WorkerClient:
         # TODO(adrian@preemo.io, 03/15/2023): should download results in parallel
         # or just return a handle that allows the user to download
         for _, function_result in sorted(
-            response.function_results_by_index.items(), key=lambda x: x[0]
+            response.results_by_index.items(), key=lambda x: x[0]
         ):
             match function_result.WhichOneof("kind"):
                 case "null_value":
