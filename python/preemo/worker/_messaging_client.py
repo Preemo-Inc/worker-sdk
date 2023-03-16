@@ -140,7 +140,7 @@ class MessagingClient:
     ) -> BatchGetArtifactPartResponse:
         response = self._worker_service.BatchGetArtifactPart(request)
         ensure_keys_match(
-            expected=request.config_by_artifact_id,
+            expected=request.configs_by_artifact_id,
             actual=response.results_by_artifact_id,
         )
 
