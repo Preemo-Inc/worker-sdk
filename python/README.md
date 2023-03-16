@@ -87,7 +87,7 @@ results = parallelize(
 ...
 ```
 
-<!-- TODO(adrian@preemo.io, 03/15/23): include an explanation of the result objects. They should be objects that give you access to the artifacts. -->
+<!-- TODO(adrian@preemo.io, 03/20/23): include an explanation of the result objects. They should be objects that give you access to the artifacts. -->
 
 ## Contributing
 
