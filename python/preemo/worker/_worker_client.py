@@ -121,17 +121,37 @@ class WorkerClient:
             namespace=namespace,
         )
 
-    def parallelize(self, function: Function, params: list[str]) -> list[Optional[str]]:
-        if len(params) == 0:
-            return []
+    def parallelize(
+        self,
+        function: Function,
+        *,
+        params: Optional[list[str]] = None,
+        count: Optional[int] = None,
+    ) -> list[Optional[str]]:
+        # TODO(adrian@preemo.io, 03/08/2023): should take an optional config argument including batching?
 
-        # TODO(adrian@preemo.io, 03/08/2023): should batch?
+        if params is None:
+            if count is None:
+                raise ValueError("either params or count must be specified")
 
-        artifact_ids = self._artifact_manager.create_artifacts(params)
-        function_parameters_by_index = {
-            i: Value(artifact_id=artifact_id.value)
-            for i, artifact_id in enumerate(artifact_ids)
-        }
+            if count <= 0:
+                raise ValueError("count must be positive")
+
+            function_parameters_by_index = {
+                i: Value(null_value=NULL_VALUE) for i in range(count)
+            }
+        else:
+            if count is not None:
+                raise ValueError("params and count must not both be specified")
+
+            if len(params) == 0:
+                return []
+
+            artifact_ids = self._artifact_manager.create_artifacts(params)
+            function_parameters_by_index = {
+                i: Value(artifact_id=artifact_id.value)
+                for i, artifact_id in enumerate(artifact_ids)
+            }
 
         response = self._client.execute_function(
             ExecuteFunctionRequest(
