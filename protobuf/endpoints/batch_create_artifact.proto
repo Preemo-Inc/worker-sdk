@@ -8,8 +8,8 @@ message CreateArtifactConfig {
 }
 
 message BatchCreateArtifactRequest {
-  // We are using a map here to avoid depending on the result array
-  // being in the same order as the request array.
+  // This field is a map instead of an array to avoid depending on the
+  // response array being in the same order as the request array.
   map<int32, CreateArtifactConfig> configs_by_index = 1;
 }
 
