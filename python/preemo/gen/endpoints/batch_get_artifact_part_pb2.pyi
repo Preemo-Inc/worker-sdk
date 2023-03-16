@@ -67,7 +67,7 @@ class BatchGetArtifactPartRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     @typing_extensions.final
-    class ConfigByArtifactIdEntry(google.protobuf.message.Message):
+    class ConfigsByArtifactIdEntry(google.protobuf.message.Message):
         DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
         KEY_FIELD_NUMBER: builtins.int
@@ -84,15 +84,15 @@ class BatchGetArtifactPartRequest(google.protobuf.message.Message):
         def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
         def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
 
-    CONFIG_BY_ARTIFACT_ID_FIELD_NUMBER: builtins.int
+    CONFIGS_BY_ARTIFACT_ID_FIELD_NUMBER: builtins.int
     @property
-    def config_by_artifact_id(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, global___GetArtifactPartConfig]: ...
+    def configs_by_artifact_id(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, global___GetArtifactPartConfig]: ...
     def __init__(
         self,
         *,
-        config_by_artifact_id: collections.abc.Mapping[builtins.str, global___GetArtifactPartConfig] | None = ...,
+        configs_by_artifact_id: collections.abc.Mapping[builtins.str, global___GetArtifactPartConfig] | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["config_by_artifact_id", b"config_by_artifact_id"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["configs_by_artifact_id", b"configs_by_artifact_id"]) -> None: ...
 
 global___BatchGetArtifactPartRequest = BatchGetArtifactPartRequest
 

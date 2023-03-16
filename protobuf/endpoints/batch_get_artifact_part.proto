@@ -11,7 +11,7 @@ message GetArtifactPartConfig {
 }
 
 message BatchGetArtifactPartRequest {
-  map<string, GetArtifactPartConfig> config_by_artifact_id = 1;
+  map<string, GetArtifactPartConfig> configs_by_artifact_id = 1;
 }
 
 message GetArtifactPartResultMetadata {

@@ -11,8 +11,15 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
 )
 from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
-    BatchFinalizeArtifactResponse,
     FinalizeArtifactConfig,
+)
+from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
+    BatchGetArtifactPartRequest,
+    GetArtifactPartConfig,
+)
+from preemo.gen.endpoints.batch_get_artifact_pb2 import (
+    BatchGetArtifactRequest,
+    GetArtifactConfig,
 )
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import StringValue
@@ -119,5 +126,18 @@ class ArtifactManager:
         return contents[0]
 
     def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+        response = self._messaging_client.batch_get_artifact(
+            BatchGetArtifactRequest(
+                configs_by_artifact_id={
+                    artifact_id.value: GetArtifactConfig()
+                    for artifact_id in artifact_ids
+                }
+            )
+        )
+
+        self._messaging_client.batch_get_artifact_part(
+            BatchGetArtifactPartRequest(config_by_artifact_id={})
+        )
+
         # TODO(adrian@preemo.io, 03/15/2023): implement
         raise Exception("not yet implemented")

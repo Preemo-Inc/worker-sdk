@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\'endpoints/batch_get_artifact_part.proto\x12\tendpoints\"\x1f\n\x1dGetArtifactPartConfigMetadata\"\xde\x01\n\x15GetArtifactPartConfig\x12]\n\x18metadatas_by_part_number\x18\x01 \x03(\x0b\x32;.endpoints.GetArtifactPartConfig.MetadatasByPartNumberEntry\x1a\x66\n\x1aMetadatasByPartNumberEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.endpoints.GetArtifactPartConfigMetadata:\x02\x38\x01\"\xd9\x01\n\x1b\x42\x61tchGetArtifactPartRequest\x12]\n\x15\x63onfig_by_artifact_id\x18\x01 \x03(\x0b\x32>.endpoints.BatchGetArtifactPartRequest.ConfigByArtifactIdEntry\x1a[\n\x17\x43onfigByArtifactIdEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .endpoints.GetArtifactPartConfig:\x02\x38\x01\"Y\n\x1dGetArtifactPartResultMetadata\x12 \n\x13\x64ownload_signed_url\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\x16\n\x14_download_signed_url\"\xde\x01\n\x15GetArtifactPartResult\x12]\n\x18metadatas_by_part_number\x18\x01 \x03(\x0b\x32;.endpoints.GetArtifactPartResult.MetadatasByPartNumberEntry\x1a\x66\n\x1aMetadatasByPartNumberEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.endpoints.GetArtifactPartResultMetadata:\x02\x38\x01\"\xde\x01\n\x1c\x42\x61tchGetArtifactPartResponse\x12`\n\x16results_by_artifact_id\x18\x01 \x03(\x0b\x32@.endpoints.BatchGetArtifactPartResponse.ResultsByArtifactIdEntry\x1a\\\n\x18ResultsByArtifactIdEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .endpoints.GetArtifactPartResult:\x02\x38\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\'endpoints/batch_get_artifact_part.proto\x12\tendpoints\"\x1f\n\x1dGetArtifactPartConfigMetadata\"\xde\x01\n\x15GetArtifactPartConfig\x12]\n\x18metadatas_by_part_number\x18\x01 \x03(\x0b\x32;.endpoints.GetArtifactPartConfig.MetadatasByPartNumberEntry\x1a\x66\n\x1aMetadatasByPartNumberEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.endpoints.GetArtifactPartConfigMetadata:\x02\x38\x01\"\xdc\x01\n\x1b\x42\x61tchGetArtifactPartRequest\x12_\n\x16\x63onfigs_by_artifact_id\x18\x01 \x03(\x0b\x32?.endpoints.BatchGetArtifactPartRequest.ConfigsByArtifactIdEntry\x1a\\\n\x18\x43onfigsByArtifactIdEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .endpoints.GetArtifactPartConfig:\x02\x38\x01\"Y\n\x1dGetArtifactPartResultMetadata\x12 \n\x13\x64ownload_signed_url\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\x16\n\x14_download_signed_url\"\xde\x01\n\x15GetArtifactPartResult\x12]\n\x18metadatas_by_part_number\x18\x01 \x03(\x0b\x32;.endpoints.GetArtifactPartResult.MetadatasByPartNumberEntry\x1a\x66\n\x1aMetadatasByPartNumberEntry\x12\x0b\n\x03key\x18\x01 \x01(\r\x12\x37\n\x05value\x18\x02 \x01(\x0b\x32(.endpoints.GetArtifactPartResultMetadata:\x02\x38\x01\"\xde\x01\n\x1c\x42\x61tchGetArtifactPartResponse\x12`\n\x16results_by_artifact_id\x18\x01 \x03(\x0b\x32@.endpoints.BatchGetArtifactPartResponse.ResultsByArtifactIdEntry\x1a\\\n\x18ResultsByArtifactIdEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12/\n\x05value\x18\x02 \x01(\x0b\x32 .endpoints.GetArtifactPartResult:\x02\x38\x01\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'endpoints.batch_get_artifact_part_pb2', globals())
@@ -22,8 +22,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _GETARTIFACTPARTCONFIG_METADATASBYPARTNUMBERENTRY._options = None
   _GETARTIFACTPARTCONFIG_METADATASBYPARTNUMBERENTRY._serialized_options = b'8\001'
-  _BATCHGETARTIFACTPARTREQUEST_CONFIGBYARTIFACTIDENTRY._options = None
-  _BATCHGETARTIFACTPARTREQUEST_CONFIGBYARTIFACTIDENTRY._serialized_options = b'8\001'
+  _BATCHGETARTIFACTPARTREQUEST_CONFIGSBYARTIFACTIDENTRY._options = None
+  _BATCHGETARTIFACTPARTREQUEST_CONFIGSBYARTIFACTIDENTRY._serialized_options = b'8\001'
   _GETARTIFACTPARTRESULT_METADATASBYPARTNUMBERENTRY._options = None
   _GETARTIFACTPARTRESULT_METADATASBYPARTNUMBERENTRY._serialized_options = b'8\001'
   _BATCHGETARTIFACTPARTRESPONSE_RESULTSBYARTIFACTIDENTRY._options = None
@@ -35,17 +35,17 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _GETARTIFACTPARTCONFIG_METADATASBYPARTNUMBERENTRY._serialized_start=208
   _GETARTIFACTPARTCONFIG_METADATASBYPARTNUMBERENTRY._serialized_end=310
   _BATCHGETARTIFACTPARTREQUEST._serialized_start=313
-  _BATCHGETARTIFACTPARTREQUEST._serialized_end=530
-  _BATCHGETARTIFACTPARTREQUEST_CONFIGBYARTIFACTIDENTRY._serialized_start=439
-  _BATCHGETARTIFACTPARTREQUEST_CONFIGBYARTIFACTIDENTRY._serialized_end=530
-  _GETARTIFACTPARTRESULTMETADATA._serialized_start=532
-  _GETARTIFACTPARTRESULTMETADATA._serialized_end=621
-  _GETARTIFACTPARTRESULT._serialized_start=624
-  _GETARTIFACTPARTRESULT._serialized_end=846
-  _GETARTIFACTPARTRESULT_METADATASBYPARTNUMBERENTRY._serialized_start=744
-  _GETARTIFACTPARTRESULT_METADATASBYPARTNUMBERENTRY._serialized_end=846
-  _BATCHGETARTIFACTPARTRESPONSE._serialized_start=849
-  _BATCHGETARTIFACTPARTRESPONSE._serialized_end=1071
-  _BATCHGETARTIFACTPARTRESPONSE_RESULTSBYARTIFACTIDENTRY._serialized_start=979
-  _BATCHGETARTIFACTPARTRESPONSE_RESULTSBYARTIFACTIDENTRY._serialized_end=1071
+  _BATCHGETARTIFACTPARTREQUEST._serialized_end=533
+  _BATCHGETARTIFACTPARTREQUEST_CONFIGSBYARTIFACTIDENTRY._serialized_start=441
+  _BATCHGETARTIFACTPARTREQUEST_CONFIGSBYARTIFACTIDENTRY._serialized_end=533
+  _GETARTIFACTPARTRESULTMETADATA._serialized_start=535
+  _GETARTIFACTPARTRESULTMETADATA._serialized_end=624
+  _GETARTIFACTPARTRESULT._serialized_start=627
+  _GETARTIFACTPARTRESULT._serialized_end=849
+  _GETARTIFACTPARTRESULT_METADATASBYPARTNUMBERENTRY._serialized_start=747
+  _GETARTIFACTPARTRESULT_METADATASBYPARTNUMBERENTRY._serialized_end=849
+  _BATCHGETARTIFACTPARTRESPONSE._serialized_start=852
+  _BATCHGETARTIFACTPARTRESPONSE._serialized_end=1074
+  _BATCHGETARTIFACTPARTRESPONSE_RESULTSBYARTIFACTIDENTRY._serialized_start=982
+  _BATCHGETARTIFACTPARTRESPONSE_RESULTSBYARTIFACTIDENTRY._serialized_end=1074
 # @@protoc_insertion_point(module_scope)
