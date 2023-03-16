@@ -109,17 +109,3 @@ class ArtifactManager:
     def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
         # TODO(adrian@preemo.io, 03/15/2023): implement
         raise Exception("not yet implemented")
-
-
-# TODO(adrian@preemo.io, 03/14/2023): do we want/need this?
-# This class is intended to be used for tests and local development
-class LocalArtifactManager:
-    def create_artifact(self, content: str) -> ArtifactId:
-        # TODO(adrian@preemo.io, 03/14/2023): print something?
-        raise Exception("not yet implemented")
-
-    def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
-        raise Exception("not yet implemented")
-
-
-# TODO(adrian@preemo.io, 03/14/2023): add test ensuring that these classes fulfill the protocol
