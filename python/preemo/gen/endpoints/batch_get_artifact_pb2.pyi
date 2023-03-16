@@ -67,11 +67,11 @@ class GetArtifactResult(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     PART_COUNT_FIELD_NUMBER: builtins.int
-    part_count: builtins.str
+    part_count: builtins.int
     def __init__(
         self,
         *,
-        part_count: builtins.str | None = ...,
+        part_count: builtins.int | None = ...,
     ) -> None: ...
     def HasField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "part_count", b"part_count"]) -> builtins.bool: ...
     def ClearField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "part_count", b"part_count"]) -> None: ...

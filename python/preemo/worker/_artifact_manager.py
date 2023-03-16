@@ -16,6 +16,7 @@ from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
 from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
     BatchGetArtifactPartRequest,
     GetArtifactPartConfig,
+    GetArtifactPartConfigMetadata,
 )
 from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
@@ -136,7 +137,17 @@ class ArtifactManager:
         )
 
         self._messaging_client.batch_get_artifact_part(
-            BatchGetArtifactPartRequest(config_by_artifact_id={})
+            BatchGetArtifactPartRequest(
+                configs_by_artifact_id={
+                    artifact_id: GetArtifactPartConfig(
+                        metadatas_by_part_number={
+                            (1 + i): GetArtifactPartConfigMetadata()
+                            for i in range(result.part_count)
+                        }
+                    )
+                    for artifact_id, result in response.results_by_artifact_id.items()
+                }
+            )
         )
 
         # TODO(adrian@preemo.io, 03/15/2023): implement
