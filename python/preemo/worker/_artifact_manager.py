@@ -127,7 +127,7 @@ class ArtifactManager:
         return contents[0]
 
     def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
-        response = self._messaging_client.batch_get_artifact(
+        get_artifact_response = self._messaging_client.batch_get_artifact(
             BatchGetArtifactRequest(
                 configs_by_artifact_id={
                     artifact_id.value: GetArtifactConfig()
@@ -136,19 +136,39 @@ class ArtifactManager:
             )
         )
 
-        self._messaging_client.batch_get_artifact_part(
-            BatchGetArtifactPartRequest(
-                configs_by_artifact_id={
-                    artifact_id: GetArtifactPartConfig(
-                        metadatas_by_part_number={
-                            (1 + i): GetArtifactPartConfigMetadata()
-                            for i in range(result.part_count)
-                        }
-                    )
-                    for artifact_id, result in response.results_by_artifact_id.items()
+        configs_by_artifact_id = {
+            artifact_id: GetArtifactPartConfig(
+                metadatas_by_part_number={
+                    (1 + i): GetArtifactPartConfigMetadata()
+                    # TODO(adrian@preemo.io, 03/20/2023): don't necessarily want to attempt to
+                    # download the entire artifact all at once
+                    for i in range(result.part_count)
                 }
             )
+            for artifact_id, result in get_artifact_response.results_by_artifact_id.items()
+        }
+        get_artifact_part_response = self._messaging_client.batch_get_artifact_part(
+            BatchGetArtifactPartRequest(configs_by_artifact_id=configs_by_artifact_id)
         )
 
-        # TODO(adrian@preemo.io, 03/15/2023): implement
-        raise Exception("not yet implemented")
+        results: list[str] = []
+        for (
+            artifact_id,
+            result,
+        ) in get_artifact_part_response.results_by_artifact_id.items():
+            config = configs_by_artifact_id[artifact_id]
+            ensure_keys_match(
+                expected=config.metadatas_by_part_number,
+                actual=result.metadatas_by_part_number,
+            )
+
+            # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
+            metadata = result.metadatas_by_part_number[1]
+            if not metadata.HasField("download_signed_url"):
+                raise Exception("expected result metadata to have download_signed_url")
+
+            # TODO(adrian@preemo.io, 03/20/2023): actually download artifact with signed url
+            # something like content = download_content(signed_url)
+            # results.append(content)
+
+        return results
