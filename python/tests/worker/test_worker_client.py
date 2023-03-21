@@ -1,19 +1,99 @@
-import pytest
-
+from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
+    BatchCreateArtifactPartRequest,
+    BatchCreateArtifactPartResponse,
+)
+from preemo.gen.endpoints.batch_create_artifact_pb2 import (
+    BatchCreateArtifactRequest,
+    BatchCreateArtifactResponse,
+)
+from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
+    BatchFinalizeArtifactRequest,
+    BatchFinalizeArtifactResponse,
+)
+from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
+    BatchGetArtifactPartRequest,
+    BatchGetArtifactPartResponse,
+)
+from preemo.gen.endpoints.batch_get_artifact_pb2 import (
+    BatchGetArtifactRequest,
+    BatchGetArtifactResponse,
+)
+from preemo.gen.endpoints.check_function_pb2 import (
+    CheckFunctionRequest,
+    CheckFunctionResponse,
+)
+from preemo.gen.endpoints.execute_function_pb2 import (
+    ExecuteFunctionRequest,
+    ExecuteFunctionResponse,
+)
 from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
-from preemo.gen.models.status_pb2 import Status
+from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
+
+
+class DoNothingArtifactManager(IArtifactManager):
+    def create_artifact(self, content: str) -> ArtifactId:
+        raise Exception("no call expected")
+
+    def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
+        raise Exception("no call expected")
+
+    def get_artifact(self, artifact_id: ArtifactId) -> str:
+        raise Exception("no call expected")
+
+    def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+        raise Exception("no call expected")
+
+
+class DoNothingMessagingClient(IMessagingClient):
+    def batch_create_artifact(
+        self, request: BatchCreateArtifactRequest
+    ) -> BatchCreateArtifactResponse:
+        raise Exception("no call expected")
+
+    def batch_create_artifact_part(
+        self, request: BatchCreateArtifactPartRequest
+    ) -> BatchCreateArtifactPartResponse:
+        raise Exception("no call expected")
+
+    def batch_finalize_artifact(
+        self, request: BatchFinalizeArtifactRequest
+    ) -> BatchFinalizeArtifactResponse:
+        raise Exception("no call expected")
+
+    def batch_get_artifact(
+        self, request: BatchGetArtifactRequest
+    ) -> BatchGetArtifactResponse:
+        raise Exception("no call expected")
+
+    def batch_get_artifact_part(
+        self, request: BatchGetArtifactPartRequest
+    ) -> BatchGetArtifactPartResponse:
+        raise Exception("no call expected")
+
+    def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
+        raise Exception("no call expected")
+
+    def execute_function(
+        self, request: ExecuteFunctionRequest
+    ) -> ExecuteFunctionResponse:
+        raise Exception("no call expected")
+
+    def register_function(
+        self, request: RegisterFunctionRequest
+    ) -> RegisterFunctionResponse:
+        raise Exception("no call expected")
 
 
 class TestRegister:
     def test_param_variations(self) -> None:
         send_request_call_count = 0
 
-        class MockMessagingClient(IMessagingClient):
+        class MockMessagingClient(DoNothingMessagingClient):
             def register_function(
                 self, request: RegisterFunctionRequest
             ) -> RegisterFunctionResponse:
@@ -42,9 +122,12 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return RegisterFunctionResponse(status=Status.STATUS_OK)
+                return RegisterFunctionResponse()
 
-        worker_client = WorkerClient(messaging_client=MockMessagingClient())
+        worker_client = WorkerClient(
+            artifact_manager=DoNothingArtifactManager(),
+            messaging_client=MockMessagingClient(),
+        )
 
         @worker_client.register
         def inner_func() -> None:
@@ -79,7 +162,7 @@ class TestRegister:
     def test_nested_decorators(self) -> None:
         send_request_call_count = 0
 
-        class MockMessagingClient(IMessagingClient):
+        class MockMessagingClient(DoNothingMessagingClient):
             def register_function(
                 self, request: RegisterFunctionRequest
             ) -> RegisterFunctionResponse:
@@ -105,9 +188,12 @@ class TestRegister:
                             f"unexpected call count: {send_request_call_count}"
                         )
 
-                return RegisterFunctionResponse(status=Status.STATUS_OK)
+                return RegisterFunctionResponse()
 
-        worker_client = WorkerClient(messaging_client=MockMessagingClient())
+        worker_client = WorkerClient(
+            artifact_manager=DoNothingArtifactManager(),
+            messaging_client=MockMessagingClient(),
+        )
 
         class InnerClass:
             @worker_client.register
@@ -124,21 +210,3 @@ class TestRegister:
             pass
 
         assert send_request_call_count == 4
-
-    def test_receiving_non_ok_reply(self) -> None:
-        class MockMessagingClient(IMessagingClient):
-            def register_function(
-                self, request: RegisterFunctionRequest
-            ) -> RegisterFunctionResponse:
-                return RegisterFunctionResponse(status=Status.STATUS_ERROR)
-
-        worker_client = WorkerClient(messaging_client=MockMessagingClient())
-
-        with pytest.raises(
-            Exception,
-            match="worker server replied to register function request with unexpected status",
-        ):
-
-            @worker_client.register
-            def inner_func() -> None:
-                pass

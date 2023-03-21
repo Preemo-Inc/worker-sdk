@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package endpoints;
+
+import "models/registered_function.proto";
+import "models/value.proto";
+
+message ExecuteFunctionRequest {
+  optional models.RegisteredFunction function_to_execute = 1;
+
+  map<uint32, models.Value> parameters_by_index = 2;
+}
+
+message ExecuteFunctionResponse {
+  map<uint32, models.Value> results_by_index = 1;
+}

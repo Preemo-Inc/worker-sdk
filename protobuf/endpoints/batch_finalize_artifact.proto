@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package endpoints;
+
+// This config is included for potential future use.
+message FinalizeArtifactConfig {
+}
+
+message BatchFinalizeArtifactRequest {
+  map<string, FinalizeArtifactConfig> configs_by_artifact_id = 1;
+}
+
+// This result is included for potential future use.
+message FinalizeArtifactResult {
+}
+
+message BatchFinalizeArtifactResponse {
+  map<string, FinalizeArtifactResult> results_by_artifact_id = 1;
+}

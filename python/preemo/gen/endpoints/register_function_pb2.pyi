@@ -6,9 +6,7 @@ import builtins
 import google.protobuf.descriptor
 import google.protobuf.message
 import preemo.gen.models.registered_function_pb2
-import preemo.gen.models.status_pb2
 import sys
-import typing
 
 if sys.version_info >= (3, 8):
     import typing as typing_extensions
@@ -39,21 +37,8 @@ global___RegisterFunctionRequest = RegisterFunctionRequest
 class RegisterFunctionResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    STATUS_FIELD_NUMBER: builtins.int
-    MESSAGE_FIELD_NUMBER: builtins.int
-    status: preemo.gen.models.status_pb2.Status.ValueType
-    message: builtins.str
     def __init__(
         self,
-        *,
-        status: preemo.gen.models.status_pb2.Status.ValueType | None = ...,
-        message: builtins.str | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_message", b"_message", "_status", b"_status", "message", b"message", "status", b"status"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_message", b"_message", "_status", b"_status", "message", b"message", "status", b"status"]) -> None: ...
-    @typing.overload
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_message", b"_message"]) -> typing_extensions.Literal["message"] | None: ...
-    @typing.overload
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_status", b"_status"]) -> typing_extensions.Literal["status"] | None: ...
 
 global___RegisterFunctionResponse = RegisterFunctionResponse

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package endpoints;
+
+// This config is included for potential future use.
+message GetArtifactConfig {
+}
+
+message BatchGetArtifactRequest {
+  map<string, GetArtifactConfig> configs_by_artifact_id = 1;
+}
+
+message GetArtifactResult {
+  optional uint32 part_count = 1;
+}
+
+message BatchGetArtifactResponse {
+  map<string, GetArtifactResult> results_by_artifact_id = 1;
+}

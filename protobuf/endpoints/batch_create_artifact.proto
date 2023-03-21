@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package endpoints;
+
+// This config is included for potential future use.
+// In the future it may include part count, expiration, or other metadata.
+message CreateArtifactConfig {
+}
+
+message BatchCreateArtifactRequest {
+  // This field is a map instead of an array to avoid depending on the
+  // response array being in the same order as the request array.
+  map<uint32, CreateArtifactConfig> configs_by_index = 1;
+}
+
+message CreateArtifactResult {
+  optional string artifact_id = 1;
+}
+
+message BatchCreateArtifactResponse {
+  map<uint32, CreateArtifactResult> results_by_index = 1;
+}
