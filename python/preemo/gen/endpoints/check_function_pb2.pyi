@@ -36,7 +36,7 @@ global___CheckFunctionRequest = CheckFunctionRequest
 @typing_extensions.final
 class CheckFunctionResponse(google.protobuf.message.Message):
     """A successful response indicates the function is registered.
-    If the function is not regsitered, a NOT_FOUND status will be thrown.
+    If the function is not registered, a NOT_FOUND status will be thrown.
     """
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
