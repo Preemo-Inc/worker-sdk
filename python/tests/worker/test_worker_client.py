@@ -103,26 +103,23 @@ class TestRegister:
                 send_request_call_count += 1
 
                 func = request.function_to_register
-                match send_request_call_count:
-                    case 1:
-                        assert func.name == "inner_func"
-                        assert not func.HasField("namespace")
-                    case 2:
-                        assert func.name == "inner_func2"
-                        assert not func.HasField("namespace")
-                    case 3:
-                        assert func.name == "another_name"
-                        assert not func.HasField("namespace")
-                    case 4:
-                        assert func.name == "inner_func4"
-                        assert func.namespace == "another_namespace"
-                    case 5:
-                        assert func.name == "another_name"
-                        assert func.namespace == "another_namespace"
-                    case _:
-                        raise Exception(
-                            f"unexpected call count: {send_request_call_count}"
-                        )
+                if send_request_call_count == 1:
+                    assert func.name == "inner_func"
+                    assert not func.HasField("namespace")
+                elif send_request_call_count == 2:
+                    assert func.name == "inner_func2"
+                    assert not func.HasField("namespace")
+                elif send_request_call_count == 3:
+                    assert func.name == "another_name"
+                    assert not func.HasField("namespace")
+                elif send_request_call_count == 4:
+                    assert func.name == "inner_func4"
+                    assert func.namespace == "another_namespace"
+                elif send_request_call_count == 5:
+                    assert func.name == "another_name"
+                    assert func.namespace == "another_namespace"
+                else:
+                    raise Exception(f"unexpected call count: {send_request_call_count}")
 
                 return RegisterFunctionResponse()
 
@@ -172,23 +169,20 @@ class TestRegister:
                 send_request_call_count += 1
 
                 func = request.function_to_register
-                match send_request_call_count:
-                    case 1:
-                        assert func.name == "inner_func"
-                        assert not func.HasField("namespace")
-                    case 2:
-                        assert func.name == "inner_func2"
-                        assert not func.HasField("namespace")
-                    case 3:
-                        assert func.name == "second"
-                        assert not func.HasField("namespace")
-                    case 4:
-                        assert func.name == "third"
-                        assert not func.HasField("namespace")
-                    case _:
-                        raise Exception(
-                            f"unexpected call count: {send_request_call_count}"
-                        )
+                if send_request_call_count == 1:
+                    assert func.name == "inner_func"
+                    assert not func.HasField("namespace")
+                elif send_request_call_count == 2:
+                    assert func.name == "inner_func2"
+                    assert not func.HasField("namespace")
+                elif send_request_call_count == 3:
+                    assert func.name == "second"
+                    assert not func.HasField("namespace")
+                elif send_request_call_count == 4:
+                    assert func.name == "third"
+                    assert not func.HasField("namespace")
+                else:
+                    raise Exception(f"unexpected call count: {send_request_call_count}")
 
                 return RegisterFunctionResponse()
 
@@ -198,8 +192,8 @@ class TestRegister:
         )
 
         class InnerClass:
-            @worker_client.register
             @staticmethod
+            @worker_client.register
             def inner_func() -> None:
                 pass
 

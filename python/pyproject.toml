@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "preemo_worker_sdk"
-version = "0.2.1"
+version = "0.2.2"
 description = ""
 license = "MIT"
 authors = [
@@ -23,7 +23,7 @@ packages = [
 grpcio = "1.51.3"
 protobuf = "4.21.12"
 pydantic = "1.10.6"
-python = "^3.8.1"
+python = "^3.8.13"
 
 [tool.poetry.dev-dependencies]
 autoflake = "2.0.1"
