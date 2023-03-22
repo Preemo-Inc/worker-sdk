@@ -1,3 +1,5 @@
+from typing import List
+
 from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
     BatchCreateArtifactPartRequest,
     BatchCreateArtifactPartResponse,
@@ -39,13 +41,13 @@ class DoNothingArtifactManager(IArtifactManager):
     def create_artifact(self, content: str) -> ArtifactId:
         raise Exception("no call expected")
 
-    def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
+    def create_artifacts(self, contents: List[str]) -> List[ArtifactId]:
         raise Exception("no call expected")
 
     def get_artifact(self, artifact_id: ArtifactId) -> str:
         raise Exception("no call expected")
 
-    def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[str]:
         raise Exception("no call expected")
 
 

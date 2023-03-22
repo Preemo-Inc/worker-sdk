@@ -1,4 +1,4 @@
-from typing import Callable, Optional
+from typing import Callable, List, Optional
 
 from google.protobuf.struct_pb2 import NULL_VALUE
 
@@ -90,9 +90,9 @@ class WorkerClient:
         self,
         function: Function,
         *,
-        params: Optional[list[str]] = None,
+        params: Optional[List[str]] = None,
         count: Optional[int] = None,
-    ) -> list[Optional[str]]:
+    ) -> List[Optional[str]]:
         # TODO(adrian@preemo.io, 03/20/2023): should take an optional config argument includes stuff like max batch size
 
         if params is None:
@@ -128,7 +128,7 @@ class WorkerClient:
         )
 
         # TODO(adrian@preemo.io, 03/20/2023): should download results in parallel or return a handle that allows the user to download result
-        results: list[Optional[str]] = []
+        results: List[Optional[str]] = []
         for _, function_result in sorted(
             response.results_by_index.items(), key=lambda x: x[0]
         ):
