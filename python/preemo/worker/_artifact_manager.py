@@ -1,4 +1,4 @@
-from typing import Protocol, runtime_checkable
+from typing import List, Protocol, runtime_checkable
 
 from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
     BatchCreateArtifactPartRequest,
@@ -36,13 +36,13 @@ class IArtifactManager(Protocol):
     def create_artifact(self, content: str) -> ArtifactId:
         pass
 
-    def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
+    def create_artifacts(self, contents: List[str]) -> List[ArtifactId]:
         pass
 
     def get_artifact(self, artifact_id: ArtifactId) -> str:
         pass
 
-    def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[str]:
         pass
 
 
@@ -50,7 +50,7 @@ class ArtifactManager:
     def __init__(self, *, messaging_client: IMessagingClient) -> None:
         self._messaging_client = messaging_client
 
-    def _create_artifacts(self, *, count: int) -> list[ArtifactId]:
+    def _create_artifacts(self, *, count: int) -> List[ArtifactId]:
         configs_by_index = {i: CreateArtifactConfig() for i in range(count)}
         response = self._messaging_client.batch_create_artifact(
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
@@ -70,7 +70,7 @@ class ArtifactManager:
 
         return artifact_ids[0]
 
-    def create_artifacts(self, contents: list[str]) -> list[ArtifactId]:
+    def create_artifacts(self, contents: List[str]) -> List[ArtifactId]:
         artifact_ids = self._create_artifacts(count=len(contents))
 
         # TODO(adrian@preemo.io, 03/20/2023): handle multipart file upload
@@ -126,7 +126,7 @@ class ArtifactManager:
 
         return contents[0]
 
-    def get_artifacts(self, artifact_ids: list[ArtifactId]) -> list[str]:
+    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[str]:
         get_artifact_response = self._messaging_client.batch_get_artifact(
             BatchGetArtifactRequest(
                 configs_by_artifact_id={
@@ -151,7 +151,7 @@ class ArtifactManager:
             BatchGetArtifactPartRequest(configs_by_artifact_id=configs_by_artifact_id)
         )
 
-        results: list[str] = []
+        results: List[str] = []
         for (
             artifact_id,
             result,
