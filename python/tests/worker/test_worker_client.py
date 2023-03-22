@@ -192,8 +192,8 @@ class TestRegister:
         )
 
         class InnerClass:
-            @worker_client.register
             @staticmethod
+            @worker_client.register
             def inner_func() -> None:
                 pass
 
