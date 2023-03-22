@@ -10,6 +10,7 @@ from preemo.gen.models.value_pb2 import Value
 from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
+from preemo.worker._types import assert_never
 
 
 class Function:
@@ -56,17 +57,19 @@ class Function:
 
         function_result = response.results_by_index[0]
 
-        match function_result.WhichOneof("kind"):
-            case "null_value":
-                return None
-            case "artifact_id":
-                return self._artifact_manager.get_artifact(
-                    ArtifactId(value=function_result.artifact_id)
-                )
-            case _:
-                raise Exception(
-                    f"received unexpected function_result: {function_result}"
-                )
+        kind = function_result.WhichOneof("kind")
+        if kind is None:
+            raise Exception("expected kind to be defined")
+
+        if kind == "null_value":
+            return None
+
+        if kind == "artifact_id":
+            return self._artifact_manager.get_artifact(
+                ArtifactId(value=function_result.artifact_id)
+            )
+
+        assert_never(kind)
 
 
 class WorkerClient:
@@ -132,19 +135,20 @@ class WorkerClient:
         for _, function_result in sorted(
             response.results_by_index.items(), key=lambda x: x[0]
         ):
-            match function_result.WhichOneof("kind"):
-                case "null_value":
-                    results.append(None)
-                case "artifact_id":
-                    results.append(
-                        self._artifact_manager.get_artifact(
-                            ArtifactId(value=function_result.artifact_id)
-                        )
+            kind = function_result.WhichOneof("kind")
+            if kind is None:
+                raise Exception("expected kind to be defined")
+
+            if kind == "null_value":
+                results.append(None)
+            elif kind == "artifact_id":
+                results.append(
+                    self._artifact_manager.get_artifact(
+                        ArtifactId(value=function_result.artifact_id)
                     )
-                case _:
-                    raise Exception(
-                        f"received unexpected function_result: {function_result}"
-                    )
+                )
+            else:
+                assert_never(kind)
 
         return results
 
