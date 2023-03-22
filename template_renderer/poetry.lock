@@ -14,7 +14,7 @@ i18n = ["Babel (>=2.7)"]
 
 [[package]]
 name = "markupsafe"
-version = "2.1.1"
+version = "2.1.2"
 description = "Safely add untrusted strings to HTML/XML markup."
 category = "main"
 optional = false
@@ -44,8 +44,8 @@ python-versions = "*"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.10.2"
-content-hash = "3977327df8d924c014e800cceb63578ebd6cefffbd8a6155adc4b9345368975c"
+python-versions = "3.8.13"
+content-hash = "a1921538b802cf9c86da2f018dbce8b834eb7e14d951bfa656ac4826f04ebea8"
 
 [metadata.files]
 jinja2 = []
