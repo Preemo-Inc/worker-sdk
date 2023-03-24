@@ -62,7 +62,7 @@ result = do_something("params")
 In order to execute a function with multiple parameters in parallel, you can use `parallelize`.
 
 ```python
-from preemo.worker import parallelize
+from preemo.worker import get_function, parallelize
 
 do_something = get_function(name="some_name", namespace="dev")
 results = parallelize(
