@@ -5,11 +5,11 @@ isort:skip_file
 import abc
 import preemo.gen.endpoints.batch_create_artifact_part_pb2
 import preemo.gen.endpoints.batch_create_artifact_pb2
+import preemo.gen.endpoints.batch_execute_function_pb2
 import preemo.gen.endpoints.batch_finalize_artifact_pb2
 import preemo.gen.endpoints.batch_get_artifact_part_pb2
 import preemo.gen.endpoints.batch_get_artifact_pb2
 import preemo.gen.endpoints.check_function_pb2
-import preemo.gen.endpoints.execute_function_pb2
 import preemo.gen.endpoints.header_pb2
 import preemo.gen.endpoints.register_function_pb2
 import grpc
@@ -23,6 +23,10 @@ class WorkerServiceStub:
     BatchCreateArtifactPart: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartRequest,
         preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartResponse,
+    ]
+    BatchExecuteFunction: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_execute_function_pb2.BatchExecuteFunctionRequest,
+        preemo.gen.endpoints.batch_execute_function_pb2.BatchExecuteFunctionResponse,
     ]
     BatchFinalizeArtifact: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactRequest,
@@ -39,10 +43,6 @@ class WorkerServiceStub:
     CheckFunction: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.check_function_pb2.CheckFunctionRequest,
         preemo.gen.endpoints.check_function_pb2.CheckFunctionResponse,
-    ]
-    ExecuteFunction: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
-        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse,
     ]
     Initiate: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.header_pb2.HeaderRequest,
@@ -67,6 +67,12 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.batch_create_artifact_part_pb2.BatchCreateArtifactPartResponse: ...
     @abc.abstractmethod
+    def BatchExecuteFunction(
+        self,
+        request: preemo.gen.endpoints.batch_execute_function_pb2.BatchExecuteFunctionRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.batch_execute_function_pb2.BatchExecuteFunctionResponse: ...
+    @abc.abstractmethod
     def BatchFinalizeArtifact(
         self,
         request: preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactRequest,
@@ -90,12 +96,6 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         request: preemo.gen.endpoints.check_function_pb2.CheckFunctionRequest,
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.check_function_pb2.CheckFunctionResponse: ...
-    @abc.abstractmethod
-    def ExecuteFunction(
-        self,
-        request: preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
-        context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse: ...
     @abc.abstractmethod
     def Initiate(
         self,

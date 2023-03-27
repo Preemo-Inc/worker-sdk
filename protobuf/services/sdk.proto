@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package services;
 
-import "endpoints/header.proto";
+import "endpoints/execute_function.proto";
 
 service SDKService {
-  rpc Initiate(endpoints.HeaderRequest) returns (endpoints.HeaderResponse);
+  rpc ExecuteFunction(endpoints.ExecuteFunctionRequest) returns (endpoints.ExecuteFunctionResponse);
 }

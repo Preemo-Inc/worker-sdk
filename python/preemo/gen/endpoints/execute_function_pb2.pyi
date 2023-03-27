@@ -3,9 +3,7 @@
 isort:skip_file
 """
 import builtins
-import collections.abc
 import google.protobuf.descriptor
-import google.protobuf.internal.containers
 import google.protobuf.message
 import preemo.gen.models.registered_function_pb2
 import preemo.gen.models.value_pb2
@@ -22,38 +20,20 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 class ExecuteFunctionRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    @typing_extensions.final
-    class ParametersByIndexEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.int
-        @property
-        def value(self) -> preemo.gen.models.value_pb2.Value: ...
-        def __init__(
-            self,
-            *,
-            key: builtins.int = ...,
-            value: preemo.gen.models.value_pb2.Value | None = ...,
-        ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
-
     FUNCTION_TO_EXECUTE_FIELD_NUMBER: builtins.int
-    PARAMETERS_BY_INDEX_FIELD_NUMBER: builtins.int
+    PARAMETER_FIELD_NUMBER: builtins.int
     @property
     def function_to_execute(self) -> preemo.gen.models.registered_function_pb2.RegisteredFunction: ...
     @property
-    def parameters_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, preemo.gen.models.value_pb2.Value]: ...
+    def parameter(self) -> preemo.gen.models.value_pb2.Value: ...
     def __init__(
         self,
         *,
         function_to_execute: preemo.gen.models.registered_function_pb2.RegisteredFunction | None = ...,
-        parameters_by_index: collections.abc.Mapping[builtins.int, preemo.gen.models.value_pb2.Value] | None = ...,
+        parameter: preemo.gen.models.value_pb2.Value | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_function_to_execute", b"_function_to_execute", "function_to_execute", b"function_to_execute"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_function_to_execute", b"_function_to_execute", "function_to_execute", b"function_to_execute", "parameters_by_index", b"parameters_by_index"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_function_to_execute", b"_function_to_execute", "function_to_execute", b"function_to_execute", "parameter", b"parameter"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_function_to_execute", b"_function_to_execute", "function_to_execute", b"function_to_execute", "parameter", b"parameter"]) -> None: ...
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_function_to_execute", b"_function_to_execute"]) -> typing_extensions.Literal["function_to_execute"] | None: ...
 
 global___ExecuteFunctionRequest = ExecuteFunctionRequest
@@ -62,32 +42,15 @@ global___ExecuteFunctionRequest = ExecuteFunctionRequest
 class ExecuteFunctionResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    @typing_extensions.final
-    class ResultsByIndexEntry(google.protobuf.message.Message):
-        DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-        KEY_FIELD_NUMBER: builtins.int
-        VALUE_FIELD_NUMBER: builtins.int
-        key: builtins.int
-        @property
-        def value(self) -> preemo.gen.models.value_pb2.Value: ...
-        def __init__(
-            self,
-            *,
-            key: builtins.int = ...,
-            value: preemo.gen.models.value_pb2.Value | None = ...,
-        ) -> None: ...
-        def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
-        def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
-
-    RESULTS_BY_INDEX_FIELD_NUMBER: builtins.int
+    RESULT_FIELD_NUMBER: builtins.int
     @property
-    def results_by_index(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, preemo.gen.models.value_pb2.Value]: ...
+    def result(self) -> preemo.gen.models.value_pb2.Value: ...
     def __init__(
         self,
         *,
-        results_by_index: collections.abc.Mapping[builtins.int, preemo.gen.models.value_pb2.Value] | None = ...,
+        result: preemo.gen.models.value_pb2.Value | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["results_by_index", b"results_by_index"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["result", b"result"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["result", b"result"]) -> None: ...
 
 global___ExecuteFunctionResponse = ExecuteFunctionResponse

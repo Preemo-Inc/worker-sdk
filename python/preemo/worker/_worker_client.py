@@ -2,8 +2,8 @@ from typing import Callable, List, Optional
 
 from google.protobuf.struct_pb2 import NULL_VALUE
 
+from preemo.gen.endpoints.batch_execute_function_pb2 import BatchExecuteFunctionRequest
 from preemo.gen.endpoints.check_function_pb2 import CheckFunctionRequest
-from preemo.gen.endpoints.execute_function_pb2 import ExecuteFunctionRequest
 from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
 from preemo.gen.models.value_pb2 import Value
@@ -46,8 +46,8 @@ class Function:
             artifact_id = self._artifact_manager.create_artifact(params)
             function_parameter = Value(artifact_id=artifact_id.value)
 
-        response = self._messaging_client.execute_function(
-            ExecuteFunctionRequest(
+        response = self._messaging_client.batch_execute_function(
+            BatchExecuteFunctionRequest(
                 function_to_execute=RegisteredFunction(
                     name=self.name, namespace=self.namespace
                 ),
@@ -121,8 +121,8 @@ class WorkerClient:
                 for i, artifact_id in enumerate(artifact_ids)
             }
 
-        response = self._messaging_client.execute_function(
-            ExecuteFunctionRequest(
+        response = self._messaging_client.batch_execute_function(
+            BatchExecuteFunctionRequest(
                 function_to_execute=RegisteredFunction(
                     name=function.name, namespace=function.namespace
                 ),

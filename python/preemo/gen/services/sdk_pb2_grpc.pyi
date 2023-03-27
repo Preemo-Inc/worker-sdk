@@ -3,22 +3,22 @@
 isort:skip_file
 """
 import abc
-import preemo.gen.endpoints.header_pb2
+import preemo.gen.endpoints.execute_function_pb2
 import grpc
 
 class SDKServiceStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
-    Initiate: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.header_pb2.HeaderRequest,
-        preemo.gen.endpoints.header_pb2.HeaderResponse,
+    ExecuteFunction: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
+        preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse,
     ]
 
 class SDKServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def Initiate(
+    def ExecuteFunction(
         self,
-        request: preemo.gen.endpoints.header_pb2.HeaderRequest,
+        request: preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
         context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.header_pb2.HeaderResponse: ...
+    ) -> preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse: ...
 
 def add_SDKServiceServicer_to_server(servicer: SDKServiceServicer, server: grpc.Server) -> None: ...
