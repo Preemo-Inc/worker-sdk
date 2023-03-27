@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package services;
+
+import "endpoints/header.proto";
+
+service SDKService {
+  rpc Initiate(endpoints.HeaderRequest) returns (endpoints.HeaderResponse);
+}
