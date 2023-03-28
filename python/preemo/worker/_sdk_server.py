@@ -9,7 +9,13 @@ from preemo.worker._sdk_service import SDKService
 class SDKServer:
     def __init__(self, *, sdk_server_url: str) -> None:
         self._server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-        add_SDKServiceServicer_to_server(SDKService(), self._server)
+
+        def close() -> None:
+            self._server.stop(grace=10)
+
+        add_SDKServiceServicer_to_server(
+            SDKService(terminate_server=close), self._server
+        )
 
         # TODO(adrian@preemo.io, 03/27/2023): investigate whether it makes sense to use add_secure_port instead
         self._server.add_insecure_port(sdk_server_url)

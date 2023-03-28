@@ -1,4 +1,4 @@
-from concurrent import futures
+from typing import Callable
 
 import grpc
 
@@ -6,13 +6,14 @@ from preemo.gen.endpoints.execute_function_pb2 import (
     ExecuteFunctionRequest,
     ExecuteFunctionResponse,
 )
-from preemo.gen.services.sdk_pb2_grpc import (
-    SDKServiceServicer,
-    add_SDKServiceServicer_to_server,
-)
+from preemo.gen.endpoints.terminate_pb2 import TerminateRequest, TerminateResponse
+from preemo.gen.services.sdk_pb2_grpc import SDKServiceServicer
 
 
 class SDKService(SDKServiceServicer):
+    def __init__(self, *, terminate_server: Callable[[], None]) -> None:
+        self._terminate_server = terminate_server
+
     def ExecuteFunction(
         self, request: ExecuteFunctionRequest, context: grpc.ServicerContext
     ) -> ExecuteFunctionResponse:
@@ -20,8 +21,8 @@ class SDKService(SDKServiceServicer):
         context.set_details("Method not implemented!")
         raise NotImplementedError()
 
-
-# TODO(adrian@preemo.io, 03/27/2023): cleanup
-server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-servicer = SDKService()
-add_SDKServiceServicer_to_server(servicer, server)
+    def Terminate(
+        self, request: TerminateRequest, context: grpc.ServicerContext
+    ) -> TerminateResponse:
+        self._terminate_server()
+        return TerminateResponse()
