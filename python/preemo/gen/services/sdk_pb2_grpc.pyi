@@ -4,6 +4,7 @@ isort:skip_file
 """
 import abc
 import preemo.gen.endpoints.execute_function_pb2
+import preemo.gen.endpoints.terminate_pb2
 import grpc
 
 class SDKServiceStub:
@@ -11,6 +12,10 @@ class SDKServiceStub:
     ExecuteFunction: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
         preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse,
+    ]
+    Terminate: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.terminate_pb2.TerminateRequest,
+        preemo.gen.endpoints.terminate_pb2.TerminateResponse,
     ]
 
 class SDKServiceServicer(metaclass=abc.ABCMeta):
@@ -20,5 +25,11 @@ class SDKServiceServicer(metaclass=abc.ABCMeta):
         request: preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionResponse: ...
+    @abc.abstractmethod
+    def Terminate(
+        self,
+        request: preemo.gen.endpoints.terminate_pb2.TerminateRequest,
+        context: grpc.ServicerContext,
+    ) -> preemo.gen.endpoints.terminate_pb2.TerminateResponse: ...
 
 def add_SDKServiceServicer_to_server(servicer: SDKServiceServicer, server: grpc.Server) -> None: ...

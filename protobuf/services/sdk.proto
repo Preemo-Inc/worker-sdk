@@ -3,7 +3,10 @@ syntax = "proto3";
 package services;
 
 import "endpoints/execute_function.proto";
+import "endpoints/terminate.proto";
 
 service SDKService {
   rpc ExecuteFunction(endpoints.ExecuteFunctionRequest) returns (endpoints.ExecuteFunctionResponse);
+
+  rpc Terminate(endpoints.TerminateRequest) returns (endpoints.TerminateResponse);
 }
