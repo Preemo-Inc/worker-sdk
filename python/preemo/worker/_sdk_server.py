@@ -14,3 +14,6 @@ class SDKServer:
         # TODO(adrian@preemo.io, 03/27/2023): investigate whether it makes sense to use add_secure_port instead
         self._server.add_insecure_port(sdk_server_url)
         self._server.start()
+
+    def wait_until_close(self) -> None:
+        self._server.wait_for_termination()
