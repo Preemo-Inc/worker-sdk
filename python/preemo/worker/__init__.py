@@ -32,13 +32,14 @@ def _start_sdk_server() -> None:
         threading.Thread(target=lambda: server.wait_until_close()).start()
 
 
+_start_sdk_server()
+
+
 _messaging_client = _construct_messaging_client()
 _artifact_manager = _ArtifactManager(messaging_client=_messaging_client)
 _worker_client = _WorkerClient(
     artifact_manager=_artifact_manager, messaging_client=_messaging_client
 )
-
-_start_sdk_server()
 
 get_function = _worker_client.get_function
 parallelize = _worker_client.parallelize
