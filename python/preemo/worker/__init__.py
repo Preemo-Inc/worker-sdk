@@ -23,10 +23,10 @@ def _construct_messaging_client() -> _IMessagingClient:
 
 
 def _start_sdk_server() -> None:
-    sdk_server_url = _get_optional_env("PREEMO_SDK_SERVER_URL")
+    sdk_server_host = _get_optional_env("PREEMO_SDK_SERVER_HOST")
 
-    if sdk_server_url is not None:
-        server = _SDKServer(sdk_server_url=sdk_server_url)
+    if sdk_server_host is not None:
+        server = _SDKServer(sdk_server_host=sdk_server_host)
 
         # This thread will keep the process running until the server is closed
         threading.Thread(target=lambda: server.wait_until_close()).start()
