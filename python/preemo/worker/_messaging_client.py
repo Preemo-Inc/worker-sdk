@@ -1,4 +1,4 @@
-from typing import Protocol, runtime_checkable
+from typing import Optional, Protocol, runtime_checkable
 
 import grpc
 
@@ -82,12 +82,16 @@ class IMessagingClient(Protocol):
 
 
 class MessagingClient:
-    def __init__(self, *, worker_server_url: str) -> None:
+    def __init__(
+        self, *, sdk_server_port: Optional[int], worker_server_url: str
+    ) -> None:
         # TODO(adrian@preemo.io, 03/25/2023): investigate whether it makes sense to use secure_channel instead
         self._channel = grpc.insecure_channel(target=worker_server_url)
         self._worker_service = WorkerServiceStub(self._channel)
 
-        self._initiate(HeaderRequest(version=__version__))
+        self._initiate(
+            HeaderRequest(sdk_server_port=sdk_server_port, version=__version__)
+        )
 
     def _initiate(self, request: HeaderRequest) -> HeaderResponse:
         return self._worker_service.Initiate(request)

@@ -14,15 +14,6 @@ from preemo.worker._worker_client import WorkerClient as _WorkerClient
 __all__ = ["get_function", "parallelize", "register"]
 
 
-def _construct_messaging_client() -> _IMessagingClient:
-    worker_server_url = _get_optional_env("PREEMO_WORKER_SERVER_URL")
-
-    if worker_server_url is None:
-        return _LocalMessagingClient()
-
-    return _MessagingClient(worker_server_url=worker_server_url)
-
-
 def _start_sdk_server() -> Optional[_SDKServer]:
     sdk_server_host = _get_optional_env("PREEMO_SDK_SERVER_HOST")
     if sdk_server_host is None:
@@ -35,10 +26,21 @@ def _start_sdk_server() -> Optional[_SDKServer]:
     return server
 
 
+def _construct_messaging_client(*, sdk_server_port: Optional[int]) -> _IMessagingClient:
+    worker_server_url = _get_optional_env("PREEMO_WORKER_SERVER_URL")
+
+    if worker_server_url is None:
+        return _LocalMessagingClient()
+
+    return _MessagingClient(
+        sdk_server_port=sdk_server_port, worker_server_url=worker_server_url
+    )
+
+
 _sdk_server = _start_sdk_server()
+_sdk_server_port = None if _sdk_server is None else _sdk_server.get_port()
 
-
-_messaging_client = _construct_messaging_client()
+_messaging_client = _construct_messaging_client(sdk_server_port=_sdk_server_port)
 _artifact_manager = _ArtifactManager(messaging_client=_messaging_client)
 _worker_client = _WorkerClient(
     artifact_manager=_artifact_manager, messaging_client=_messaging_client
