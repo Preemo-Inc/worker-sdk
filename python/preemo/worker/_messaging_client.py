@@ -11,6 +11,10 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
     BatchCreateArtifactResponse,
 )
+from preemo.gen.endpoints.batch_execute_function_pb2 import (
+    BatchExecuteFunctionRequest,
+    BatchExecuteFunctionResponse,
+)
 from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
     BatchFinalizeArtifactResponse,
@@ -26,10 +30,6 @@ from preemo.gen.endpoints.batch_get_artifact_pb2 import (
 from preemo.gen.endpoints.check_function_pb2 import (
     CheckFunctionRequest,
     CheckFunctionResponse,
-)
-from preemo.gen.endpoints.execute_function_pb2 import (
-    ExecuteFunctionRequest,
-    ExecuteFunctionResponse,
 )
 from preemo.gen.endpoints.header_pb2 import HeaderRequest, HeaderResponse
 from preemo.gen.endpoints.register_function_pb2 import (
@@ -52,6 +52,11 @@ class IMessagingClient(Protocol):
     ) -> BatchCreateArtifactPartResponse:
         pass
 
+    def batch_execute_function(
+        self, request: BatchExecuteFunctionRequest
+    ) -> BatchExecuteFunctionResponse:
+        pass
+
     def batch_finalize_artifact(
         self, request: BatchFinalizeArtifactRequest
     ) -> BatchFinalizeArtifactResponse:
@@ -68,11 +73,6 @@ class IMessagingClient(Protocol):
         pass
 
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
-        pass
-
-    def execute_function(
-        self, request: ExecuteFunctionRequest
-    ) -> ExecuteFunctionResponse:
         pass
 
     def register_function(
@@ -113,6 +113,17 @@ class MessagingClient:
 
         return response
 
+    def batch_execute_function(
+        self, request: BatchExecuteFunctionRequest
+    ) -> BatchExecuteFunctionResponse:
+        response = self._worker_service.BatchExecuteFunction(request)
+        ensure_keys_match(
+            expected=request.parameters_by_index,
+            actual=response.results_by_index,
+        )
+
+        return response
+
     def batch_finalize_artifact(
         self, request: BatchFinalizeArtifactRequest
     ) -> BatchFinalizeArtifactResponse:
@@ -149,17 +160,6 @@ class MessagingClient:
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
         return self._worker_service.CheckFunction(request)
 
-    def execute_function(
-        self, request: ExecuteFunctionRequest
-    ) -> ExecuteFunctionResponse:
-        response = self._worker_service.ExecuteFunction(request)
-        ensure_keys_match(
-            expected=request.parameters_by_index,
-            actual=response.results_by_index,
-        )
-
-        return response
-
     def register_function(
         self, request: RegisterFunctionRequest
     ) -> RegisterFunctionResponse:
@@ -179,6 +179,12 @@ class LocalMessagingClient:
     ) -> BatchCreateArtifactPartResponse:
         print(f"sending batch create artifact part request: {request}")
         return BatchCreateArtifactPartResponse()
+
+    def batch_execute_function(
+        self, request: BatchExecuteFunctionRequest
+    ) -> BatchExecuteFunctionResponse:
+        print(f"sending batch execute function request: {request}")
+        return BatchExecuteFunctionResponse()
 
     def batch_finalize_artifact(
         self, request: BatchFinalizeArtifactRequest
@@ -201,12 +207,6 @@ class LocalMessagingClient:
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
         print(f"sending check function request: {request}")
         return CheckFunctionResponse()
-
-    def execute_function(
-        self, request: ExecuteFunctionRequest
-    ) -> ExecuteFunctionResponse:
-        print(f"sending execute function request: {request}")
-        return ExecuteFunctionResponse()
 
     def register_function(
         self, request: RegisterFunctionRequest

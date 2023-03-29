@@ -8,6 +8,10 @@ from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
     BatchCreateArtifactResponse,
 )
+from preemo.gen.endpoints.batch_execute_function_pb2 import (
+    BatchExecuteFunctionRequest,
+    BatchExecuteFunctionResponse,
+)
 from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
     BatchFinalizeArtifactResponse,
@@ -23,10 +27,6 @@ from preemo.gen.endpoints.batch_get_artifact_pb2 import (
 from preemo.gen.endpoints.check_function_pb2 import (
     CheckFunctionRequest,
     CheckFunctionResponse,
-)
-from preemo.gen.endpoints.execute_function_pb2 import (
-    ExecuteFunctionRequest,
-    ExecuteFunctionResponse,
 )
 from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
@@ -62,6 +62,11 @@ class DoNothingMessagingClient(IMessagingClient):
     ) -> BatchCreateArtifactPartResponse:
         raise Exception("no call expected")
 
+    def batch_execute_function(
+        self, request: BatchExecuteFunctionRequest
+    ) -> BatchExecuteFunctionResponse:
+        raise Exception("no call expected")
+
     def batch_finalize_artifact(
         self, request: BatchFinalizeArtifactRequest
     ) -> BatchFinalizeArtifactResponse:
@@ -78,11 +83,6 @@ class DoNothingMessagingClient(IMessagingClient):
         raise Exception("no call expected")
 
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
-        raise Exception("no call expected")
-
-    def execute_function(
-        self, request: ExecuteFunctionRequest
-    ) -> ExecuteFunctionResponse:
         raise Exception("no call expected")
 
     def register_function(

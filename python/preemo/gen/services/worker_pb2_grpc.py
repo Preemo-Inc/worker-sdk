@@ -4,11 +4,11 @@ import grpc
 
 from endpoints import batch_create_artifact_part_pb2 as endpoints_dot_batch__create__artifact__part__pb2
 from endpoints import batch_create_artifact_pb2 as endpoints_dot_batch__create__artifact__pb2
+from endpoints import batch_execute_function_pb2 as endpoints_dot_batch__execute__function__pb2
 from endpoints import batch_finalize_artifact_pb2 as endpoints_dot_batch__finalize__artifact__pb2
 from endpoints import batch_get_artifact_part_pb2 as endpoints_dot_batch__get__artifact__part__pb2
 from endpoints import batch_get_artifact_pb2 as endpoints_dot_batch__get__artifact__pb2
 from endpoints import check_function_pb2 as endpoints_dot_check__function__pb2
-from endpoints import execute_function_pb2 as endpoints_dot_execute__function__pb2
 from endpoints import header_pb2 as endpoints_dot_header__pb2
 from endpoints import register_function_pb2 as endpoints_dot_register__function__pb2
 
@@ -32,6 +32,11 @@ class WorkerServiceStub(object):
                 request_serializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.SerializeToString,
                 response_deserializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.FromString,
                 )
+        self.BatchExecuteFunction = channel.unary_unary(
+                '/services.WorkerService/BatchExecuteFunction',
+                request_serializer=endpoints_dot_batch__execute__function__pb2.BatchExecuteFunctionRequest.SerializeToString,
+                response_deserializer=endpoints_dot_batch__execute__function__pb2.BatchExecuteFunctionResponse.FromString,
+                )
         self.BatchFinalizeArtifact = channel.unary_unary(
                 '/services.WorkerService/BatchFinalizeArtifact',
                 request_serializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.SerializeToString,
@@ -51,11 +56,6 @@ class WorkerServiceStub(object):
                 '/services.WorkerService/CheckFunction',
                 request_serializer=endpoints_dot_check__function__pb2.CheckFunctionRequest.SerializeToString,
                 response_deserializer=endpoints_dot_check__function__pb2.CheckFunctionResponse.FromString,
-                )
-        self.ExecuteFunction = channel.unary_unary(
-                '/services.WorkerService/ExecuteFunction',
-                request_serializer=endpoints_dot_execute__function__pb2.ExecuteFunctionRequest.SerializeToString,
-                response_deserializer=endpoints_dot_execute__function__pb2.ExecuteFunctionResponse.FromString,
                 )
         self.Initiate = channel.unary_unary(
                 '/services.WorkerService/Initiate',
@@ -84,6 +84,12 @@ class WorkerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def BatchExecuteFunction(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def BatchFinalizeArtifact(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -103,12 +109,6 @@ class WorkerServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def CheckFunction(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def ExecuteFunction(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -139,6 +139,11 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     request_deserializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.FromString,
                     response_serializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.SerializeToString,
             ),
+            'BatchExecuteFunction': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchExecuteFunction,
+                    request_deserializer=endpoints_dot_batch__execute__function__pb2.BatchExecuteFunctionRequest.FromString,
+                    response_serializer=endpoints_dot_batch__execute__function__pb2.BatchExecuteFunctionResponse.SerializeToString,
+            ),
             'BatchFinalizeArtifact': grpc.unary_unary_rpc_method_handler(
                     servicer.BatchFinalizeArtifact,
                     request_deserializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.FromString,
@@ -158,11 +163,6 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     servicer.CheckFunction,
                     request_deserializer=endpoints_dot_check__function__pb2.CheckFunctionRequest.FromString,
                     response_serializer=endpoints_dot_check__function__pb2.CheckFunctionResponse.SerializeToString,
-            ),
-            'ExecuteFunction': grpc.unary_unary_rpc_method_handler(
-                    servicer.ExecuteFunction,
-                    request_deserializer=endpoints_dot_execute__function__pb2.ExecuteFunctionRequest.FromString,
-                    response_serializer=endpoints_dot_execute__function__pb2.ExecuteFunctionResponse.SerializeToString,
             ),
             'Initiate': grpc.unary_unary_rpc_method_handler(
                     servicer.Initiate,
@@ -215,6 +215,23 @@ class WorkerService(object):
         return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchCreateArtifactPart',
             endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.SerializeToString,
             endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def BatchExecuteFunction(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchExecuteFunction',
+            endpoints_dot_batch__execute__function__pb2.BatchExecuteFunctionRequest.SerializeToString,
+            endpoints_dot_batch__execute__function__pb2.BatchExecuteFunctionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -283,23 +300,6 @@ class WorkerService(object):
         return grpc.experimental.unary_unary(request, target, '/services.WorkerService/CheckFunction',
             endpoints_dot_check__function__pb2.CheckFunctionRequest.SerializeToString,
             endpoints_dot_check__function__pb2.CheckFunctionResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def ExecuteFunction(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/ExecuteFunction',
-            endpoints_dot_execute__function__pb2.ExecuteFunctionRequest.SerializeToString,
-            endpoints_dot_execute__function__pb2.ExecuteFunctionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

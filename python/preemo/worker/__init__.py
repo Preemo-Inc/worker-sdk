@@ -1,3 +1,5 @@
+import threading
+
 from preemo.worker._artifact_manager import ArtifactManager as _ArtifactManager
 from preemo.worker._env import get_optional_env as _get_optional_env
 from preemo.worker._messaging_client import IMessagingClient as _IMessagingClient
@@ -5,6 +7,7 @@ from preemo.worker._messaging_client import (
     LocalMessagingClient as _LocalMessagingClient,
 )
 from preemo.worker._messaging_client import MessagingClient as _MessagingClient
+from preemo.worker._sdk_server import SDKServer as _SDKServer
 from preemo.worker._worker_client import WorkerClient as _WorkerClient
 
 __all__ = ["get_function", "parallelize", "register"]
@@ -17,6 +20,19 @@ def _construct_messaging_client() -> _IMessagingClient:
         return _LocalMessagingClient()
 
     return _MessagingClient(worker_server_url=worker_server_url)
+
+
+def _start_sdk_server() -> None:
+    sdk_server_url = _get_optional_env("PREEMO_SDK_SERVER_URL")
+
+    if sdk_server_url is not None:
+        server = _SDKServer(sdk_server_url=sdk_server_url)
+
+        # This thread will keep the process running until the server is closed
+        threading.Thread(target=lambda: server.wait_until_close()).start()
+
+
+_start_sdk_server()
 
 
 _messaging_client = _construct_messaging_client()

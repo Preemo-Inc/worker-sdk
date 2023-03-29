@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package endpoints;
+
+message TerminateRequest {
+}
+
+message TerminateResponse {
+}
