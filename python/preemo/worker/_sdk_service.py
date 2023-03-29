@@ -17,6 +17,7 @@ class SDKService(SDKServiceServicer):
     def ExecuteFunction(
         self, request: ExecuteFunctionRequest, context: grpc.ServicerContext
     ) -> ExecuteFunctionResponse:
+        # TODO(adrian@preemo.io, 03/28/2023): implement
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError()
