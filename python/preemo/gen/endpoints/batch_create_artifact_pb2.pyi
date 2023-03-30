@@ -75,7 +75,7 @@ class CreateArtifactResult(google.protobuf.message.Message):
     ARTIFACT_ID_FIELD_NUMBER: builtins.int
     PART_SIZE_THRESHOLD_FIELD_NUMBER: builtins.int
     artifact_id: builtins.str
-    """Required field for a unique identifier of an artifact."""
+    """Required field representing the unique identifier for a file stored in the cloud."""
     part_size_threshold: builtins.int
     """Required field indicating the precise number of bytes a part should
     reach before creating the next part.
