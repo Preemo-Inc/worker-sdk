@@ -15,7 +15,7 @@ message GetArtifactResult {
   optional uint32 part_count = 1;
 
   // Required field indicating the precise number of bytes each part contains,
-  // other than the final part, which can contain fewer bytes
+  // other than the final part, which can contain fewer bytes.
   optional uint64 part_size_threshold = 2;
 
   // Required field indicating the size in bytes of the combined parts.

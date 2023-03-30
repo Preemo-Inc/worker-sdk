@@ -74,7 +74,7 @@ class GetArtifactResult(google.protobuf.message.Message):
     """Required field indicating the number of parts uploaded by the artifact."""
     part_size_threshold: builtins.int
     """Required field indicating the precise number of bytes each part contains,
-    other than the final part, which can contain fewer bytes
+    other than the final part, which can contain fewer bytes.
     """
     total_size: builtins.int
     """Required field indicating the size in bytes of the combined parts."""
