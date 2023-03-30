@@ -24,8 +24,18 @@ class SDKService(SDKServiceServicer):
     def ExecuteFunction(
         self, request: ExecuteFunctionRequest, context: grpc.ServicerContext
     ) -> ExecuteFunctionResponse:
+        if not request.HasField("function_to_execute"):
+            raise Exception(
+                "expected execute function request to have function_to_execute"
+            )
 
-        # self._function_registry.get_function(name=request.function_to_execute
+        if not request.function_to_execute.HasField("name"):
+            raise Exception("expected function_to_execute to have name")
+
+        func = self._function_registry.get_function(
+            name=request.function_to_execute.name,
+            namespace=request.function_to_execute.namespace,
+        )
         # TODO(adrian@preemo.io, 03/28/2023): implement
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")

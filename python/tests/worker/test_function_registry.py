@@ -8,13 +8,10 @@ class TestFunctionRegistry:
         function_registry = FunctionRegistry()
         name = "inner"
 
+        assert function_registry.get_function(name=name) is None
+
         def inner_func() -> None:
             pass
-
-        with pytest.raises(
-            Exception, match="cannot find registered function with name"
-        ):
-            function_registry.get_function(name=name)
 
         function_registry.register_function(inner_func, name=name)
         func = function_registry.get_function(name=name)
@@ -31,13 +28,10 @@ class TestFunctionRegistry:
         name = "inner"
         namespace = "some_namespace"
 
+        assert function_registry.get_function(name=name, namespace=namespace) is None
+
         def inner_func() -> None:
             pass
-
-        with pytest.raises(
-            Exception, match="cannot find registered function with namespace"
-        ):
-            function_registry.get_function(name=name, namespace=namespace)
 
         function_registry.register_function(inner_func, name=name, namespace=namespace)
         func = function_registry.get_function(name=name, namespace=namespace)

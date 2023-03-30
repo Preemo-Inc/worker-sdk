@@ -33,6 +33,7 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionResponse,
 )
 from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
+from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
@@ -125,6 +126,7 @@ class TestRegister:
 
         worker_client = WorkerClient(
             artifact_manager=DoNothingArtifactManager(),
+            function_registry=FunctionRegistry(),
             messaging_client=MockMessagingClient(),
         )
 
@@ -188,6 +190,7 @@ class TestRegister:
 
         worker_client = WorkerClient(
             artifact_manager=DoNothingArtifactManager(),
+            function_registry=FunctionRegistry(),
             messaging_client=MockMessagingClient(),
         )
 
