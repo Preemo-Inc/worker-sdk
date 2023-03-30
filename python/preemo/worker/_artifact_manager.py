@@ -33,16 +33,16 @@ class ArtifactId(StringValue):
 
 @runtime_checkable
 class IArtifactManager(Protocol):
-    def create_artifact(self, content: str) -> ArtifactId:
+    def create_artifact(self, content: bytes) -> ArtifactId:
         pass
 
-    def create_artifacts(self, contents: List[str]) -> List[ArtifactId]:
+    def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
         pass
 
-    def get_artifact(self, artifact_id: ArtifactId) -> str:
+    def get_artifact(self, artifact_id: ArtifactId) -> bytes:
         pass
 
-    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[str]:
+    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
         pass
 
 
@@ -63,14 +63,14 @@ class ArtifactManager:
             )
         )
 
-    def create_artifact(self, content: str) -> ArtifactId:
+    def create_artifact(self, content: bytes) -> ArtifactId:
         artifact_ids = self.create_artifacts([content])
         if len(artifact_ids) != 1:
             raise Exception("expected exactly one artifact to be created")
 
         return artifact_ids[0]
 
-    def create_artifacts(self, contents: List[str]) -> List[ArtifactId]:
+    def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
         artifact_ids = self._create_artifacts(count=len(contents))
 
         # TODO(adrian@preemo.io, 03/20/2023): handle multipart file upload
@@ -119,14 +119,14 @@ class ArtifactManager:
 
         return artifact_ids
 
-    def get_artifact(self, artifact_id: ArtifactId) -> str:
+    def get_artifact(self, artifact_id: ArtifactId) -> bytes:
         contents = self.get_artifacts([artifact_id])
         if len(contents) != 1:
             raise Exception("expected exactly one artifact to be retrieved")
 
         return contents[0]
 
-    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[str]:
+    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
         get_artifact_response = self._messaging_client.batch_get_artifact(
             BatchGetArtifactRequest(
                 configs_by_artifact_id={
@@ -151,7 +151,7 @@ class ArtifactManager:
             BatchGetArtifactPartRequest(configs_by_artifact_id=configs_by_artifact_id)
         )
 
-        results: List[str] = []
+        results: List[bytes] = []
         for (
             artifact_id,
             result,

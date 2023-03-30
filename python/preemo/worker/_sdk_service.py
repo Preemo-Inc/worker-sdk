@@ -36,6 +36,7 @@ class SDKService(SDKServiceServicer):
             name=request.function_to_execute.name,
             namespace=request.function_to_execute.namespace,
         )
+
         # TODO(adrian@preemo.io, 03/28/2023): implement
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
