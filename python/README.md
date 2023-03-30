@@ -57,15 +57,15 @@ result = do_something("params")
 ...
 ```
 
-### Parallelize Function Execution
+### Parallel Function Execution
 
-In order to execute a function with multiple parameters in parallel, you can use `parallelize`.
+In order to execute a function with multiple parameters at the same time, you can use `parallel`.
 
 ```python
-from preemo.worker import get_function, parallelize
+from preemo.worker import get_function, parallel
 
 do_something = get_function(name="some_name", namespace="dev")
-results = parallelize(
+results = parallel(
     do_something,
     params=[
         "params1",
@@ -80,7 +80,7 @@ If your function doesn't take a parameter and you'd like to run multiple instanc
 
 ```python
 do_something = get_function(name="some_name", namespace="dev")
-results = parallelize(
+results = parallel(
     do_something,
     count=10
 )

@@ -74,12 +74,15 @@ class Function:
 
 class WorkerClient:
     def __init__(
-        self, *, artifact_manager: IArtifactManager, messaging_client: IMessagingClient
+        self,
+        *,
+        artifact_manager: IArtifactManager,
+        function_registry: FunctionRegistry,
+        messaging_client: IMessagingClient,
     ) -> None:
         self._artifact_manager = artifact_manager
         self._messaging_client = messaging_client
-
-        self._function_registry = FunctionRegistry()
+        self._function_registry = function_registry
 
     def get_function(self, name: str, *, namespace: Optional[str] = None) -> Function:
         return Function(
@@ -89,7 +92,7 @@ class WorkerClient:
             namespace=namespace,
         )
 
-    def parallelize(
+    def parallel(
         self,
         function: Function,
         *,

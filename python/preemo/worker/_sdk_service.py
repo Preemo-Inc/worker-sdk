@@ -8,10 +8,17 @@ from preemo.gen.endpoints.execute_function_pb2 import (
 )
 from preemo.gen.endpoints.terminate_pb2 import TerminateRequest, TerminateResponse
 from preemo.gen.services.sdk_pb2_grpc import SDKServiceServicer
+from preemo.worker._function_registry import FunctionRegistry
 
 
 class SDKService(SDKServiceServicer):
-    def __init__(self, *, terminate_server: Callable[[], None]) -> None:
+    def __init__(
+        self,
+        *,
+        function_registry: FunctionRegistry,
+        terminate_server: Callable[[], None]
+    ) -> None:
+        self._function_registry = function_registry
         self._terminate_server = terminate_server
 
     def ExecuteFunction(
