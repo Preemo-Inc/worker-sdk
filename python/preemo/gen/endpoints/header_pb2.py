@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x65ndpoints/header.proto\x12\tendpoints\"1\n\rHeaderRequest\x12\x14\n\x07version\x18\x01 \x01(\tH\x00\x88\x01\x01\x42\n\n\x08_version\"\x10\n\x0eHeaderResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x65ndpoints/header.proto\x12\tendpoints\"c\n\rHeaderRequest\x12\x14\n\x07version\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x1c\n\x0fsdk_server_port\x18\x02 \x01(\rH\x01\x88\x01\x01\x42\n\n\x08_versionB\x12\n\x10_sdk_server_port\"\x10\n\x0eHeaderResponseb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'endpoints.header_pb2', globals())
@@ -21,7 +21,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _HEADERREQUEST._serialized_start=37
-  _HEADERREQUEST._serialized_end=86
-  _HEADERRESPONSE._serialized_start=88
-  _HEADERRESPONSE._serialized_end=104
+  _HEADERREQUEST._serialized_end=136
+  _HEADERRESPONSE._serialized_start=138
+  _HEADERRESPONSE._serialized_end=154
 # @@protoc_insertion_point(module_scope)

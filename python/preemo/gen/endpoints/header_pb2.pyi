@@ -6,6 +6,7 @@ import builtins
 import google.protobuf.descriptor
 import google.protobuf.message
 import sys
+import typing
 
 if sys.version_info >= (3, 8):
     import typing as typing_extensions
@@ -23,14 +24,24 @@ class HeaderRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     VERSION_FIELD_NUMBER: builtins.int
+    SDK_SERVER_PORT_FIELD_NUMBER: builtins.int
     version: builtins.str
+    """Required field indicating the version of the Worker SDK."""
+    sdk_server_port: builtins.int
+    """Optional field for the port on which the SDK server is listening.
+    This field must be present if and only if the SDK server is running.
+    """
     def __init__(
         self,
         *,
         version: builtins.str | None = ...,
+        sdk_server_port: builtins.int | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_version", b"_version", "version", b"version"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_version", b"_version", "version", b"version"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_sdk_server_port", b"_sdk_server_port", "_version", b"_version", "sdk_server_port", b"sdk_server_port", "version", b"version"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_sdk_server_port", b"_sdk_server_port", "_version", b"_version", "sdk_server_port", b"sdk_server_port", "version", b"version"]) -> None: ...
+    @typing.overload
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_sdk_server_port", b"_sdk_server_port"]) -> typing_extensions.Literal["sdk_server_port"] | None: ...
+    @typing.overload
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_version", b"_version"]) -> typing_extensions.Literal["version"] | None: ...
 
 global___HeaderRequest = HeaderRequest
