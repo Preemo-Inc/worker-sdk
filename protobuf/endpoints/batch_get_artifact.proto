@@ -11,7 +11,15 @@ message BatchGetArtifactRequest {
 }
 
 message GetArtifactResult {
+  // Required field indicating the number of parts uploaded by the artifact.
   optional uint32 part_count = 1;
+
+  // Required field indicating the precise number of bytes each part contains,
+  // other than the final part, which can contain fewer bytes.
+  optional uint64 part_size_threshold = 2;
+
+  // Required field indicating the size in bytes of the combined parts.
+  optional uint64 total_size = 3;
 }
 
 message BatchGetArtifactResponse {

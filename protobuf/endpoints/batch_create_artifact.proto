@@ -14,7 +14,12 @@ message BatchCreateArtifactRequest {
 }
 
 message CreateArtifactResult {
+  // Required field representing the unique identifier for a file stored in the cloud.
   optional string artifact_id = 1;
+
+  // Required field indicating the precise number of bytes a part should
+  // reach before creating the next part.
+  optional uint64 part_size_threshold = 2;
 }
 
 message BatchCreateArtifactResponse {

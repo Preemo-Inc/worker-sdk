@@ -8,6 +8,7 @@ import google.protobuf.descriptor
 import google.protobuf.internal.containers
 import google.protobuf.message
 import sys
+import typing
 
 if sys.version_info >= (3, 8):
     import typing as typing_extensions
@@ -67,15 +68,31 @@ class GetArtifactResult(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     PART_COUNT_FIELD_NUMBER: builtins.int
+    PART_SIZE_THRESHOLD_FIELD_NUMBER: builtins.int
+    TOTAL_SIZE_FIELD_NUMBER: builtins.int
     part_count: builtins.int
+    """Required field indicating the number of parts uploaded by the artifact."""
+    part_size_threshold: builtins.int
+    """Required field indicating the precise number of bytes each part contains,
+    other than the final part, which can contain fewer bytes.
+    """
+    total_size: builtins.int
+    """Required field indicating the size in bytes of the combined parts."""
     def __init__(
         self,
         *,
         part_count: builtins.int | None = ...,
+        part_size_threshold: builtins.int | None = ...,
+        total_size: builtins.int | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "part_count", b"part_count"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "part_count", b"part_count"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "_part_size_threshold", b"_part_size_threshold", "_total_size", b"_total_size", "part_count", b"part_count", "part_size_threshold", b"part_size_threshold", "total_size", b"total_size"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "_part_size_threshold", b"_part_size_threshold", "_total_size", b"_total_size", "part_count", b"part_count", "part_size_threshold", b"part_size_threshold", "total_size", b"total_size"]) -> None: ...
+    @typing.overload
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_part_count", b"_part_count"]) -> typing_extensions.Literal["part_count"] | None: ...
+    @typing.overload
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_part_size_threshold", b"_part_size_threshold"]) -> typing_extensions.Literal["part_size_threshold"] | None: ...
+    @typing.overload
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_total_size", b"_total_size"]) -> typing_extensions.Literal["total_size"] | None: ...
 
 global___GetArtifactResult = GetArtifactResult
 

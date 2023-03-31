@@ -8,6 +8,7 @@ import google.protobuf.descriptor
 import google.protobuf.internal.containers
 import google.protobuf.message
 import sys
+import typing
 
 if sys.version_info >= (3, 8):
     import typing as typing_extensions
@@ -72,15 +73,25 @@ class CreateArtifactResult(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     ARTIFACT_ID_FIELD_NUMBER: builtins.int
+    PART_SIZE_THRESHOLD_FIELD_NUMBER: builtins.int
     artifact_id: builtins.str
+    """Required field representing the unique identifier for a file stored in the cloud."""
+    part_size_threshold: builtins.int
+    """Required field indicating the precise number of bytes a part should
+    reach before creating the next part.
+    """
     def __init__(
         self,
         *,
         artifact_id: builtins.str | None = ...,
+        part_size_threshold: builtins.int | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_artifact_id", b"_artifact_id", "artifact_id", b"artifact_id"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_artifact_id", b"_artifact_id", "artifact_id", b"artifact_id"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_artifact_id", b"_artifact_id", "_part_size_threshold", b"_part_size_threshold", "artifact_id", b"artifact_id", "part_size_threshold", b"part_size_threshold"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_artifact_id", b"_artifact_id", "_part_size_threshold", b"_part_size_threshold", "artifact_id", b"artifact_id", "part_size_threshold", b"part_size_threshold"]) -> None: ...
+    @typing.overload
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_artifact_id", b"_artifact_id"]) -> typing_extensions.Literal["artifact_id"] | None: ...
+    @typing.overload
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_part_size_threshold", b"_part_size_threshold"]) -> typing_extensions.Literal["part_size_threshold"] | None: ...
 
 global___CreateArtifactResult = CreateArtifactResult
 

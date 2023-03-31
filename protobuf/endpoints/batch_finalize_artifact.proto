@@ -2,8 +2,12 @@ syntax = "proto3";
 
 package endpoints;
 
-// This config is included for potential future use.
 message FinalizeArtifactConfig {
+  // Required field representing the size in bytes of the combined artifact parts.
+  optional uint64 total_size = 1;
+
+  // Required field indicating the number of parts that were written to.
+  optional uint32 part_count = 2;
 }
 
 message BatchFinalizeArtifactRequest {
