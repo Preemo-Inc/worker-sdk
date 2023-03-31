@@ -8,6 +8,7 @@ from preemo.gen.endpoints.execute_function_pb2 import (
 )
 from preemo.gen.endpoints.terminate_pb2 import TerminateRequest, TerminateResponse
 from preemo.gen.services.sdk_pb2_grpc import SDKServiceServicer
+from preemo.worker._artifact_manager import ArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 
 
@@ -15,9 +16,11 @@ class SDKService(SDKServiceServicer):
     def __init__(
         self,
         *,
+        artifact_manager: ArtifactManager,
         function_registry: FunctionRegistry,
         terminate_server: Callable[[], None]
     ) -> None:
+        self._artifact_manager = artifact_manager
         self._function_registry = function_registry
         self._terminate_server = terminate_server
 
@@ -36,6 +39,10 @@ class SDKService(SDKServiceServicer):
             name=request.function_to_execute.name,
             namespace=request.function_to_execute.namespace,
         )
+
+        # download params if necessary
+        # call func
+        # write result to artifact
 
         # TODO(adrian@preemo.io, 03/28/2023): implement
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)

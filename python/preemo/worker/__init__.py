@@ -45,6 +45,12 @@ _sdk_server_port = None if _sdk_server is None else _sdk_server.get_port()
 
 _messaging_client = _construct_messaging_client(sdk_server_port=_sdk_server_port)
 _artifact_manager = _ArtifactManager(messaging_client=_messaging_client)
+
+# TODO(adrian@preemo.io, 03/30/2023): sort out this circular dependency...
+# artifact manager needs messaging client
+# messaging client can't be created until the sdk server port exists
+# sdk server can't be started until it creates the sdk service which requires an artifact manager
+
 _worker_client = _WorkerClient(
     artifact_manager=_artifact_manager,
     function_registry=_function_registry,
