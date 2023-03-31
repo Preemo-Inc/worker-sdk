@@ -50,6 +50,7 @@ _artifact_manager = _ArtifactManager(messaging_client=_messaging_client)
 # artifact manager needs messaging client
 # messaging client can't be created until the sdk server port exists
 # sdk server can't be started until it creates the sdk service which requires an artifact manager
+# A possible solution is to add a `set_artifact_manager` on the sdk_server and make it nullable.
 
 _worker_client = _WorkerClient(
     artifact_manager=_artifact_manager,
