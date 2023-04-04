@@ -1,4 +1,4 @@
-from typing import Optional, Protocol, runtime_checkable
+from typing import Protocol, runtime_checkable
 
 import grpc
 
@@ -35,6 +35,10 @@ from preemo.gen.endpoints.header_pb2 import HeaderRequest, HeaderResponse
 from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
+)
+from preemo.gen.endpoints.sdk_server_ready_pb2 import (
+    SDKServerReadyRequest,
+    SDKServerReadyResponse,
 )
 from preemo.gen.services.worker_pb2_grpc import WorkerServiceStub
 from preemo.worker._validation import ensure_keys_match
@@ -80,18 +84,19 @@ class IMessagingClient(Protocol):
     ) -> RegisterFunctionResponse:
         pass
 
+    def sdk_server_ready(
+        self, request: SDKServerReadyRequest
+    ) -> SDKServerReadyResponse:
+        pass
+
 
 class MessagingClient:
-    def __init__(
-        self, *, sdk_server_port: Optional[int], worker_server_url: str
-    ) -> None:
+    def __init__(self, *, worker_server_url: str) -> None:
         # TODO(adrian@preemo.io, 03/25/2023): investigate whether it makes sense to use secure_channel instead
         self._channel = grpc.insecure_channel(target=worker_server_url)
         self._worker_service = WorkerServiceStub(self._channel)
 
-        self._initiate(
-            HeaderRequest(sdk_server_port=sdk_server_port, version=__version__)
-        )
+        self._initiate(HeaderRequest(version=__version__))
 
     def _initiate(self, request: HeaderRequest) -> HeaderResponse:
         return self._worker_service.Initiate(request)
@@ -169,6 +174,11 @@ class MessagingClient:
     ) -> RegisterFunctionResponse:
         return self._worker_service.RegisterFunction(request)
 
+    def sdk_server_ready(
+        self, request: SDKServerReadyRequest
+    ) -> SDKServerReadyResponse:
+        return self._worker_service.SDKServerReady(request)
+
 
 # This class is intended to be used for tests and local development
 class LocalMessagingClient:
@@ -217,3 +227,9 @@ class LocalMessagingClient:
     ) -> RegisterFunctionResponse:
         print(f"sending register function request: {request}")
         return RegisterFunctionResponse()
+
+    def sdk_server_ready(
+        self, request: SDKServerReadyRequest
+    ) -> SDKServerReadyResponse:
+        print(f"sending sdk server ready request: {request}")
+        return SDKServerReadyResponse()
