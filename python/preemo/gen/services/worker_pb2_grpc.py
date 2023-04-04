@@ -11,6 +11,7 @@ from endpoints import batch_get_artifact_pb2 as endpoints_dot_batch__get__artifa
 from endpoints import check_function_pb2 as endpoints_dot_check__function__pb2
 from endpoints import header_pb2 as endpoints_dot_header__pb2
 from endpoints import register_function_pb2 as endpoints_dot_register__function__pb2
+from endpoints import sdk_server_ready_pb2 as endpoints_dot_sdk__server__ready__pb2
 
 
 class WorkerServiceStub(object):
@@ -66,6 +67,11 @@ class WorkerServiceStub(object):
                 '/services.WorkerService/RegisterFunction',
                 request_serializer=endpoints_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
                 response_deserializer=endpoints_dot_register__function__pb2.RegisterFunctionResponse.FromString,
+                )
+        self.SDKServerReady = channel.unary_unary(
+                '/services.WorkerService/SDKServerReady',
+                request_serializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyRequest.SerializeToString,
+                response_deserializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyResponse.FromString,
                 )
 
 
@@ -126,6 +132,12 @@ class WorkerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SDKServerReady(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_WorkerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -173,6 +185,11 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     servicer.RegisterFunction,
                     request_deserializer=endpoints_dot_register__function__pb2.RegisterFunctionRequest.FromString,
                     response_serializer=endpoints_dot_register__function__pb2.RegisterFunctionResponse.SerializeToString,
+            ),
+            'SDKServerReady': grpc.unary_unary_rpc_method_handler(
+                    servicer.SDKServerReady,
+                    request_deserializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyRequest.FromString,
+                    response_serializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -334,5 +351,22 @@ class WorkerService(object):
         return grpc.experimental.unary_unary(request, target, '/services.WorkerService/RegisterFunction',
             endpoints_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
             endpoints_dot_register__function__pb2.RegisterFunctionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SDKServerReady(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/SDKServerReady',
+            endpoints_dot_sdk__server__ready__pb2.SDKServerReadyRequest.SerializeToString,
+            endpoints_dot_sdk__server__ready__pb2.SDKServerReadyResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
