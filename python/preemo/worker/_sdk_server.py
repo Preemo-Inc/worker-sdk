@@ -4,6 +4,8 @@ from concurrent import futures
 import grpc
 
 from preemo.gen.services.sdk_pb2_grpc import add_SDKServiceServicer_to_server
+from preemo.worker._artifact_manager import ArtifactManager
+from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._sdk_service import SDKService
 
 
@@ -35,7 +37,13 @@ class SDKServer:
             if attempt_count >= 20:
                 raise Exception(f"failed to connect {attempt_count} times")
 
-    def __init__(self, *, sdk_server_host: str) -> None:
+    def __init__(
+        self,
+        *,
+        artifact_manager: ArtifactManager,
+        function_registry: FunctionRegistry,
+        sdk_server_host: str,
+    ) -> None:
         server = grpc.server(
             futures.ThreadPoolExecutor(max_workers=1),
             # This option prevents multiple servers from reusing the same port (see https://groups.google.com/g/grpc-io/c/RB69llv2tC4/m/7E__iL3LAwAJ)
@@ -45,7 +53,14 @@ class SDKServer:
         def close() -> None:
             server.stop(grace=10)  # seconds
 
-        add_SDKServiceServicer_to_server(SDKService(terminate_server=close), server)
+        add_SDKServiceServicer_to_server(
+            SDKService(
+                artifact_manager=artifact_manager,
+                function_registry=function_registry,
+                terminate_server=close,
+            ),
+            server,
+        )
         port = SDKServer._bind_server_to_random_port(
             server=server, host=sdk_server_host
         )

@@ -7,10 +7,6 @@ package endpoints;
 message HeaderRequest {
   // Required field indicating the version of the Worker SDK.
   optional string version = 1;
-
-  // Optional field for the port on which the SDK server is listening.
-  // This field must be present if and only if the SDK server is running.
-  optional uint32 sdk_server_port = 2;
 }
 
 message HeaderResponse {

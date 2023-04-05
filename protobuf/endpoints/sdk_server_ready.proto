@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package endpoints;
+
+message SDKServerReadyRequest {
+  // Required field for the port on which the SDK server is listening.
+  optional uint32 sdk_server_port = 1;
+}
+
+message SDKServerReadyResponse {
+}

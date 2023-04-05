@@ -32,22 +32,27 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionRequest,
     RegisterFunctionResponse,
 )
+from preemo.gen.endpoints.sdk_server_ready_pb2 import (
+    SDKServerReadyRequest,
+    SDKServerReadyResponse,
+)
 from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
+from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
 
 class DoNothingArtifactManager(IArtifactManager):
-    def create_artifact(self, content: str) -> ArtifactId:
+    def create_artifact(self, content: bytes) -> ArtifactId:
         raise Exception("no call expected")
 
-    def create_artifacts(self, contents: List[str]) -> List[ArtifactId]:
+    def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
         raise Exception("no call expected")
 
-    def get_artifact(self, artifact_id: ArtifactId) -> str:
+    def get_artifact(self, artifact_id: ArtifactId) -> bytes:
         raise Exception("no call expected")
 
-    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[str]:
+    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
         raise Exception("no call expected")
 
 
@@ -90,6 +95,11 @@ class DoNothingMessagingClient(IMessagingClient):
     ) -> RegisterFunctionResponse:
         raise Exception("no call expected")
 
+    def sdk_server_ready(
+        self, request: SDKServerReadyRequest
+    ) -> SDKServerReadyResponse:
+        raise Exception("no call expected")
+
 
 class TestRegister:
     def test_param_variations(self) -> None:
@@ -125,6 +135,7 @@ class TestRegister:
 
         worker_client = WorkerClient(
             artifact_manager=DoNothingArtifactManager(),
+            function_registry=FunctionRegistry(),
             messaging_client=MockMessagingClient(),
         )
 
@@ -188,6 +199,7 @@ class TestRegister:
 
         worker_client = WorkerClient(
             artifact_manager=DoNothingArtifactManager(),
+            function_registry=FunctionRegistry(),
             messaging_client=MockMessagingClient(),
         )
 

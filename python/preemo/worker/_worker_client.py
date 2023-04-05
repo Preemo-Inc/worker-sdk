@@ -39,7 +39,7 @@ class Function:
             )
         )
 
-    def __call__(self, params: Optional[str] = None) -> Optional[str]:
+    def __call__(self, params: Optional[bytes] = None) -> Optional[bytes]:
         if params is None:
             function_parameter = Value(null_value=NULL_VALUE)
         else:
@@ -74,12 +74,15 @@ class Function:
 
 class WorkerClient:
     def __init__(
-        self, *, artifact_manager: IArtifactManager, messaging_client: IMessagingClient
+        self,
+        *,
+        artifact_manager: IArtifactManager,
+        function_registry: FunctionRegistry,
+        messaging_client: IMessagingClient,
     ) -> None:
         self._artifact_manager = artifact_manager
         self._messaging_client = messaging_client
-
-        self._function_registry = FunctionRegistry()
+        self._function_registry = function_registry
 
     def get_function(self, name: str, *, namespace: Optional[str] = None) -> Function:
         return Function(
@@ -89,13 +92,13 @@ class WorkerClient:
             namespace=namespace,
         )
 
-    def parallelize(
+    def parallel(
         self,
         function: Function,
         *,
-        params: Optional[List[str]] = None,
+        params: Optional[List[bytes]] = None,
         count: Optional[int] = None,
-    ) -> List[Optional[str]]:
+    ) -> List[Optional[bytes]]:
         # TODO(adrian@preemo.io, 03/20/2023): should take an optional config argument includes stuff like max batch size
 
         if params is None:
@@ -131,7 +134,7 @@ class WorkerClient:
         )
 
         # TODO(adrian@preemo.io, 03/20/2023): should download results in parallel or return a handle that allows the user to download result
-        results: List[Optional[str]] = []
+        results: List[Optional[bytes]] = []
         for _, function_result in sorted(
             response.results_by_index.items(), key=lambda x: x[0]
         ):

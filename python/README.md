@@ -21,7 +21,7 @@ In order to register a function with Preemo workers, you can use `register` to d
 from preemo.worker import register
 
 @register(name="some_name", namespace="dev")
-def do_something(params: str):
+def do_something(params: bytes):
     ...
 ```
 
@@ -34,7 +34,7 @@ def do_something(params: str):
     ...
 ```
 
-At the moment, only functions that take 0 or 1 string arguments will work. These functions should also either return `None` or a string.
+At the moment, only functions that take 0 or 1 bytes arguments will work. These functions should also either return `None` or bytes.
 
 ### Execute Function
 
@@ -44,7 +44,7 @@ In order to execute a function that you have previously registered with Preemo w
 from preemo.worker import get_function
 
 do_something = get_function(name="some_name", namespace="dev")
-result = do_something("params")
+result = do_something(b"params")
 ...
 ```
 
@@ -53,23 +53,23 @@ The second parameter, `namespace`, is optional. If the namespace isn't specified
 ```python
 # gets the function named do_something in the global namespace
 do_something = get_function("do_something")
-result = do_something("params")
+result = do_something(b"params")
 ...
 ```
 
-### Parallelize Function Execution
+### Parallel Function Execution
 
-In order to execute a function with multiple parameters in parallel, you can use `parallelize`.
+In order to execute a function with multiple parameters at the same time, you can use `parallel`.
 
 ```python
-from preemo.worker import get_function, parallelize
+from preemo.worker import get_function, parallel
 
 do_something = get_function(name="some_name", namespace="dev")
-results = parallelize(
+results = parallel(
     do_something,
     params=[
-        "params1",
-        "params2",
+        b"params1",
+        b"params2",
         ...
     ]
 )
@@ -80,7 +80,7 @@ If your function doesn't take a parameter and you'd like to run multiple instanc
 
 ```python
 do_something = get_function(name="some_name", namespace="dev")
-results = parallelize(
+results = parallel(
     do_something,
     count=10
 )

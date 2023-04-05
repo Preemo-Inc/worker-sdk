@@ -11,6 +11,7 @@ import "endpoints/batch_get_artifact_part.proto";
 import "endpoints/check_function.proto";
 import "endpoints/header.proto";
 import "endpoints/register_function.proto";
+import "endpoints/sdk_server_ready.proto";
 
 service WorkerService {
   rpc BatchCreateArtifact(endpoints.BatchCreateArtifactRequest) returns (endpoints.BatchCreateArtifactResponse);
@@ -30,4 +31,6 @@ service WorkerService {
   rpc Initiate(endpoints.HeaderRequest) returns (endpoints.HeaderResponse);
 
   rpc RegisterFunction(endpoints.RegisterFunctionRequest) returns (endpoints.RegisterFunctionResponse);
+
+  rpc SDKServerReady(endpoints.SDKServerReadyRequest) returns (endpoints.SDKServerReadyResponse);
 }
