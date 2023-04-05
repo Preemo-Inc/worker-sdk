@@ -43,27 +43,31 @@ def _start_sdk_server(
     return server
 
 
-_messaging_client = _construct_messaging_client()
-_artifact_manager = _ArtifactManager(messaging_client=_messaging_client)
+def _construct_worker_client() -> _WorkerClient:
+    messaging_client = _construct_messaging_client()
+    artifact_manager = _ArtifactManager(messaging_client=messaging_client)
 
-_function_registry = _FunctionRegistry()
-_sdk_server = _start_sdk_server(
-    artifact_manager=_artifact_manager, function_registry=_function_registry
-)
-
-if _sdk_server is not None:
-    _messaging_client.sdk_server_ready(
-        _SDKServerReadyRequest(sdk_server_port=_sdk_server.get_port())
+    function_registry = _FunctionRegistry()
+    sdk_server = _start_sdk_server(
+        artifact_manager=artifact_manager, function_registry=function_registry
     )
 
-_worker_client = _WorkerClient(
-    artifact_manager=_artifact_manager,
-    function_registry=_function_registry,
-    messaging_client=_messaging_client,
-)
+    if sdk_server is not None:
+        messaging_client.sdk_server_ready(
+            _SDKServerReadyRequest(sdk_server_port=sdk_server.get_port())
+        )
+
+    return _WorkerClient(
+        artifact_manager=artifact_manager,
+        function_registry=function_registry,
+        messaging_client=messaging_client,
+    )
+
 
 # provide shorthand for functions
 __all__ = ["get_function", "parallel", "register"]
+
+_worker_client = _construct_worker_client()
 
 get_function = _worker_client.get_function
 parallel = _worker_client.parallel
