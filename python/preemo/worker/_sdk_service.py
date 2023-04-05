@@ -58,22 +58,9 @@ class SDKService(SDKServiceServicer):
         if not func_to_execute.HasField("name"):
             raise Exception("expected function_to_execute to have name")
 
-        func_name = func_to_execute.name
-        func_namespace = func_to_execute.namespace
-
-        func = self._function_registry.get_function(
-            name=func_name, namespace=func_namespace
+        func = self._function_registry.get_required_function(
+            name=func_to_execute.name, namespace=func_to_execute.namespace
         )
-
-        if func is None:
-            if func_namespace is None:
-                raise Exception(
-                    f"cannot find registered function with name: {func_name}"
-                )
-
-            raise Exception(
-                f"cannot find registered function with namespace {func_namespace} and name: {func_name}"
-            )
 
         parameter_value = self._retrieve_value(func_parameter)
         if parameter_value is None:

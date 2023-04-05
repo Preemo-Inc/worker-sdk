@@ -35,3 +35,17 @@ class FunctionRegistry:
             return self._global_functions_by_name.get(name)
 
         return self._functions_by_namespace_and_name.get(namespace, {}).get(name)
+
+    def get_required_function(
+        self, *, name: str, namespace: Optional[str] = None
+    ) -> Callable:
+        func = self.get_function(name=name, namespace=namespace)
+        if func is not None:
+            return func
+
+        if namespace is None:
+            raise Exception(f"cannot find registered function with name: {name}")
+
+        raise Exception(
+            f"cannot find registered function with namespace {namespace} and name: {name}"
+        )

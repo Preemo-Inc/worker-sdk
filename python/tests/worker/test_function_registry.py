@@ -10,13 +10,20 @@ class TestFunctionRegistry:
 
         assert function_registry.get_function(name=name) is None
 
+        with pytest.raises(
+            Exception, match="cannot find registered function with name"
+        ):
+            function_registry.get_required_function(name=name)
+
         def inner_func() -> None:
             pass
 
         function_registry.register_function(inner_func, name=name)
         func = function_registry.get_function(name=name)
+        required_func = function_registry.get_required_function(name=name)
 
         assert func == inner_func
+        assert required_func == inner_func
 
         with pytest.raises(
             Exception, match="must not register multiple functions with the same name"
@@ -30,13 +37,22 @@ class TestFunctionRegistry:
 
         assert function_registry.get_function(name=name, namespace=namespace) is None
 
+        with pytest.raises(
+            Exception, match="cannot find registered function with namespace"
+        ):
+            function_registry.get_required_function(name=name, namespace=namespace)
+
         def inner_func() -> None:
             pass
 
         function_registry.register_function(inner_func, name=name, namespace=namespace)
         func = function_registry.get_function(name=name, namespace=namespace)
+        required_func = function_registry.get_required_function(
+            name=name, namespace=namespace
+        )
 
         assert func == inner_func
+        assert required_func == inner_func
 
         with pytest.raises(
             Exception,
