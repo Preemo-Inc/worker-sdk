@@ -245,22 +245,31 @@ class ArtifactManager:
             BatchGetArtifactPartRequest(configs_by_artifact_id=configs_by_artifact_id)
         )
 
-        results: List[bytes] = []
-        for (
-            artifact_id,
-            result,
-        ) in get_artifact_part_response.results_by_artifact_id.items():
-            config = configs_by_artifact_id[artifact_id]
-            ensure_keys_match(
-                expected=config.metadatas_by_part_number,
-                actual=result.metadatas_by_part_number,
-            )
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=self._max_download_threads
+        ) as executor:
+            futures = []
+            for (
+                artifact_id,
+                result,
+            ) in get_artifact_part_response.results_by_artifact_id.items():
+                pass
+        # results: List[bytes] = []
+        # for (
+        #     artifact_id,
+        #     result,
+        # ) in get_artifact_part_response.results_by_artifact_id.items():
+        #     config = configs_by_artifact_id[artifact_id]
+        #     ensure_keys_match(
+        #         expected=config.metadatas_by_part_number,
+        #         actual=result.metadatas_by_part_number,
+        #     )
 
-            # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
-            # metadata = result.metadatas_by_part_number[1]
+        # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
+        # metadata = result.metadatas_by_part_number[1]
 
-            # TODO(adrian@preemo.io, 03/20/2023): actually download artifact with signed url
-            # something like content = download_content(signed_url)
-            # results.append(content)
+        #     # TODO(adrian@preemo.io, 03/20/2023): actually download artifact with signed url
+        #     # something like content = download_content(signed_url)
+        #     # results.append(content)
 
-        return results
+        # return results
