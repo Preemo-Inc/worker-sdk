@@ -84,7 +84,10 @@ class ArtifactManager:
         if not response.ok:
             raise Exception(f"unexpected response while uploading: {response}")
 
-    def __init__(self, *, messaging_client: IMessagingClient) -> None:
+    def __init__(
+        self, *, max_upload_threads: int, messaging_client: IMessagingClient
+    ) -> None:
+        self._max_upload_threads = max_upload_threads
         self._messaging_client = messaging_client
 
     def _create_artifacts(self, *, count: int) -> List[Artifact]:
@@ -139,8 +142,9 @@ class ArtifactManager:
             )
         )
 
-        # TODO(adrian@preemo.io, 04/05/2023): pass in max_workers or set as env var
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        with concurrent.futures.ThreadPoolExecutor(
+            max_workers=self._max_upload_threads
+        ) as executor:
             futures = []
             for artifact, content in zip(artifacts, contents):
                 content_view = memoryview(content)
