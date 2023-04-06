@@ -85,8 +85,19 @@ class ArtifactManager:
             raise Exception(f"unexpected response while uploading: {response}")
 
     def __init__(
-        self, *, max_upload_threads: int, messaging_client: IMessagingClient
+        self,
+        *,
+        max_download_threads: int,
+        max_upload_threads: int,
+        messaging_client: IMessagingClient,
     ) -> None:
+        if max_download_threads <= 0:
+            raise ValueError("max_download_threads must be positive")
+
+        if max_upload_threads <= 0:
+            raise ValueError("max_upload_threads must be positive")
+
+        self._max_download_threads = max_download_threads
         self._max_upload_threads = max_upload_threads
         self._messaging_client = messaging_client
 
@@ -224,10 +235,8 @@ class ArtifactManager:
         configs_by_artifact_id = {
             artifact_id: GetArtifactPartConfig(
                 metadatas_by_part_number={
-                    (1 + i): GetArtifactPartConfigMetadata()
-                    # TODO(adrian@preemo.io, 03/20/2023): don't necessarily want to attempt to
-                    # download the entire artifact all at once
-                    for i in range(result.part_count)
+                    part_number: GetArtifactPartConfigMetadata()
+                    for part_number in range(result.part_count)
                 }
             )
             for artifact_id, result in get_artifact_response.results_by_artifact_id.items()
