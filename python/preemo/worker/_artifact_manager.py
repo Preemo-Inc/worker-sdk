@@ -79,10 +79,23 @@ class ArtifactManager:
 
     @staticmethod
     def _upload_content(*, content: memoryview, url: str) -> None:
+        # TODO(adrian@preemo.io, 04/06/2023): how to force gzip
         response = requests.put(url=url, data=content)
 
+        # TODO(adrian@preemo.io, 04/06/2023): should probably retry
         if not response.ok:
             raise Exception(f"unexpected response while uploading: {response}")
+
+    @staticmethod
+    def _download_content(*, url: str) -> bytes:
+        # TODO(adrian@preemo.io, 04/06/2023): how to force (un)gzip
+        response = requests.get(url=url)
+
+        # TODO(adrian@preemo.io, 04/06/2023): should probably retry
+        if not response.ok:
+            raise Exception(f"unexpected response while downloading: {response}")
+
+        return response.content
 
     def __init__(
         self,
@@ -129,7 +142,7 @@ class ArtifactManager:
     def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
         artifacts = self._create_artifacts(count=len(contents))
 
-        configs_by_artifact_id: Dict[str, CreateArtifactPartConfig] = {}
+        configs_by_artifact_id_value: Dict[str, CreateArtifactPartConfig] = {}
         for artifact, content in zip(artifacts, contents):
             part_count = ArtifactManager._calculate_part_count(
                 content_length=len(content),
@@ -140,7 +153,7 @@ class ArtifactManager:
                 # TODO(adrian@preemo.io, 04/05/2023): sort out if there's a reasonable way to handle this case
                 raise Exception("artifact contents must not be empty")
 
-            configs_by_artifact_id[artifact.id.value] = CreateArtifactPartConfig(
+            configs_by_artifact_id_value[artifact.id.value] = CreateArtifactPartConfig(
                 metadatas_by_part_number={
                     part_number: CreateArtifactPartConfigMetadata()
                     for part_number in range(part_count)
@@ -149,7 +162,7 @@ class ArtifactManager:
 
         response = self._messaging_client.batch_create_artifact_part(
             BatchCreateArtifactPartRequest(
-                configs_by_artifact_id=configs_by_artifact_id
+                configs_by_artifact_id=configs_by_artifact_id_value
             )
         )
 
@@ -160,7 +173,7 @@ class ArtifactManager:
             for artifact, content in zip(artifacts, contents):
                 content_view = memoryview(content)
 
-                config = configs_by_artifact_id[artifact.id.value]
+                config = configs_by_artifact_id_value[artifact.id.value]
                 result = response.results_by_artifact_id[artifact.id.value]
                 ensure_keys_match(
                     expected=config.metadatas_by_part_number,
@@ -232,44 +245,87 @@ class ArtifactManager:
             )
         )
 
-        configs_by_artifact_id = {
-            artifact_id: GetArtifactPartConfig(
+        configs_by_artifact_id_value = {
+            artifact_id_value: GetArtifactPartConfig(
                 metadatas_by_part_number={
                     part_number: GetArtifactPartConfigMetadata()
                     for part_number in range(result.part_count)
                 }
             )
-            for artifact_id, result in get_artifact_response.results_by_artifact_id.items()
+            for artifact_id_value, result in get_artifact_response.results_by_artifact_id.items()
         }
         get_artifact_part_response = self._messaging_client.batch_get_artifact_part(
-            BatchGetArtifactPartRequest(configs_by_artifact_id=configs_by_artifact_id)
+            BatchGetArtifactPartRequest(
+                configs_by_artifact_id=configs_by_artifact_id_value
+            )
         )
 
         with concurrent.futures.ThreadPoolExecutor(
             max_workers=self._max_download_threads
         ) as executor:
-            futures = []
+            futures_by_artifact_id_and_part_number: Dict[
+                ArtifactId, Dict[int, concurrent.futures.Future]
+            ] = {}
             for (
-                artifact_id,
-                result,
+                artifact_id_value,
+                artifact_part_result,
             ) in get_artifact_part_response.results_by_artifact_id.items():
-                pass
-        # results: List[bytes] = []
-        # for (
-        #     artifact_id,
-        #     result,
-        # ) in get_artifact_part_response.results_by_artifact_id.items():
-        #     config = configs_by_artifact_id[artifact_id]
-        #     ensure_keys_match(
-        #         expected=config.metadatas_by_part_number,
-        #         actual=result.metadatas_by_part_number,
-        #     )
+                config = configs_by_artifact_id_value[artifact_id_value]
+                ensure_keys_match(
+                    expected=config.metadatas_by_part_number,
+                    actual=artifact_part_result.metadatas_by_part_number,
+                )
 
-        # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
-        # metadata = result.metadatas_by_part_number[1]
+                futures_by_part_number: Dict[int, concurrent.futures.Future] = {}
+                for (
+                    part_number,
+                    metadata,
+                ) in artifact_part_result.metadatas_by_part_number.items():
+                    # TODO(adrian@preemo.io, 04/06/2023): move these expectations/validations into messaging client
+                    if not metadata.HasField("download_signed_url"):
+                        raise Exception(
+                            "expected result metadata to have download_signed_url"
+                        )
 
-        #     # TODO(adrian@preemo.io, 03/20/2023): actually download artifact with signed url
-        #     # something like content = download_content(signed_url)
-        #     # results.append(content)
+                    futures_by_part_number[part_number] = executor.submit(
+                        ArtifactManager._download_content,
+                        url=metadata.download_signed_url,
+                    )
 
-        # return results
+                futures_by_artifact_id_and_part_number[
+                    ArtifactId(value=artifact_id_value)
+                ] = futures_by_part_number
+
+            futures = [
+                future
+                for futures_by_part_number in futures_by_artifact_id_and_part_number.values()
+                for future in futures_by_part_number.values()
+            ]
+            done, not_done = concurrent.futures.wait(
+                futures,
+                return_when=concurrent.futures.ALL_COMPLETED,
+            )
+
+            if len(not_done) != 0:
+                raise Exception("expected incomplete future set to be empty")
+
+            if len(done) != len(futures):
+                raise Exception("expected all futures to have completed")
+
+            results: List[bytes] = []
+            for artifact_id in artifact_ids:
+                futures_by_part_number = futures_by_artifact_id_and_part_number[
+                    artifact_id
+                ]
+
+                result = bytearray()
+                for part_number, future in sorted(
+                    futures_by_part_number.items(), key=lambda x: x[0]
+                ):
+                    # TODO(adrian@preemo.io, 04/06/2023): include validation regarding part size threshold and total size
+                    content = future.result()
+                    result.extend(content)
+
+                results.append(result)
+
+        return results

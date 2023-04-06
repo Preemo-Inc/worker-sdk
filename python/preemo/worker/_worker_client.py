@@ -14,6 +14,9 @@ from preemo.worker._types import assert_never
 
 
 class Result:
+    # TODO(adrian@preemo.io, 04/06/2023): need to sort out how this class
+    # can be used when error handling, status checking, etc
+    # Perhaps futures should be used instead
     def __init__(
         self, *, artifact_id: ArtifactId, artifact_manager: IArtifactManager
     ) -> None:
