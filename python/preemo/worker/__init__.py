@@ -5,6 +5,7 @@ from preemo.gen.endpoints.sdk_server_ready_pb2 import (
     SDKServerReadyRequest as _SDKServerReadyRequest,
 )
 from preemo.worker._artifact_manager import ArtifactManager as _ArtifactManager
+from preemo.worker._artifact_manager import IArtifactManager as _IArtifactManager
 from preemo.worker._env import get_optional_env as _get_optional_env
 from preemo.worker._function_registry import FunctionRegistry as _FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient as _IMessagingClient
@@ -26,7 +27,7 @@ def _construct_messaging_client() -> _IMessagingClient:
 
 
 def _start_sdk_server(
-    *, artifact_manager: _ArtifactManager, function_registry: _FunctionRegistry
+    *, artifact_manager: _IArtifactManager, function_registry: _FunctionRegistry
 ) -> Optional[_SDKServer]:
     sdk_server_host = _get_optional_env("PREEMO_SDK_SERVER_HOST")
     if sdk_server_host is None:

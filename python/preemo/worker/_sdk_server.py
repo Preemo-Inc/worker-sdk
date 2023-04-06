@@ -4,7 +4,7 @@ import random
 import grpc
 
 from preemo.gen.services.sdk_pb2_grpc import add_SDKServiceServicer_to_server
-from preemo.worker._artifact_manager import ArtifactManager
+from preemo.worker._artifact_manager import IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._sdk_service import SDKService
 
@@ -41,7 +41,7 @@ class SDKServer:
     def __init__(
         self,
         *,
-        artifact_manager: ArtifactManager,
+        artifact_manager: IArtifactManager,
         function_registry: FunctionRegistry,
         sdk_server_host: str,
     ) -> None:

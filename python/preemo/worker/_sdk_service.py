@@ -10,7 +10,7 @@ from preemo.gen.endpoints.execute_function_pb2 import (
 from preemo.gen.endpoints.terminate_pb2 import TerminateRequest, TerminateResponse
 from preemo.gen.models.value_pb2 import Value
 from preemo.gen.services.sdk_pb2_grpc import SDKServiceServicer
-from preemo.worker._artifact_manager import ArtifactId, ArtifactManager
+from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._types import assert_never
 
@@ -32,7 +32,7 @@ class SDKService(SDKServiceServicer):
     def __init__(
         self,
         *,
-        artifact_manager: ArtifactManager,
+        artifact_manager: IArtifactManager,
         function_registry: FunctionRegistry,
         terminate_server: Callable[[], None],
     ) -> None:
