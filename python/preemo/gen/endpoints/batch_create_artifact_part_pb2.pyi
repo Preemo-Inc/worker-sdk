@@ -53,7 +53,7 @@ class CreateArtifactPartConfig(google.protobuf.message.Message):
     METADATAS_BY_PART_NUMBER_FIELD_NUMBER: builtins.int
     @property
     def metadatas_by_part_number(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___CreateArtifactPartConfigMetadata]:
-        """For an artifact, part numbers must be sequential positive integers starting with 1."""
+        """For an artifact, part numbers must be sequential positive integers starting with 0."""
     def __init__(
         self,
         *,

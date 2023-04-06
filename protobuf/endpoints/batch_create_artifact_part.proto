@@ -7,7 +7,7 @@ message CreateArtifactPartConfigMetadata {
 }
 
 message CreateArtifactPartConfig {
-  // For an artifact, part numbers must be sequential positive integers starting with 1.
+  // For an artifact, part numbers must be sequential positive integers starting with 0.
   map<uint32, CreateArtifactPartConfigMetadata> metadatas_by_part_number = 1;
 }
 
