@@ -1,5 +1,5 @@
+import concurrent.futures
 import math
-from concurrent import futures
 from typing import Dict, List, Protocol, runtime_checkable
 
 from pydantic import StrictInt
@@ -58,6 +58,10 @@ class IArtifactManager(Protocol):
 
 class ArtifactManager:
     @staticmethod
+    def _calculate_part_count(*, content_length: int, part_size_threshold: int) -> int:
+        return math.ceil(content_length / part_size_threshold)
+
+    @staticmethod
     def _deserialize_to_artifact(result: CreateArtifactResult) -> Artifact:
         if not result.HasField("artifact_id"):
             raise Exception("expected create artifact result to have artifact_id")
@@ -72,6 +76,10 @@ class ArtifactManager:
             part_size_threshold=result.part_size_threshold,
         )
 
+    @staticmethod
+    def _upload_stuff(*, content: memoryview, upload_url: str) -> None:
+        pass
+
     def __init__(self, *, messaging_client: IMessagingClient) -> None:
         self._messaging_client = messaging_client
 
@@ -81,12 +89,17 @@ class ArtifactManager:
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
         )
 
-        return list(
+        artifacts = list(
             map(
                 lambda x: ArtifactManager._deserialize_to_artifact(x[1]),
                 sorted(response.results_by_index.items(), key=lambda x: x[0]),
             )
         )
+
+        if len(artifacts) != count:
+            raise Exception("received unexpected artifact count")
+
+        return artifacts
 
     def create_artifact(self, content: bytes) -> ArtifactId:
         artifact_ids = self.create_artifacts([content])
@@ -99,9 +112,11 @@ class ArtifactManager:
         artifacts = self._create_artifacts(count=len(contents))
 
         configs_by_artifact_id: Dict[str, CreateArtifactPartConfig] = {}
-        for i, artifact in enumerate(artifacts):
-            content_length = len(contents[i])
-            part_count = math.ceil(content_length / artifact.part_size_threshold)
+        for artifact, content in zip(artifacts, contents):
+            part_count = ArtifactManager._calculate_part_count(
+                content_length=len(content),
+                part_size_threshold=artifact.part_size_threshold,
+            )
 
             if part_count == 0:
                 # TODO(adrian@preemo.io, 04/05/2023): sort out if there's a reasonable way to handle this case
@@ -109,9 +124,8 @@ class ArtifactManager:
 
             configs_by_artifact_id[artifact.id.value] = CreateArtifactPartConfig(
                 metadatas_by_part_number={
-                    # TODO(adrian@preemo.io, 04/05/2023): consider if 0-based indexing is more reasonable
-                    (1 + j): CreateArtifactPartConfigMetadata()
-                    for j in range(part_count)
+                    part_number: CreateArtifactPartConfigMetadata()
+                    for part_number in range(part_count)
                 }
             )
 
@@ -122,9 +136,10 @@ class ArtifactManager:
         )
 
         # TODO(adrian@preemo.io, 04/05/2023): pass in max_workers or set as env var
-        with futures.ThreadPoolExecutor(max_workers=5) as executor:
-            for i, artifact in enumerate(artifacts):
-                content = contents[i]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            futures = []
+            for artifact, content in zip(artifacts, contents):
+                content_view = memoryview(content)
 
                 config = configs_by_artifact_id[artifact.id.value]
                 result = response.results_by_artifact_id[artifact.id.value]
@@ -139,43 +154,46 @@ class ArtifactManager:
                             "expected result metadata to have upload_signed_url"
                         )
 
-                    # TODO(adrian@preemo.io, 04/05/2023): okay let's do 0-based lol
-                    min_content_index = (part_number - 1) * artifact.part_size_threshold
-                    max_content_index = min_content_index + artifact.part_size_threshold
+                    start_index = part_number * artifact.part_size_threshold
+                    part_content = content_view[
+                        start_index : start_index + artifact.part_size_threshold
+                    ]
 
-                    metadata.upload_signed_url
+                    futures.append(
+                        executor.submit(
+                            ArtifactManager._upload_stuff,
+                            content=part_content,
+                            upload_url=metadata.upload_signed_url,
+                        )
+                    )
 
-                # executor.submit(fn, args)
+            # TODO(adrian@preemo.io, 04/05/2023): exception handling
+            done, not_done = concurrent.futures.wait(
+                futures, return_when=concurrent.futures.ALL_COMPLETED
+            )
 
-        # # TODO(adrian@preemo.io, 03/20/2023): should upload in parallel
-        # for i, content in enumerate(contents):
-        #     artifact_id = artifact_ids[i].value
-        #     config = configs_by_artifact_id[artifact_id]
-        #     result = response.results_by_artifact_id[artifact_id]
+            if len(not_done) != 0:
+                raise Exception("expected incomplete future set to be empty")
 
-        #     ensure_keys_match(
-        #         expected=config.metadatas_by_part_number,
-        #         actual=result.metadatas_by_part_number,
-        #     )
+            if len(done) != len(futures):
+                raise Exception("expected all futures to have completed")
 
-        #     # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
-        #     metadata = result.metadatas_by_part_number[1]
-        #     if not metadata.HasField("upload_signed_url"):
-        #         raise Exception("expected result metadata to have upload_signed_url")
+        self._messaging_client.batch_finalize_artifact(
+            BatchFinalizeArtifactRequest(
+                configs_by_artifact_id={
+                    artifact.id.value: FinalizeArtifactConfig(
+                        total_size=len(content),
+                        part_count=ArtifactManager._calculate_part_count(
+                            content_length=len(content),
+                            part_size_threshold=artifact.part_size_threshold,
+                        ),
+                    )
+                    for artifact, content in zip(artifacts, contents)
+                }
+            )
+        )
 
-        #     # TODO(adrian@preemo.io, 03/20/2023): actually upload to artifact with signed url
-        #     # something like upload_content(content, signed_url)
-
-        # self._messaging_client.batch_finalize_artifact(
-        #     BatchFinalizeArtifactRequest(
-        #         configs_by_artifact_id={
-        #             artifact_id.value: FinalizeArtifactConfig()
-        #             for artifact_id in artifact_ids
-        #         }
-        #     )
-        # )
-
-        # return artifact_ids
+        return list(map(lambda a: a.id, artifacts))
 
     def get_artifact(self, artifact_id: ArtifactId) -> bytes:
         contents = self.get_artifacts([artifact_id])
