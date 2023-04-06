@@ -87,7 +87,18 @@ results = parallel(
 ...
 ```
 
-<!-- TODO(adrian@preemo.io, 03/20/23): include an explanation of the result objects. They should be objects that give you access to the artifacts. -->
+### Results
+
+In order to view the result of an executed function, you can call `.get()`.
+
+```python
+from preemo.worker import get_function
+
+do_something = get_function(name="some_name", namespace="dev")
+result = do_something(b"params")
+value = result.get()
+...
+```
 
 ## Contributing
 

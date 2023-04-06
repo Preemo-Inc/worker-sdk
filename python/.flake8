@@ -8,11 +8,21 @@ exclude =
   preemo/gen/*
 
 # options copied from https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#line-length
+# and https://github.com/PyCQA/flake8-pyi/issues/20
 extend-ignore =
   # Whitespace before ':'
   E203,
+  # Expected 1 blank line, found 0
+  E301,
+  # Expected 2 blank lines, found 0
+  E302,
   # Line too long
-  E501
+  E501,
+  # Multiple statements on one line (colon)
+  E701,
+  # Multiple statements on one line (def)
+  E704
+
 
 max-line-length = 88
 
