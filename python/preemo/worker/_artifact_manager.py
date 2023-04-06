@@ -2,6 +2,7 @@ import concurrent.futures
 import math
 from typing import Dict, List, Protocol, runtime_checkable
 
+import requests
 from pydantic import StrictInt
 
 from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
@@ -77,9 +78,11 @@ class ArtifactManager:
         )
 
     @staticmethod
-    def _upload_stuff(*, content: memoryview, upload_url: str) -> None:
-        # TODO(adrian@preemo.io, 04/05/2023): implement
-        raise NotImplementedError()
+    def _upload_content(*, content: memoryview, url: str) -> None:
+        response = requests.put(url=url, data=content)
+
+        if not response.ok:
+            raise Exception(f"unexpected response while uploading: {response}")
 
     def __init__(self, *, messaging_client: IMessagingClient) -> None:
         self._messaging_client = messaging_client
@@ -162,9 +165,9 @@ class ArtifactManager:
 
                     futures.append(
                         executor.submit(
-                            ArtifactManager._upload_stuff,
+                            ArtifactManager._upload_content,
                             content=part_content,
-                            upload_url=metadata.upload_signed_url,
+                            url=metadata.upload_signed_url,
                         )
                     )
 
