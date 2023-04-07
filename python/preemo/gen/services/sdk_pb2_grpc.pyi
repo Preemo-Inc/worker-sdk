@@ -7,7 +7,7 @@ import preemo.gen.endpoints.execute_function_pb2
 import preemo.gen.endpoints.terminate_pb2
 import grpc
 
-class SDKServiceStub:
+class SdkServiceStub:
     def __init__(self, channel: grpc.Channel) -> None: ...
     ExecuteFunction: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.execute_function_pb2.ExecuteFunctionRequest,
@@ -18,7 +18,7 @@ class SDKServiceStub:
         preemo.gen.endpoints.terminate_pb2.TerminateResponse,
     ]
 
-class SDKServiceServicer(metaclass=abc.ABCMeta):
+class SdkServiceServicer(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def ExecuteFunction(
         self,
@@ -32,4 +32,4 @@ class SDKServiceServicer(metaclass=abc.ABCMeta):
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.terminate_pb2.TerminateResponse: ...
 
-def add_SDKServiceServicer_to_server(servicer: SDKServiceServicer, server: grpc.Server) -> None: ...
+def add_SdkServiceServicer_to_server(servicer: SdkServiceServicer, server: grpc.Server) -> None: ...

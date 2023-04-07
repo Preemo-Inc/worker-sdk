@@ -15,7 +15,7 @@ else:
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
-class SDKServerReadyRequest(google.protobuf.message.Message):
+class SdkServerReadyRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     SDK_SERVER_PORT_FIELD_NUMBER: builtins.int
@@ -30,14 +30,14 @@ class SDKServerReadyRequest(google.protobuf.message.Message):
     def ClearField(self, field_name: typing_extensions.Literal["_sdk_server_port", b"_sdk_server_port", "sdk_server_port", b"sdk_server_port"]) -> None: ...
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_sdk_server_port", b"_sdk_server_port"]) -> typing_extensions.Literal["sdk_server_port"] | None: ...
 
-global___SDKServerReadyRequest = SDKServerReadyRequest
+global___SdkServerReadyRequest = SdkServerReadyRequest
 
 @typing_extensions.final
-class SDKServerReadyResponse(google.protobuf.message.Message):
+class SdkServerReadyResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     def __init__(
         self,
     ) -> None: ...
 
-global___SDKServerReadyResponse = SDKServerReadyResponse
+global___SdkServerReadyResponse = SdkServerReadyResponse

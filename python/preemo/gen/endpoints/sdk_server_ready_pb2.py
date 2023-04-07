@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n endpoints/sdk_server_ready.proto\x12\tendpoints\"I\n\x15SDKServerReadyRequest\x12\x1c\n\x0fsdk_server_port\x18\x01 \x01(\rH\x00\x88\x01\x01\x42\x12\n\x10_sdk_server_port\"\x18\n\x16SDKServerReadyResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n endpoints/sdk_server_ready.proto\x12\tendpoints\"I\n\x15SdkServerReadyRequest\x12\x1c\n\x0fsdk_server_port\x18\x01 \x01(\rH\x00\x88\x01\x01\x42\x12\n\x10_sdk_server_port\"\x18\n\x16SdkServerReadyResponseb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'endpoints.sdk_server_ready_pb2', globals())
