@@ -32,5 +32,5 @@ service WorkerService {
 
   rpc RegisterFunction(endpoints.RegisterFunctionRequest) returns (endpoints.RegisterFunctionResponse);
 
-  rpc SDKServerReady(endpoints.SDKServerReadyRequest) returns (endpoints.SDKServerReadyResponse);
+  rpc SdkServerReady(endpoints.SdkServerReadyRequest) returns (endpoints.SdkServerReadyResponse);
 }

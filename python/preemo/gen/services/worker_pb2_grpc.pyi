@@ -53,9 +53,9 @@ class WorkerServiceStub:
         preemo.gen.endpoints.register_function_pb2.RegisterFunctionRequest,
         preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse,
     ]
-    SDKServerReady: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.sdk_server_ready_pb2.SDKServerReadyRequest,
-        preemo.gen.endpoints.sdk_server_ready_pb2.SDKServerReadyResponse,
+    SdkServerReady: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.sdk_server_ready_pb2.SdkServerReadyRequest,
+        preemo.gen.endpoints.sdk_server_ready_pb2.SdkServerReadyResponse,
     ]
 
 class WorkerServiceServicer(metaclass=abc.ABCMeta):
@@ -114,10 +114,10 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.register_function_pb2.RegisterFunctionResponse: ...
     @abc.abstractmethod
-    def SDKServerReady(
+    def SdkServerReady(
         self,
-        request: preemo.gen.endpoints.sdk_server_ready_pb2.SDKServerReadyRequest,
+        request: preemo.gen.endpoints.sdk_server_ready_pb2.SdkServerReadyRequest,
         context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.sdk_server_ready_pb2.SDKServerReadyResponse: ...
+    ) -> preemo.gen.endpoints.sdk_server_ready_pb2.SdkServerReadyResponse: ...
 
 def add_WorkerServiceServicer_to_server(servicer: WorkerServiceServicer, server: grpc.Server) -> None: ...

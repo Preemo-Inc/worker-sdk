@@ -6,7 +6,7 @@ from endpoints import execute_function_pb2 as endpoints_dot_execute__function__p
 from endpoints import terminate_pb2 as endpoints_dot_terminate__pb2
 
 
-class SDKServiceStub(object):
+class SdkServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -16,18 +16,18 @@ class SDKServiceStub(object):
             channel: A grpc.Channel.
         """
         self.ExecuteFunction = channel.unary_unary(
-                '/services.SDKService/ExecuteFunction',
+                '/services.SdkService/ExecuteFunction',
                 request_serializer=endpoints_dot_execute__function__pb2.ExecuteFunctionRequest.SerializeToString,
                 response_deserializer=endpoints_dot_execute__function__pb2.ExecuteFunctionResponse.FromString,
                 )
         self.Terminate = channel.unary_unary(
-                '/services.SDKService/Terminate',
+                '/services.SdkService/Terminate',
                 request_serializer=endpoints_dot_terminate__pb2.TerminateRequest.SerializeToString,
                 response_deserializer=endpoints_dot_terminate__pb2.TerminateResponse.FromString,
                 )
 
 
-class SDKServiceServicer(object):
+class SdkServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def ExecuteFunction(self, request, context):
@@ -43,7 +43,7 @@ class SDKServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_SDKServiceServicer_to_server(servicer, server):
+def add_SdkServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'ExecuteFunction': grpc.unary_unary_rpc_method_handler(
                     servicer.ExecuteFunction,
@@ -57,12 +57,12 @@ def add_SDKServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'services.SDKService', rpc_method_handlers)
+            'services.SdkService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class SDKService(object):
+class SdkService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -76,7 +76,7 @@ class SDKService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.SDKService/ExecuteFunction',
+        return grpc.experimental.unary_unary(request, target, '/services.SdkService/ExecuteFunction',
             endpoints_dot_execute__function__pb2.ExecuteFunctionRequest.SerializeToString,
             endpoints_dot_execute__function__pb2.ExecuteFunctionResponse.FromString,
             options, channel_credentials,
@@ -93,7 +93,7 @@ class SDKService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.SDKService/Terminate',
+        return grpc.experimental.unary_unary(request, target, '/services.SdkService/Terminate',
             endpoints_dot_terminate__pb2.TerminateRequest.SerializeToString,
             endpoints_dot_terminate__pb2.TerminateResponse.FromString,
             options, channel_credentials,

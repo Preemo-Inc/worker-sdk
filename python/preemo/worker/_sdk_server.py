@@ -3,13 +3,13 @@ import random
 
 import grpc
 
-from preemo.gen.services.sdk_pb2_grpc import add_SDKServiceServicer_to_server
+from preemo.gen.services.sdk_pb2_grpc import add_SdkServiceServicer_to_server
 from preemo.worker._artifact_manager import IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
-from preemo.worker._sdk_service import SDKService
+from preemo.worker._sdk_service import SdkService
 
 
-class SDKServer:
+class SdkServer:
     @staticmethod
     def _generate_random_port() -> int:
         return random.randrange(60_000, 61_000)
@@ -18,7 +18,7 @@ class SDKServer:
     def _bind_server_to_random_port(*, server: grpc.Server, host: str) -> int:
         attempt_count = 0
         while True:
-            port = SDKServer._generate_random_port()
+            port = SdkServer._generate_random_port()
             try:
                 # TODO(adrian@preemo.io, 03/27/2023): investigate whether it makes sense to use add_secure_port instead
                 server.add_insecure_port(f"{host}:{port}")
@@ -54,15 +54,15 @@ class SDKServer:
         def close() -> None:
             server.stop(grace=10)  # seconds
 
-        add_SDKServiceServicer_to_server(
-            SDKService(
+        add_SdkServiceServicer_to_server(
+            SdkService(
                 artifact_manager=artifact_manager,
                 function_registry=function_registry,
                 terminate_server=close,
             ),
             server,
         )
-        port = SDKServer._bind_server_to_random_port(
+        port = SdkServer._bind_server_to_random_port(
             server=server, host=sdk_server_host
         )
 

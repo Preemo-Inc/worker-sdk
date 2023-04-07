@@ -68,10 +68,10 @@ class WorkerServiceStub(object):
                 request_serializer=endpoints_dot_register__function__pb2.RegisterFunctionRequest.SerializeToString,
                 response_deserializer=endpoints_dot_register__function__pb2.RegisterFunctionResponse.FromString,
                 )
-        self.SDKServerReady = channel.unary_unary(
-                '/services.WorkerService/SDKServerReady',
-                request_serializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyRequest.SerializeToString,
-                response_deserializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyResponse.FromString,
+        self.SdkServerReady = channel.unary_unary(
+                '/services.WorkerService/SdkServerReady',
+                request_serializer=endpoints_dot_sdk__server__ready__pb2.SdkServerReadyRequest.SerializeToString,
+                response_deserializer=endpoints_dot_sdk__server__ready__pb2.SdkServerReadyResponse.FromString,
                 )
 
 
@@ -132,7 +132,7 @@ class WorkerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SDKServerReady(self, request, context):
+    def SdkServerReady(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -186,10 +186,10 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     request_deserializer=endpoints_dot_register__function__pb2.RegisterFunctionRequest.FromString,
                     response_serializer=endpoints_dot_register__function__pb2.RegisterFunctionResponse.SerializeToString,
             ),
-            'SDKServerReady': grpc.unary_unary_rpc_method_handler(
-                    servicer.SDKServerReady,
-                    request_deserializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyRequest.FromString,
-                    response_serializer=endpoints_dot_sdk__server__ready__pb2.SDKServerReadyResponse.SerializeToString,
+            'SdkServerReady': grpc.unary_unary_rpc_method_handler(
+                    servicer.SdkServerReady,
+                    request_deserializer=endpoints_dot_sdk__server__ready__pb2.SdkServerReadyRequest.FromString,
+                    response_serializer=endpoints_dot_sdk__server__ready__pb2.SdkServerReadyResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -355,7 +355,7 @@ class WorkerService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def SDKServerReady(request,
+    def SdkServerReady(request,
             target,
             options=(),
             channel_credentials=None,
@@ -365,8 +365,8 @@ class WorkerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/SDKServerReady',
-            endpoints_dot_sdk__server__ready__pb2.SDKServerReadyRequest.SerializeToString,
-            endpoints_dot_sdk__server__ready__pb2.SDKServerReadyResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/SdkServerReady',
+            endpoints_dot_sdk__server__ready__pb2.SdkServerReadyRequest.SerializeToString,
+            endpoints_dot_sdk__server__ready__pb2.SdkServerReadyResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

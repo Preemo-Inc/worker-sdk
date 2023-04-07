@@ -5,7 +5,7 @@ package services;
 import "endpoints/execute_function.proto";
 import "endpoints/terminate.proto";
 
-service SDKService {
+service SdkService {
   rpc ExecuteFunction(endpoints.ExecuteFunctionRequest) returns (endpoints.ExecuteFunctionResponse);
 
   rpc Terminate(endpoints.TerminateRequest) returns (endpoints.TerminateResponse);

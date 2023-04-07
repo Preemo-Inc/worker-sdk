@@ -37,8 +37,8 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionResponse,
 )
 from preemo.gen.endpoints.sdk_server_ready_pb2 import (
-    SDKServerReadyRequest,
-    SDKServerReadyResponse,
+    SdkServerReadyRequest,
+    SdkServerReadyResponse,
 )
 from preemo.gen.services.worker_pb2_grpc import WorkerServiceStub
 from preemo.worker._validation import ensure_keys_match
@@ -85,8 +85,8 @@ class IMessagingClient(Protocol):
         pass
 
     def sdk_server_ready(
-        self, request: SDKServerReadyRequest
-    ) -> SDKServerReadyResponse:
+        self, request: SdkServerReadyRequest
+    ) -> SdkServerReadyResponse:
         pass
 
 
@@ -222,9 +222,9 @@ class MessagingClient:
         return self._worker_service.RegisterFunction(request)
 
     def sdk_server_ready(
-        self, request: SDKServerReadyRequest
-    ) -> SDKServerReadyResponse:
-        return self._worker_service.SDKServerReady(request)
+        self, request: SdkServerReadyRequest
+    ) -> SdkServerReadyResponse:
+        return self._worker_service.SdkServerReady(request)
 
 
 # This class is intended to be used for tests and local development
@@ -276,7 +276,7 @@ class LocalMessagingClient:
         return RegisterFunctionResponse()
 
     def sdk_server_ready(
-        self, request: SDKServerReadyRequest
-    ) -> SDKServerReadyResponse:
+        self, request: SdkServerReadyRequest
+    ) -> SdkServerReadyResponse:
         print(f"sending sdk server ready request: {request}")
-        return SDKServerReadyResponse()
+        return SdkServerReadyResponse()

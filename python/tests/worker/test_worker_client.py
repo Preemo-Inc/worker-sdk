@@ -33,8 +33,8 @@ from preemo.gen.endpoints.register_function_pb2 import (
     RegisterFunctionResponse,
 )
 from preemo.gen.endpoints.sdk_server_ready_pb2 import (
-    SDKServerReadyRequest,
-    SDKServerReadyResponse,
+    SdkServerReadyRequest,
+    SdkServerReadyResponse,
 )
 from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
@@ -96,8 +96,8 @@ class DoNothingMessagingClient(IMessagingClient):
         raise Exception("no call expected")
 
     def sdk_server_ready(
-        self, request: SDKServerReadyRequest
-    ) -> SDKServerReadyResponse:
+        self, request: SdkServerReadyRequest
+    ) -> SdkServerReadyResponse:
         raise Exception("no call expected")
 
 
