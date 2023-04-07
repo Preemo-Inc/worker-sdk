@@ -13,6 +13,20 @@ from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import assert_never
 
 
+class Result:
+    # TODO(adrian@preemo.io, 04/20/2023): need to sort out how this class
+    # can be used when error handling, status checking, etc
+    # Perhaps futures should be used instead
+    def __init__(
+        self, *, artifact_id: ArtifactId, artifact_manager: IArtifactManager
+    ) -> None:
+        self._artifact_id = artifact_id
+        self._artifact_manager = artifact_manager
+
+    def get(self) -> bytes:
+        return self._artifact_manager.get_artifact(self._artifact_id)
+
+
 class Function:
     def __init__(
         self,
@@ -39,7 +53,7 @@ class Function:
             )
         )
 
-    def __call__(self, params: Optional[bytes] = None) -> Optional[bytes]:
+    def __call__(self, params: Optional[bytes] = None) -> Optional[Result]:
         if params is None:
             function_parameter = Value(null_value=NULL_VALUE)
         else:
@@ -65,8 +79,9 @@ class Function:
             return None
 
         if kind == "artifact_id":
-            return self._artifact_manager.get_artifact(
-                ArtifactId(value=function_result.artifact_id)
+            return Result(
+                artifact_id=ArtifactId(value=function_result.artifact_id),
+                artifact_manager=self._artifact_manager,
             )
 
         assert_never(kind)
@@ -98,7 +113,7 @@ class WorkerClient:
         *,
         params: Optional[List[bytes]] = None,
         count: Optional[int] = None,
-    ) -> List[Optional[bytes]]:
+    ) -> List[Optional[Result]]:
         # TODO(adrian@preemo.io, 03/20/2023): should take an optional config argument includes stuff like max batch size
 
         if params is None:
@@ -133,8 +148,7 @@ class WorkerClient:
             )
         )
 
-        # TODO(adrian@preemo.io, 03/20/2023): should download results in parallel or return a handle that allows the user to download result
-        results: List[Optional[bytes]] = []
+        results: List[Optional[Result]] = []
         for _, function_result in sorted(
             response.results_by_index.items(), key=lambda x: x[0]
         ):
@@ -146,8 +160,9 @@ class WorkerClient:
                 results.append(None)
             elif kind == "artifact_id":
                 results.append(
-                    self._artifact_manager.get_artifact(
-                        ArtifactId(value=function_result.artifact_id)
+                    Result(
+                        artifact_id=ArtifactId(value=function_result.artifact_id),
+                        artifact_manager=self._artifact_manager,
                     )
                 )
             else:

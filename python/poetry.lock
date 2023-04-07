@@ -696,6 +696,25 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "types-requests"
+version = "2.28.11.17"
+description = "Typing stubs for requests"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+types-urllib3 = "<1.27"
+
+[[package]]
+name = "types-urllib3"
+version = "1.26.25.10"
+description = "Typing stubs for urllib3"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.5.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -739,7 +758,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8.13"
-content-hash = "93c3d8e77179b19f811b751a113948971fede591c6d89f65c12c74d05ca127f9"
+content-hash = "25708562e4fa049ade7102748ebf6f31d3ad3510d540ae15ebd472b56b739870"
 
 [metadata.files]
 attrs = []
@@ -799,6 +818,8 @@ six = []
 tomli = []
 twine = []
 types-protobuf = []
+types-requests = []
+types-urllib3 = []
 typing-extensions = []
 urllib3 = []
 webencodings = []

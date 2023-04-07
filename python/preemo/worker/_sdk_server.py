@@ -1,10 +1,10 @@
+import concurrent.futures
 import random
-from concurrent import futures
 
 import grpc
 
 from preemo.gen.services.sdk_pb2_grpc import add_SDKServiceServicer_to_server
-from preemo.worker._artifact_manager import ArtifactManager
+from preemo.worker._artifact_manager import IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._sdk_service import SDKService
 
@@ -22,7 +22,6 @@ class SDKServer:
             try:
                 # TODO(adrian@preemo.io, 03/27/2023): investigate whether it makes sense to use add_secure_port instead
                 server.add_insecure_port(f"{host}:{port}")
-                return port
             except RuntimeError as e:
                 if len(e.args) < 1:
                     raise e
@@ -32,6 +31,8 @@ class SDKServer:
                     raise e
 
                 print(f"failed to bind to port {port}, retrying with a different port")
+            else:
+                return port
 
             attempt_count += 1
             if attempt_count >= 20:
@@ -40,12 +41,12 @@ class SDKServer:
     def __init__(
         self,
         *,
-        artifact_manager: ArtifactManager,
+        artifact_manager: IArtifactManager,
         function_registry: FunctionRegistry,
         sdk_server_host: str,
     ) -> None:
         server = grpc.server(
-            futures.ThreadPoolExecutor(max_workers=1),
+            concurrent.futures.ThreadPoolExecutor(max_workers=1),
             # This option prevents multiple servers from reusing the same port (see https://groups.google.com/g/grpc-io/c/RB69llv2tC4/m/7E__iL3LAwAJ)
             options=(("grpc.so_reuseport", 0),),
         )
