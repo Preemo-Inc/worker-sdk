@@ -59,23 +59,23 @@ class IArtifactManager(Protocol):
 class ArtifactManager:
     @staticmethod
     def _calculate_part_count(*, content_length: int, part_size_threshold: int) -> int:
-        return math.ceil(content_length / part_size_threshold)
+        return max(1, math.ceil(content_length / part_size_threshold))
 
     @staticmethod
     def _upload_content(*, content: memoryview, url: str) -> None:
-        # TODO(adrian@preemo.io, 04/06/2023): how to force gzip
-        response = requests.put(url=url, data=content)
+        response = requests.put(
+            url=url, data=content, headers={"Content-Encoding": "gzip"}
+        )
 
-        # TODO(adrian@preemo.io, 04/06/2023): should probably retry
+        # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
         if not response.ok:
             raise Exception(f"unexpected response while uploading: {response}")
 
     @staticmethod
     def _download_content(*, url: str) -> bytes:
-        # TODO(adrian@preemo.io, 04/06/2023): how to force (un)gzip
-        response = requests.get(url=url)
+        response = requests.get(url=url, headers={"Accept-Encoding": "gzip"})
 
-        # TODO(adrian@preemo.io, 04/06/2023): should probably retry
+        # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
         if not response.ok:
             raise Exception(f"unexpected response while downloading: {response}")
 
@@ -136,10 +136,6 @@ class ArtifactManager:
                 part_size_threshold=artifact.part_size_threshold,
             )
 
-            if part_count == 0:
-                # TODO(adrian@preemo.io, 04/05/2023): sort out if there's a reasonable way to handle this case
-                raise Exception("artifact contents must not be empty")
-
             configs_by_artifact_id_value[artifact.id.value] = CreateArtifactPartConfig(
                 metadatas_by_part_number={
                     part_number: CreateArtifactPartConfigMetadata()
@@ -181,7 +177,7 @@ class ArtifactManager:
                         )
                     )
 
-            # TODO(adrian@preemo.io, 04/05/2023): exception handling
+            # TODO(adrian@preemo.io, 04/15/2023): add exception handling
             done, not_done = concurrent.futures.wait(
                 futures, return_when=concurrent.futures.ALL_COMPLETED
             )
