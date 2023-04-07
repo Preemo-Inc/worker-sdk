@@ -14,7 +14,7 @@ from preemo.worker._types import assert_never
 
 
 class Result:
-    # TODO(adrian@preemo.io, 04/06/2023): need to sort out how this class
+    # TODO(adrian@preemo.io, 04/20/2023): need to sort out how this class
     # can be used when error handling, status checking, etc
     # Perhaps futures should be used instead
     def __init__(
