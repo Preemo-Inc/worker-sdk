@@ -2,7 +2,7 @@ import threading
 from typing import Optional
 
 from preemo.gen.endpoints.sdk_server_ready_pb2 import (
-    SDKServerReadyRequest as _SDKServerReadyRequest,
+    SdkServerReadyRequest as _SdkServerReadyRequest,
 )
 from preemo.worker._artifact_manager import ArtifactManager as _ArtifactManager
 from preemo.worker._artifact_manager import IArtifactManager as _IArtifactManager
@@ -14,7 +14,7 @@ from preemo.worker._messaging_client import (
     LocalMessagingClient as _LocalMessagingClient,
 )
 from preemo.worker._messaging_client import MessagingClient as _MessagingClient
-from preemo.worker._sdk_server import SDKServer as _SDKServer
+from preemo.worker._sdk_server import SdkServer as _SdkServer
 from preemo.worker._worker_client import WorkerClient as _WorkerClient
 
 
@@ -47,12 +47,12 @@ def _construct_messaging_client() -> _IMessagingClient:
 
 def _start_sdk_server(
     *, artifact_manager: _IArtifactManager, function_registry: _FunctionRegistry
-) -> Optional[_SDKServer]:
+) -> Optional[_SdkServer]:
     sdk_server_host = _get_optional_string_env("PREEMO_SDK_SERVER_HOST")
     if sdk_server_host is None:
         return None
 
-    server = _SDKServer(
+    server = _SdkServer(
         artifact_manager=artifact_manager,
         function_registry=function_registry,
         sdk_server_host=sdk_server_host,
@@ -74,7 +74,7 @@ def _construct_worker_client() -> _WorkerClient:
 
     if sdk_server is not None:
         messaging_client.sdk_server_ready(
-            _SDKServerReadyRequest(sdk_server_port=sdk_server.get_port())
+            _SdkServerReadyRequest(sdk_server_port=sdk_server.get_port())
         )
 
     return _WorkerClient(

@@ -9,13 +9,13 @@ from preemo.gen.endpoints.execute_function_pb2 import (
 )
 from preemo.gen.endpoints.terminate_pb2 import TerminateRequest, TerminateResponse
 from preemo.gen.models.value_pb2 import Value
-from preemo.gen.services.sdk_pb2_grpc import SDKServiceServicer
+from preemo.gen.services.sdk_pb2_grpc import SdkServiceServicer
 from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._types import assert_never
 
 
-class SDKService(SDKServiceServicer):
+class SdkService(SdkServiceServicer):
     @staticmethod
     def _validate_execute_function_request(request: ExecuteFunctionRequest) -> None:
         if not request.HasField("function_to_execute"):
@@ -58,7 +58,7 @@ class SDKService(SDKServiceServicer):
     def ExecuteFunction(
         self, request: ExecuteFunctionRequest, context: grpc.ServicerContext
     ) -> ExecuteFunctionResponse:
-        SDKService._validate_execute_function_request(request)
+        SdkService._validate_execute_function_request(request)
 
         if request.function_to_execute.HasField("namespace"):
             namespace = request.function_to_execute.namespace
