@@ -104,7 +104,7 @@ class ArtifactManager:
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
         )
 
-        artifacts = [
+        return [
             Artifact(
                 id=ArtifactId(value=result.artifact_id),
                 part_size_threshold=result.part_size_threshold,
@@ -113,11 +113,6 @@ class ArtifactManager:
                 response.results_by_index.items(), key=lambda x: x[0]
             )
         ]
-
-        if len(artifacts) != count:
-            raise Exception("received unexpected artifact count")
-
-        return artifacts
 
     def create_artifact(self, content: bytes) -> ArtifactId:
         artifact_ids = self.create_artifacts([content])
@@ -128,9 +123,12 @@ class ArtifactManager:
 
     def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
         artifacts = self._create_artifacts(count=len(contents))
+        if len(artifacts) != len(contents):
+            raise Exception("expected artifacts and contents lengths to be equal")
+        artifacts_and_contents = zip(artifacts, contents)
 
         configs_by_artifact_id_value: Dict[str, CreateArtifactPartConfig] = {}
-        for artifact, content in zip(artifacts, contents):
+        for artifact, content in artifacts_and_contents:
             part_count = ArtifactManager._calculate_part_count(
                 content_length=len(content),
                 part_size_threshold=artifact.part_size_threshold,
@@ -153,7 +151,7 @@ class ArtifactManager:
             max_workers=self._max_upload_threads
         ) as executor:
             futures = []
-            for artifact, content in zip(artifacts, contents):
+            for artifact, content in artifacts_and_contents:
                 content_view = memoryview(content)
 
                 config = configs_by_artifact_id_value[artifact.id.value]
@@ -198,7 +196,7 @@ class ArtifactManager:
                             part_size_threshold=artifact.part_size_threshold,
                         ),
                     )
-                    for artifact, content in zip(artifacts, contents)
+                    for artifact, content in artifacts_and_contents
                 }
             )
         )
