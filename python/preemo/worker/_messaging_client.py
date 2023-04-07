@@ -153,6 +153,10 @@ class MessagingClient:
             actual=response.results_by_index,
         )
 
+        for result in response.results_by_index.values():
+            if not result.HasField("kind"):
+                raise Exception("expected Value to have kind")
+
         return response
 
     def batch_finalize_artifact(
@@ -175,6 +179,18 @@ class MessagingClient:
             actual=response.results_by_artifact_id,
         )
 
+        for result in response.results_by_artifact_id.values():
+            if not result.HasField("part_count"):
+                raise Exception("expected GetArtifactResult to have part_count")
+
+            if not result.HasField("part_size_threshold"):
+                raise Exception(
+                    "expected GetArtifactResult to have part_size_threshold"
+                )
+
+            if not result.HasField("total_size"):
+                raise Exception("expected GetArtifactResult to have total_size")
+
         return response
 
     def batch_get_artifact_part(
@@ -185,6 +201,19 @@ class MessagingClient:
             expected=request.configs_by_artifact_id,
             actual=response.results_by_artifact_id,
         )
+
+        for artifact_id, result in response.results_by_artifact_id.items():
+            config = request.configs_by_artifact_id[artifact_id]
+            ensure_keys_match(
+                expected=config.metadatas_by_part_number,
+                actual=result.metadatas_by_part_number,
+            )
+
+            for metadata in result.metadatas_by_part_number.values():
+                if not metadata.HasField("download_signed_url"):
+                    raise Exception(
+                        "expected GetArtifactPartResultMetadata to have download_signed_url"
+                    )
 
         return response
 
