@@ -153,10 +153,6 @@ class MessagingClient:
             actual=response.results_by_index,
         )
 
-        for result in response.results_by_index.values():
-            if not result.HasField("kind"):
-                raise Exception("expected Value to have kind")
-
         return response
 
     def batch_finalize_artifact(
