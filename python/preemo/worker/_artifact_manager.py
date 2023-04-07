@@ -287,15 +287,31 @@ class ArtifactManager:
                 futures_by_part_number = futures_by_artifact_id_and_part_number[
                     artifact_id
                 ]
+                get_artifact_result = get_artifact_response.results_by_artifact_id[
+                    artifact_id.value
+                ]
 
+                # TODO(adrian@preemo.io, 04/20/2023): Consider other options for constructing the byte result,
+                # such as a memory-mapped file or BytesIO
                 result = bytearray()
                 for part_number, future in sorted(
                     futures_by_part_number.items(), key=lambda x: x[0]
                 ):
-                    # TODO(adrian@preemo.io, 04/06/2023): include validation regarding part size threshold and total size
                     content = future.result()
+
+                    if part_number < get_artifact_result.part_count - 1:
+                        # not the final part
+                        if len(content) != get_artifact_result.part_size_threshold:
+                            raise Exception(
+                                "expected content size to equal part_size_threshold"
+                            )
+
                     result.extend(content)
 
+                if len(result) != get_artifact_result.total_size:
+                    raise Exception("expected result object size to equal total_size")
+
+                # TODO(adrian@preemo.io, 04/20/2023): do i need to convert to bytes here? Is bytearray just masquerading as bytes?
                 results.append(result)
 
         return results
