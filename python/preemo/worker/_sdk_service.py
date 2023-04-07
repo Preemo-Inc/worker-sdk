@@ -16,6 +16,19 @@ from preemo.worker._types import assert_never
 
 
 class SDKService(SDKServiceServicer):
+    @staticmethod
+    def _validate_execute_function_request(request: ExecuteFunctionRequest) -> None:
+        if not request.HasField("function_to_execute"):
+            raise Exception(
+                "expected ExecuteFunctionRequest to have function_to_execute"
+            )
+
+        if not request.function_to_execute.HasField("name"):
+            raise Exception("expected RegisteredFunction to have name")
+
+        if not request.HasField("parameter"):
+            raise Exception("expected ExecuteFunctionRequest to have parameter")
+
     def __init__(
         self,
         *,
@@ -45,24 +58,18 @@ class SDKService(SDKServiceServicer):
     def ExecuteFunction(
         self, request: ExecuteFunctionRequest, context: grpc.ServicerContext
     ) -> ExecuteFunctionResponse:
-        if not request.HasField("function_to_execute"):
-            raise Exception(
-                "expected execute function request to have function_to_execute"
-            )
-        func_to_execute = request.function_to_execute
+        SDKService._validate_execute_function_request(request)
 
-        if not request.HasField("parameter"):
-            raise Exception("expected execute function request to have parameter")
-        func_parameter = request.parameter
-
-        if not func_to_execute.HasField("name"):
-            raise Exception("expected function_to_execute to have name")
+        if request.function_to_execute.HasField("namespace"):
+            namespace = request.function_to_execute.namespace
+        else:
+            namespace = None
 
         func = self._function_registry.get_required_function(
-            name=func_to_execute.name, namespace=func_to_execute.namespace
+            name=request.function_to_execute.name, namespace=namespace
         )
 
-        parameter_value = self._retrieve_value(func_parameter)
+        parameter_value = self._retrieve_value(request.parameter)
         if parameter_value is None:
             result = func()
         else:

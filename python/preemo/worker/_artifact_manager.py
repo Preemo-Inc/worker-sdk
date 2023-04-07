@@ -101,9 +101,7 @@ class ArtifactManager:
             )
 
             # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
-            metadata = result.metadatas_by_part_number[1]
-            if not metadata.HasField("upload_signed_url"):
-                raise Exception("expected result metadata to have upload_signed_url")
+            # metadata = result.metadatas_by_part_number[1]
 
             # TODO(adrian@preemo.io, 03/20/2023): actually upload to artifact with signed url
             # something like upload_content(content, signed_url)
@@ -163,9 +161,7 @@ class ArtifactManager:
             )
 
             # TODO(adrian@preemo.io, 03/20/2023): this hard-coded part number will need to change for multi-part upload
-            metadata = result.metadatas_by_part_number[1]
-            if not metadata.HasField("download_signed_url"):
-                raise Exception("expected result metadata to have download_signed_url")
+            # metadata = result.metadatas_by_part_number[1]
 
             # TODO(adrian@preemo.io, 03/20/2023): actually download artifact with signed url
             # something like content = download_content(signed_url)
