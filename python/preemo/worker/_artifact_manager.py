@@ -104,15 +104,15 @@ class ArtifactManager:
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
         )
 
-        artifacts = list(
-            map(
-                lambda x: Artifact(
-                    id=ArtifactId(value=x[1].artifact_id),
-                    part_size_threshold=x[1].part_size_threshold,
-                ),
-                sorted(response.results_by_index.items(), key=lambda x: x[0]),
+        artifacts = [
+            Artifact(
+                id=ArtifactId(value=result.artifact_id),
+                part_size_threshold=result.part_size_threshold,
             )
-        )
+            for _, result in sorted(
+                response.results_by_index.items(), key=lambda x: x[0]
+            )
+        ]
 
         if len(artifacts) != count:
             raise Exception("received unexpected artifact count")
@@ -203,7 +203,7 @@ class ArtifactManager:
             )
         )
 
-        return list(map(lambda a: a.id, artifacts))
+        return [artifact.id for artifact in artifacts]
 
     def get_artifact(self, artifact_id: ArtifactId) -> bytes:
         contents = self.get_artifacts([artifact_id])
