@@ -13,7 +13,6 @@ from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
 from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
     CreateArtifactConfig,
-    CreateArtifactResult,
 )
 from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
@@ -63,21 +62,6 @@ class ArtifactManager:
         return math.ceil(content_length / part_size_threshold)
 
     @staticmethod
-    def _deserialize_to_artifact(result: CreateArtifactResult) -> Artifact:
-        if not result.HasField("artifact_id"):
-            raise Exception("expected create artifact result to have artifact_id")
-
-        if not result.HasField("part_size_threshold"):
-            raise Exception(
-                "expected create artifact result to have part_size_threshold"
-            )
-
-        return Artifact(
-            id=ArtifactId(value=result.artifact_id),
-            part_size_threshold=result.part_size_threshold,
-        )
-
-    @staticmethod
     def _upload_content(*, content: memoryview, url: str) -> None:
         # TODO(adrian@preemo.io, 04/06/2023): how to force gzip
         response = requests.put(url=url, data=content)
@@ -122,7 +106,10 @@ class ArtifactManager:
 
         artifacts = list(
             map(
-                lambda x: ArtifactManager._deserialize_to_artifact(x[1]),
+                lambda x: Artifact(
+                    id=ArtifactId(value=x[1].artifact_id),
+                    part_size_threshold=x[1].part_size_threshold,
+                ),
                 sorted(response.results_by_index.items(), key=lambda x: x[0]),
             )
         )
@@ -181,11 +168,6 @@ class ArtifactManager:
                 )
 
                 for part_number, metadata in result.metadatas_by_part_number.items():
-                    if not metadata.HasField("upload_signed_url"):
-                        raise Exception(
-                            "expected result metadata to have upload_signed_url"
-                        )
-
                     start_index = part_number * artifact.part_size_threshold
                     part_content = content_view[
                         start_index : start_index + artifact.part_size_threshold
@@ -281,12 +263,6 @@ class ArtifactManager:
                     part_number,
                     metadata,
                 ) in artifact_part_result.metadatas_by_part_number.items():
-                    # TODO(adrian@preemo.io, 04/06/2023): move these expectations/validations into messaging client
-                    if not metadata.HasField("download_signed_url"):
-                        raise Exception(
-                            "expected result metadata to have download_signed_url"
-                        )
-
                     futures_by_part_number[part_number] = executor.submit(
                         ArtifactManager._download_content,
                         url=metadata.download_signed_url,
