@@ -109,6 +109,15 @@ class MessagingClient:
             expected=request.configs_by_index, actual=response.results_by_index
         )
 
+        for result in response.results_by_index.values():
+            if not result.HasField("artifact_id"):
+                raise Exception("expected CreateArtifactResult to have artifact_id")
+
+            if not result.HasField("part_size_threshold"):
+                raise Exception(
+                    "expected CreateArtifactResult to have part_size_threshold"
+                )
+
         return response
 
     def batch_create_artifact_part(
@@ -119,6 +128,19 @@ class MessagingClient:
             expected=request.configs_by_artifact_id,
             actual=response.results_by_artifact_id,
         )
+
+        for artifact_id, result in response.results_by_artifact_id.items():
+            config = request.configs_by_artifact_id[artifact_id]
+            ensure_keys_match(
+                expected=config.metadatas_by_part_number,
+                actual=result.metadatas_by_part_number,
+            )
+
+            for metadata in result.metadatas_by_part_number.values():
+                if not metadata.HasField("upload_signed_url"):
+                    raise Exception(
+                        "expected CreateArtifactPartResultMetadata to have upload_signed_url"
+                    )
 
         return response
 
