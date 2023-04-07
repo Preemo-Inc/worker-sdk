@@ -211,7 +211,6 @@ class ArtifactManager:
         return contents[0]
 
     def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
-        # TODO(adrian@preemo.io, 04/05/2023): fix this whole implementation
         get_artifact_response = self._messaging_client.batch_get_artifact(
             BatchGetArtifactRequest(
                 configs_by_artifact_id={
