@@ -17,17 +17,26 @@ from preemo.worker._types import assert_never
 
 class SdkService(SdkServiceServicer):
     @staticmethod
-    def _validate_execute_function_request(request: ExecuteFunctionRequest) -> None:
+    def _validate_execute_function_request(
+        request: ExecuteFunctionRequest, context: grpc.ServicerContext
+    ) -> None:
         if not request.HasField("function_to_execute"):
-            raise Exception(
-                "expected ExecuteFunctionRequest to have function_to_execute"
+            context.abort(
+                grpc.StatusCode.INVALID_ARGUMENT,
+                "expected ExecuteFunctionRequest to have function_to_execute",
             )
 
         if not request.function_to_execute.HasField("name"):
-            raise Exception("expected RegisteredFunction to have name")
+            context.abort(
+                grpc.StatusCode.INVALID_ARGUMENT,
+                "expected RegisteredFunction to have name",
+            )
 
         if not request.HasField("parameter"):
-            raise Exception("expected ExecuteFunctionRequest to have parameter")
+            context.abort(
+                grpc.StatusCode.INVALID_ARGUMENT,
+                "expected ExecuteFunctionRequest to have parameter",
+            )
 
     def __init__(
         self,
