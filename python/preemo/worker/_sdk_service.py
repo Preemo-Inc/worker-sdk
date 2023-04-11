@@ -67,7 +67,7 @@ class SdkService(SdkServiceServicer):
     def ExecuteFunction(
         self, request: ExecuteFunctionRequest, context: grpc.ServicerContext
     ) -> ExecuteFunctionResponse:
-        SdkService._validate_execute_function_request(request)
+        SdkService._validate_execute_function_request(request, context)
 
         if request.function_to_execute.HasField("namespace"):
             namespace = request.function_to_execute.namespace
