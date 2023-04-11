@@ -84,6 +84,8 @@ def _construct_worker_client() -> _WorkerClient:
     )
 
 
+# TODO(adrian@preemo.io, 04/11/2023): add environment (dev, prod)
+
 # provide shorthand for functions
 __all__ = ["get_function", "parallel", "register"]
 
