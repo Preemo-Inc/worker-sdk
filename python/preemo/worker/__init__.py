@@ -20,6 +20,10 @@ from preemo.worker._worker_client import WorkerClient as _WorkerClient
 def _construct_artifact_manager(
     messaging_client: _IMessagingClient,
 ) -> _IArtifactManager:
+    is_development = _EnvManager.is_development
+    if is_development is None:
+        is_development = False
+
     max_download_threads = _EnvManager.max_download_threads
     if max_download_threads is None:
         max_download_threads = 5
@@ -29,6 +33,7 @@ def _construct_artifact_manager(
         max_upload_threads = 5
 
     return _ArtifactManager(
+        is_development=is_development,
         max_download_threads=max_download_threads,
         max_upload_threads=max_upload_threads,
         messaging_client=messaging_client,
