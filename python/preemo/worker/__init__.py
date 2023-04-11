@@ -1,5 +1,5 @@
-import threading
-from typing import Optional
+from threading import Thread as _Thread
+from typing import Optional as _Optional
 
 from preemo.gen.endpoints.sdk_server_ready_pb2 import (
     SdkServerReadyRequest as _SdkServerReadyRequest,
@@ -17,29 +17,6 @@ from preemo.worker._sdk_server import SdkServer as _SdkServer
 from preemo.worker._worker_client import WorkerClient as _WorkerClient
 
 
-def _construct_artifact_manager(
-    messaging_client: _IMessagingClient,
-) -> _IArtifactManager:
-    is_development = _EnvManager.is_development
-    if is_development is None:
-        is_development = False
-
-    max_download_threads = _EnvManager.max_download_threads
-    if max_download_threads is None:
-        max_download_threads = 5
-
-    max_upload_threads = _EnvManager.max_upload_threads
-    if max_upload_threads is None:
-        max_upload_threads = 5
-
-    return _ArtifactManager(
-        is_development=is_development,
-        max_download_threads=max_download_threads,
-        max_upload_threads=max_upload_threads,
-        messaging_client=messaging_client,
-    )
-
-
 def _construct_messaging_client() -> _IMessagingClient:
     if _EnvManager.worker_server_url is None:
         return _LocalMessagingClient()
@@ -49,7 +26,7 @@ def _construct_messaging_client() -> _IMessagingClient:
 
 def _start_sdk_server(
     *, artifact_manager: _IArtifactManager, function_registry: _FunctionRegistry
-) -> Optional[_SdkServer]:
+) -> _Optional[_SdkServer]:
     if _EnvManager.sdk_server_host is None:
         return None
 
@@ -59,14 +36,14 @@ def _start_sdk_server(
         sdk_server_host=_EnvManager.sdk_server_host,
     )
     # This thread will keep the process running until the server is closed
-    threading.Thread(target=lambda: server.wait_until_close()).start()
+    _Thread(target=lambda: server.wait_until_close()).start()
 
     return server
 
 
 def _construct_worker_client() -> _WorkerClient:
     messaging_client = _construct_messaging_client()
-    artifact_manager = _construct_artifact_manager(messaging_client=messaging_client)
+    artifact_manager = _ArtifactManager(messaging_client=messaging_client)
 
     function_registry = _FunctionRegistry()
     sdk_server = _start_sdk_server(
@@ -84,8 +61,6 @@ def _construct_worker_client() -> _WorkerClient:
         messaging_client=messaging_client,
     )
 
-
-# TODO(adrian@preemo.io, 04/11/2023): add environment (dev, prod)
 
 # provide shorthand for functions
 __all__ = ["get_function", "parallel", "register"]

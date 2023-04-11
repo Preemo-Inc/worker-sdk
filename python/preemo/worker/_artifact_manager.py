@@ -27,6 +27,7 @@ from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
     GetArtifactConfig,
 )
+from preemo.worker._env_manager import EnvManager
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import ImmutableModel, StringValue
 from preemo.worker._validation import ensure_keys_match
@@ -64,24 +65,12 @@ class ArtifactManager:
     def __init__(
         self,
         *,
-        is_development: bool,
-        max_download_threads: int,
-        max_upload_threads: int,
         messaging_client: IMessagingClient,
     ) -> None:
-        if max_download_threads <= 0:
-            raise ValueError("max_download_threads must be positive")
-
-        if max_upload_threads <= 0:
-            raise ValueError("max_upload_threads must be positive")
-
-        self._is_development = is_development
-        self._max_download_threads = max_download_threads
-        self._max_upload_threads = max_upload_threads
         self._messaging_client = messaging_client
 
     def _write_content(self, *, content: memoryview, url: str) -> None:
-        if self._is_development:
+        if EnvManager.is_development:
             # treat url as file path
             with open(url, "wb") as fout:
                 fout.write(content)
@@ -96,7 +85,7 @@ class ArtifactManager:
                 raise Exception(f"unexpected response while uploading: {response}")
 
     def _read_content(self, *, url: str) -> bytes:
-        if self._is_development:
+        if EnvManager.is_development:
             # treat url as file path
             with open(url, "rb") as fin:
                 return fin.read()
@@ -159,7 +148,7 @@ class ArtifactManager:
         )
 
         with concurrent.futures.ThreadPoolExecutor(
-            max_workers=self._max_upload_threads
+            max_workers=EnvManager.max_upload_threads
         ) as executor:
             futures = []
             for artifact, content in artifacts_and_contents:
@@ -247,7 +236,7 @@ class ArtifactManager:
         )
 
         with concurrent.futures.ThreadPoolExecutor(
-            max_workers=self._max_download_threads
+            max_workers=EnvManager.max_download_threads
         ) as executor:
             futures_by_artifact_id_and_part_number: Dict[
                 ArtifactId, Dict[int, concurrent.futures.Future]
