@@ -27,6 +27,7 @@ from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
     GetArtifactConfig,
 )
+from preemo.worker._env_manager import EnvManager
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import ImmutableModel, StringValue
 from preemo.worker._validation import ensure_keys_match
@@ -61,42 +62,41 @@ class ArtifactManager:
     def _calculate_part_count(*, content_length: int, part_size_threshold: int) -> int:
         return max(1, math.ceil(content_length / part_size_threshold))
 
-    @staticmethod
-    def _upload_content(*, content: memoryview, url: str) -> None:
-        response = requests.put(
-            url=url, data=content, headers={"Content-Encoding": "gzip"}
-        )
-
-        # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
-        if not response.ok:
-            raise Exception(f"unexpected response while uploading: {response}")
-
-    @staticmethod
-    def _download_content(*, url: str) -> bytes:
-        response = requests.get(url=url, headers={"Accept-Encoding": "gzip"})
-
-        # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
-        if not response.ok:
-            raise Exception(f"unexpected response while downloading: {response}")
-
-        return response.content
-
     def __init__(
         self,
         *,
-        max_download_threads: int,
-        max_upload_threads: int,
         messaging_client: IMessagingClient,
     ) -> None:
-        if max_download_threads <= 0:
-            raise ValueError("max_download_threads must be positive")
-
-        if max_upload_threads <= 0:
-            raise ValueError("max_upload_threads must be positive")
-
-        self._max_download_threads = max_download_threads
-        self._max_upload_threads = max_upload_threads
         self._messaging_client = messaging_client
+
+    def _write_content(self, *, content: memoryview, url: str) -> None:
+        if EnvManager.is_development:
+            # treat url as file path
+            with open(url, "wb") as fout:
+                fout.write(content)
+        else:
+            # TODO(adrian@preemo.io, 04/11/2023): might be post
+            response = requests.put(
+                url=url, data=content, headers={"Content-Encoding": "gzip"}
+            )
+
+            # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
+            if not response.ok:
+                raise Exception(f"unexpected response while uploading: {response}")
+
+    def _read_content(self, *, url: str) -> bytes:
+        if EnvManager.is_development:
+            # treat url as file path
+            with open(url, "rb") as fin:
+                return fin.read()
+        else:
+            response = requests.get(url=url, headers={"Accept-Encoding": "gzip"})
+
+            # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
+            if not response.ok:
+                raise Exception(f"unexpected response while downloading: {response}")
+
+            return response.content
 
     def _create_artifacts(self, *, count: int) -> List[Artifact]:
         configs_by_index = {i: CreateArtifactConfig() for i in range(count)}
@@ -148,7 +148,7 @@ class ArtifactManager:
         )
 
         with concurrent.futures.ThreadPoolExecutor(
-            max_workers=self._max_upload_threads
+            max_workers=EnvManager.max_upload_threads
         ) as executor:
             futures = []
             for artifact, content in artifacts_and_contents:
@@ -169,7 +169,7 @@ class ArtifactManager:
 
                     futures.append(
                         executor.submit(
-                            ArtifactManager._upload_content,
+                            self._write_content,
                             content=part_content,
                             url=metadata.upload_signed_url,
                         )
@@ -236,7 +236,7 @@ class ArtifactManager:
         )
 
         with concurrent.futures.ThreadPoolExecutor(
-            max_workers=self._max_download_threads
+            max_workers=EnvManager.max_download_threads
         ) as executor:
             futures_by_artifact_id_and_part_number: Dict[
                 ArtifactId, Dict[int, concurrent.futures.Future]
@@ -257,7 +257,7 @@ class ArtifactManager:
                     metadata,
                 ) in artifact_part_result.metadatas_by_part_number.items():
                     futures_by_part_number[part_number] = executor.submit(
-                        ArtifactManager._download_content,
+                        self._read_content,
                         url=metadata.download_signed_url,
                     )
 
