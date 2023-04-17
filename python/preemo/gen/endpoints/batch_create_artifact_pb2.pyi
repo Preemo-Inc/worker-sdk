@@ -25,14 +25,12 @@ class _ArtifactType:
 class _ArtifactTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_ArtifactType.ValueType], builtins.type):
     DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
     ARTIFACT_TYPE_UNSPECIFIED: _ArtifactType.ValueType  # 0
-    """TODO(hayden@preemo.io, 04/17/2023): should these be ARTFACT_TYPE... or ARTIFACTTYPE_..."""
     ARTIFACT_TYPE_PARAMS: _ArtifactType.ValueType  # 1
     ARTIFACT_TYPE_RESULT: _ArtifactType.ValueType  # 2
 
 class ArtifactType(_ArtifactType, metaclass=_ArtifactTypeEnumTypeWrapper): ...
 
 ARTIFACT_TYPE_UNSPECIFIED: ArtifactType.ValueType  # 0
-"""TODO(hayden@preemo.io, 04/17/2023): should these be ARTFACT_TYPE... or ARTIFACTTYPE_..."""
 ARTIFACT_TYPE_PARAMS: ArtifactType.ValueType  # 1
 ARTIFACT_TYPE_RESULT: ArtifactType.ValueType  # 2
 global___ArtifactType = ArtifactType
@@ -50,9 +48,11 @@ class CreateArtifactConfig(google.protobuf.message.Message):
     def __init__(
         self,
         *,
-        type: global___ArtifactType.ValueType = ...,
+        type: global___ArtifactType.ValueType | None = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["type", b"type"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_type", b"_type", "type", b"type"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_type", b"_type", "type", b"type"]) -> None: ...
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_type", b"_type"]) -> typing_extensions.Literal["type"] | None: ...
 
 global___CreateArtifactConfig = CreateArtifactConfig
 
