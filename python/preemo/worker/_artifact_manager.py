@@ -121,6 +121,7 @@ class ArtifactManager:
 
         return artifact_ids[0]
 
+    # TODO(hayden@preemo.io, 04/17/2023): include the type
     def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
         artifacts = self._create_artifacts(count=len(contents))
         if len(artifacts) != len(contents):
