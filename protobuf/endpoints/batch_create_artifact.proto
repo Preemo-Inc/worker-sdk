@@ -2,9 +2,17 @@ syntax = "proto3";
 
 package endpoints;
 
+enum ArtifactType {
+  // TODO(hayden@preemo.io, 04/17/2023): should these be ARTFACT_TYPE... or ARTIFACTTYPE_...
+  ARTIFACT_TYPE_UNSPECIFIED = 0;
+  ARTIFACT_TYPE_PARAMS = 1;
+  ARTIFACT_TYPE_RESULT = 2;
+}
+
 // This config is included for potential future use.
 // In the future it may include part count, expiration, or other metadata.
 message CreateArtifactConfig {
+  ArtifactType type = 1;
 }
 
 message BatchCreateArtifactRequest {

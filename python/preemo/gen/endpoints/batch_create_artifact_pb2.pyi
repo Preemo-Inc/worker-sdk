@@ -6,16 +6,36 @@ import builtins
 import collections.abc
 import google.protobuf.descriptor
 import google.protobuf.internal.containers
+import google.protobuf.internal.enum_type_wrapper
 import google.protobuf.message
 import sys
 import typing
 
-if sys.version_info >= (3, 8):
+if sys.version_info >= (3, 10):
     import typing as typing_extensions
 else:
     import typing_extensions
 
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
+
+class _ArtifactType:
+    ValueType = typing.NewType("ValueType", builtins.int)
+    V: typing_extensions.TypeAlias = ValueType
+
+class _ArtifactTypeEnumTypeWrapper(google.protobuf.internal.enum_type_wrapper._EnumTypeWrapper[_ArtifactType.ValueType], builtins.type):
+    DESCRIPTOR: google.protobuf.descriptor.EnumDescriptor
+    ARTIFACT_TYPE_UNSPECIFIED: _ArtifactType.ValueType  # 0
+    """TODO(hayden@preemo.io, 04/17/2023): should these be ARTFACT_TYPE... or ARTIFACTTYPE_..."""
+    ARTIFACT_TYPE_PARAMS: _ArtifactType.ValueType  # 1
+    ARTIFACT_TYPE_RESULT: _ArtifactType.ValueType  # 2
+
+class ArtifactType(_ArtifactType, metaclass=_ArtifactTypeEnumTypeWrapper): ...
+
+ARTIFACT_TYPE_UNSPECIFIED: ArtifactType.ValueType  # 0
+"""TODO(hayden@preemo.io, 04/17/2023): should these be ARTFACT_TYPE... or ARTIFACTTYPE_..."""
+ARTIFACT_TYPE_PARAMS: ArtifactType.ValueType  # 1
+ARTIFACT_TYPE_RESULT: ArtifactType.ValueType  # 2
+global___ArtifactType = ArtifactType
 
 @typing_extensions.final
 class CreateArtifactConfig(google.protobuf.message.Message):
@@ -25,9 +45,14 @@ class CreateArtifactConfig(google.protobuf.message.Message):
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
+    TYPE_FIELD_NUMBER: builtins.int
+    type: global___ArtifactType.ValueType
     def __init__(
         self,
+        *,
+        type: global___ArtifactType.ValueType = ...,
     ) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["type", b"type"]) -> None: ...
 
 global___CreateArtifactConfig = CreateArtifactConfig
 
