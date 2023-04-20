@@ -44,16 +44,18 @@ class ArtifactType(enum.Enum):
 
 @runtime_checkable
 class IArtifactManager(Protocol):
-    def create_artifact(self, content: bytes) -> ArtifactId:
+    def create_artifact(self, *, content: bytes, type_: ArtifactType) -> ArtifactId:
         pass
 
-    def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
+    def create_artifacts(
+        self, *, contents: List[bytes], type_: ArtifactType
+    ) -> List[ArtifactId]:
         pass
 
-    def get_artifact(self, artifact_id: ArtifactId) -> bytes:
+    def get_artifact(self, *, artifact_id: ArtifactId) -> bytes:
         pass
 
-    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
+    def get_artifacts(self, *, artifact_ids: List[ArtifactId]) -> List[bytes]:
         pass
 
 
@@ -102,18 +104,17 @@ class ArtifactManager:
         self,
         *,
         count: int,
-        # TODO(adrian@preemo.io, 04/20/2023): make this into an enum
-        artifact_type: ArtifactType,
+        type_: ArtifactType,
     ) -> List[Artifact]:
-        if artifact_type == ArtifactType.PARAMS:
-            config_artifact_type = ARTIFACT_TYPE_PARAMS
-        elif artifact_type == ArtifactType.RESULT:
-            config_artifact_type = ARTIFACT_TYPE_RESULT
+        if type_ == ArtifactType.PARAMS:
+            artifact_type = ARTIFACT_TYPE_PARAMS
+        elif type_ == ArtifactType.RESULT:
+            artifact_type = ARTIFACT_TYPE_RESULT
         else:
-            pass
+            raise AssertionError(f"Expected code to be unreachable, but got: {type_}")
 
         configs_by_index = {
-            i: CreateArtifactConfig(type=config_artifact_type) for i in range(count)
+            i: CreateArtifactConfig(artifact_type=artifact_type) for i in range(count)
         }
         response = self._messaging_client.batch_create_artifact(
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
@@ -129,16 +130,18 @@ class ArtifactManager:
             )
         ]
 
-    def create_artifact(self, content: bytes) -> ArtifactId:
-        artifact_ids = self.create_artifacts([content])
+    def create_artifact(self, *, content: bytes, type_: ArtifactType) -> ArtifactId:
+        artifact_ids = self.create_artifacts(contents=[content], type_=type_)
         if len(artifact_ids) != 1:
             raise Exception("expected exactly one artifact to be created")
 
         return artifact_ids[0]
 
     # TODO(hayden@preemo.io, 04/17/2023): include the type
-    def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
-        artifacts = self._create_artifacts(count=len(contents))
+    def create_artifacts(
+        self, *, contents: List[bytes], type_: ArtifactType
+    ) -> List[ArtifactId]:
+        artifacts = self._create_artifacts(count=len(contents), type_=type_)
         if len(artifacts) != len(contents):
             raise Exception("expected artifacts and contents lengths to be equal")
         artifacts_and_contents = zip(artifacts, contents)
@@ -219,14 +222,14 @@ class ArtifactManager:
 
         return [artifact.id for artifact in artifacts]
 
-    def get_artifact(self, artifact_id: ArtifactId) -> bytes:
-        contents = self.get_artifacts([artifact_id])
+    def get_artifact(self, *, artifact_id: ArtifactId) -> bytes:
+        contents = self.get_artifacts(artifact_ids=[artifact_id])
         if len(contents) != 1:
             raise Exception("expected exactly one artifact to be retrieved")
 
         return contents[0]
 
-    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
+    def get_artifacts(self, *, artifact_ids: List[ArtifactId]) -> List[bytes]:
         get_artifact_response = self._messaging_client.batch_get_artifact(
             BatchGetArtifactRequest(
                 configs_by_artifact_id={
