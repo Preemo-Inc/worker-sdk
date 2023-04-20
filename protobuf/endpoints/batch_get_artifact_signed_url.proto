@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package endpoints;
+
+// This config is included for potential future use.
+message GetArtifactDownloadSignedUrlConfigMetadata {
+}
+
+message GetArtifactDownloadSignedUrlConfig {
+  map<uint32, GetArtifactDownloadSignedUrlConfigMetadata> metadatas_by_part_number = 1;
+}
+
+// This config is included for potential future use.
+message GetArtifactUploadSignedUrlConfigMetadata {
+}
+
+message GetArtifactUploadSignedUrlConfig {
+  map<uint32, GetArtifactUploadSignedUrlConfigMetadata> metadatas_by_part_number = 1;
+}
+
+message GetArtifactSignedUrlConfig {
+  oneof config {
+    GetArtifactDownloadSignedUrlConfig download = 1;
+
+    GetArtifactUploadSignedUrlConfig upload = 2;
+  }
+}
+
+message BatchGetArtifactSignedUrlRequest {
+  map<string, GetArtifactSignedUrlConfig> configs_by_artifact_id = 1;
+}
+
+message GetArtifactDownloadSignedUrlResultMetadata {
+  optional string download_signed_url = 1;
+}
+
+message GetArtifactDownloadSignedUrlResult {
+  map<uint32, GetArtifactDownloadSignedUrlResultMetadata> metadatas_by_part_number = 1;
+}
+
+message GetArtifactUploadSignedUrlResultMetadata {
+  optional string upload_signed_url = 1;
+}
+
+message GetArtifactUploadSignedUrlResult {
+  map<uint32, GetArtifactUploadSignedUrlResultMetadata> metadatas_by_part_number = 1;
+}
+
+message GetArtifactSignedUrlResult {
+  oneof result {
+    GetArtifactDownloadSignedUrlResult download = 1;
+
+    GetArtifactUploadSignedUrlResult upload = 2;
+  }
+}
+
+message BatchGetArtifactSignedUrlResponse {
+  map<string, GetArtifactSignedUrlResult> results_by_artifact_id = 1;
+}
