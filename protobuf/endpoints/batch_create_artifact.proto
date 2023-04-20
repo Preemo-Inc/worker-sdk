@@ -2,15 +2,11 @@ syntax = "proto3";
 
 package endpoints;
 
-enum ArtifactType {
-  ARTIFACT_TYPE_UNSPECIFIED = 0;
-  ARTIFACT_TYPE_PARAMS = 1;
-  ARTIFACT_TYPE_RESULT = 2;
-}
+import "models/artifact_type.proto";
 
 message CreateArtifactConfig {
   // Required field representing the type of content the artifact will contain.
-  optional ArtifactType type = 1;
+  optional models.ArtifactType type = 1;
 
   // Optional field representing the initial number of parts to allocate for this artifact.
   optional uint32 part_count = 2;

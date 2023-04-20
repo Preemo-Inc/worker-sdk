@@ -1,27 +1,20 @@
 import concurrent.futures
 import math
-from typing import Dict, List, Protocol, runtime_checkable
+from typing import Dict, List, Literal, Protocol, Union, runtime_checkable
 
 import requests
 from pydantic import StrictInt
 
-from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
-    BatchCreateArtifactPartRequest,
-    CreateArtifactPartConfig,
-    CreateArtifactPartConfigMetadata,
-)
 from preemo.gen.endpoints.batch_create_artifact_pb2 import (
+    ARTIFACT_TYPE_PARAMS,
+    ARTIFACT_TYPE_RESULT,
+    ArtifactType,
     BatchCreateArtifactRequest,
     CreateArtifactConfig,
 )
 from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
     FinalizeArtifactConfig,
-)
-from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
-    BatchGetArtifactPartRequest,
-    GetArtifactPartConfig,
-    GetArtifactPartConfigMetadata,
 )
 from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
@@ -98,7 +91,18 @@ class ArtifactManager:
 
             return response.content
 
-    def _create_artifacts(self, *, count: int) -> List[Artifact]:
+    def _create_artifacts(
+        self,
+        *,
+        count: int,
+        # TODO(adrian@preemo.io, 04/20/2023): make this into an enum
+        content_type: Union[Literal["params"], Literal["result"]],
+    ) -> List[Artifact]:
+        if content_type == "params":
+            artifact_type = ArtifactType.ARTIFACT_TYPE_PARAMS
+        elif content_type == "result":
+            artifact_type = ArtifactType.ARTIFACT_TYPE_RESULT
+
         configs_by_index = {i: CreateArtifactConfig() for i in range(count)}
         response = self._messaging_client.batch_create_artifact(
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
