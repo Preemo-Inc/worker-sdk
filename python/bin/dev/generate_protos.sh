@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [[ "${0}" != *"bin/dev/generate_protos.sh" ]] || [[ "$(basename $(pwd))" != "python" ]]; then
   echo "script must be run from the subrepo root: worker-sdk/python"
