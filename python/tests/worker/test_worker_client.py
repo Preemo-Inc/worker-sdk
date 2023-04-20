@@ -1,8 +1,8 @@
 from typing import List
 
-from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
-    BatchCreateArtifactPartRequest,
-    BatchCreateArtifactPartResponse,
+from preemo.gen.endpoints.batch_allocate_artifact_part_pb2 import (
+    BatchAllocateArtifactPartRequest,
+    BatchAllocateArtifactPartResponse,
 )
 from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
@@ -16,13 +16,17 @@ from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
     BatchFinalizeArtifactResponse,
 )
-from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
-    BatchGetArtifactPartRequest,
-    BatchGetArtifactPartResponse,
+from preemo.gen.endpoints.batch_get_artifact_download_url_pb2 import (
+    BatchGetArtifactDownloadUrlRequest,
+    BatchGetArtifactDownloadUrlResponse,
 )
 from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
     BatchGetArtifactResponse,
+)
+from preemo.gen.endpoints.batch_get_artifact_upload_url_pb2 import (
+    BatchGetArtifactUploadUrlRequest,
+    BatchGetArtifactUploadUrlResponse,
 )
 from preemo.gen.endpoints.check_function_pb2 import (
     CheckFunctionRequest,
@@ -57,14 +61,14 @@ class DoNothingArtifactManager(IArtifactManager):
 
 
 class DoNothingMessagingClient(IMessagingClient):
+    def batch_allocate_artifact_part(
+        self, request: BatchAllocateArtifactPartRequest
+    ) -> BatchAllocateArtifactPartResponse:
+        raise Exception("no call expected")
+
     def batch_create_artifact(
         self, request: BatchCreateArtifactRequest
     ) -> BatchCreateArtifactResponse:
-        raise Exception("no call expected")
-
-    def batch_create_artifact_part(
-        self, request: BatchCreateArtifactPartRequest
-    ) -> BatchCreateArtifactPartResponse:
         raise Exception("no call expected")
 
     def batch_execute_function(
@@ -82,9 +86,14 @@ class DoNothingMessagingClient(IMessagingClient):
     ) -> BatchGetArtifactResponse:
         raise Exception("no call expected")
 
-    def batch_get_artifact_part(
-        self, request: BatchGetArtifactPartRequest
-    ) -> BatchGetArtifactPartResponse:
+    def batch_get_artifact_download_url(
+        self, request: BatchGetArtifactDownloadUrlRequest
+    ) -> BatchGetArtifactDownloadUrlResponse:
+        raise Exception("no call expected")
+
+    def batch_get_artifact_upload_url(
+        self, request: BatchGetArtifactUploadUrlRequest
+    ) -> BatchGetArtifactUploadUrlResponse:
         raise Exception("no call expected")
 
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
