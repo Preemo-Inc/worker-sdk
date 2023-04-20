@@ -1,14 +1,12 @@
 import concurrent.futures
+import enum
 import math
-from typing import Dict, List, Literal, Protocol, Union, runtime_checkable
+from typing import Dict, List, Protocol, runtime_checkable
 
 import requests
 from pydantic import StrictInt
 
 from preemo.gen.endpoints.batch_create_artifact_pb2 import (
-    ARTIFACT_TYPE_PARAMS,
-    ARTIFACT_TYPE_RESULT,
-    ArtifactType,
     BatchCreateArtifactRequest,
     CreateArtifactConfig,
 )
@@ -19,6 +17,10 @@ from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
 from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
     GetArtifactConfig,
+)
+from preemo.gen.models.artifact_type_pb2 import (
+    ARTIFACT_TYPE_PARAMS,
+    ARTIFACT_TYPE_RESULT,
 )
 from preemo.worker._env_manager import EnvManager
 from preemo.worker._messaging_client import IMessagingClient
@@ -33,6 +35,11 @@ class ArtifactId(StringValue):
 class Artifact(ImmutableModel):
     id: ArtifactId
     part_size_threshold: StrictInt
+
+
+class ArtifactType(enum.Enum):
+    PARAMS = "params"
+    RESULT = "result"
 
 
 @runtime_checkable
@@ -96,14 +103,18 @@ class ArtifactManager:
         *,
         count: int,
         # TODO(adrian@preemo.io, 04/20/2023): make this into an enum
-        content_type: Union[Literal["params"], Literal["result"]],
+        artifact_type: ArtifactType,
     ) -> List[Artifact]:
-        if content_type == "params":
-            artifact_type = ArtifactType.ARTIFACT_TYPE_PARAMS
-        elif content_type == "result":
-            artifact_type = ArtifactType.ARTIFACT_TYPE_RESULT
+        if artifact_type == ArtifactType.PARAMS:
+            config_artifact_type = ARTIFACT_TYPE_PARAMS
+        elif artifact_type == ArtifactType.RESULT:
+            config_artifact_type = ARTIFACT_TYPE_RESULT
+        else:
+            pass
 
-        configs_by_index = {i: CreateArtifactConfig() for i in range(count)}
+        configs_by_index = {
+            i: CreateArtifactConfig(type=config_artifact_type) for i in range(count)
+        }
         response = self._messaging_client.batch_create_artifact(
             BatchCreateArtifactRequest(configs_by_index=configs_by_index)
         )

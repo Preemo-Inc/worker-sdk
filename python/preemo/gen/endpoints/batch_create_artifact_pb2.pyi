@@ -22,24 +22,24 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 class CreateArtifactConfig(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    TYPE_FIELD_NUMBER: builtins.int
+    ARTIFACT_TYPE_FIELD_NUMBER: builtins.int
     PART_COUNT_FIELD_NUMBER: builtins.int
-    type: preemo.gen.models.artifact_type_pb2.ArtifactType.ValueType
+    artifact_type: preemo.gen.models.artifact_type_pb2.ArtifactType.ValueType
     """Required field representing the type of content the artifact will contain."""
     part_count: builtins.int
     """Optional field representing the initial number of parts to allocate for this artifact."""
     def __init__(
         self,
         *,
-        type: preemo.gen.models.artifact_type_pb2.ArtifactType.ValueType | None = ...,
+        artifact_type: preemo.gen.models.artifact_type_pb2.ArtifactType.ValueType | None = ...,
         part_count: builtins.int | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "_type", b"_type", "part_count", b"part_count", "type", b"type"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "_type", b"_type", "part_count", b"part_count", "type", b"type"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_artifact_type", b"_artifact_type", "_part_count", b"_part_count", "artifact_type", b"artifact_type", "part_count", b"part_count"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_artifact_type", b"_artifact_type", "_part_count", b"_part_count", "artifact_type", b"artifact_type", "part_count", b"part_count"]) -> None: ...
+    @typing.overload
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_artifact_type", b"_artifact_type"]) -> typing_extensions.Literal["artifact_type"] | None: ...
     @typing.overload
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_part_count", b"_part_count"]) -> typing_extensions.Literal["part_count"] | None: ...
-    @typing.overload
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_type", b"_type"]) -> typing_extensions.Literal["type"] | None: ...
 
 global___CreateArtifactConfig = CreateArtifactConfig
 

@@ -6,7 +6,7 @@ import "models/artifact_type.proto";
 
 message CreateArtifactConfig {
   // Required field representing the type of content the artifact will contain.
-  optional models.ArtifactType type = 1;
+  optional models.ArtifactType artifact_type = 1;
 
   // Optional field representing the initial number of parts to allocate for this artifact.
   optional uint32 part_count = 2;
