@@ -6,8 +6,8 @@ import "endpoints/batch_allocate_artifact_part.proto";
 import "endpoints/batch_create_artifact.proto";
 import "endpoints/batch_execute_function.proto";
 import "endpoints/batch_finalize_artifact.proto";
-import "endpoints/batch_get_artifact_download_signed_url.proto";
-import "endpoints/batch_get_artifact_upload_signed_url.proto";
+import "endpoints/batch_get_artifact_download_url.proto";
+import "endpoints/batch_get_artifact_upload_url.proto";
 import "endpoints/batch_get_artifact.proto";
 import "endpoints/check_function.proto";
 import "endpoints/header.proto";
@@ -23,9 +23,9 @@ service WorkerService {
 
   rpc BatchFinalizeArtifact(endpoints.BatchFinalizeArtifactRequest) returns (endpoints.BatchFinalizeArtifactResponse);
 
-  rpc BatchGetArtifactDownloadSignedUrl(endpoints.BatchGetArtifactDownloadSignedUrlRequest) returns (endpoints.BatchGetArtifactDownloadSignedUrlResponse);
+  rpc BatchGetArtifactDownloadUrl(endpoints.BatchGetArtifactDownloadUrlRequest) returns (endpoints.BatchGetArtifactDownloadUrlResponse);
 
-  rpc BatchGetArtifactUploadSignedUrl(endpoints.BatchGetArtifactUploadSignedUrlRequest) returns (endpoints.BatchGetArtifactUploadSignedUrlResponse);
+  rpc BatchGetArtifactUploadUrl(endpoints.BatchGetArtifactUploadUrlRequest) returns (endpoints.BatchGetArtifactUploadUrlResponse);
 
   rpc BatchGetArtifact(endpoints.BatchGetArtifactRequest) returns (endpoints.BatchGetArtifactResponse);
 

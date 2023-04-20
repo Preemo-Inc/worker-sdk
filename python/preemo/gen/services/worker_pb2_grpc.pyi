@@ -7,9 +7,9 @@ import preemo.gen.endpoints.batch_allocate_artifact_part_pb2
 import preemo.gen.endpoints.batch_create_artifact_pb2
 import preemo.gen.endpoints.batch_execute_function_pb2
 import preemo.gen.endpoints.batch_finalize_artifact_pb2
-import preemo.gen.endpoints.batch_get_artifact_download_signed_url_pb2
+import preemo.gen.endpoints.batch_get_artifact_download_url_pb2
 import preemo.gen.endpoints.batch_get_artifact_pb2
-import preemo.gen.endpoints.batch_get_artifact_upload_signed_url_pb2
+import preemo.gen.endpoints.batch_get_artifact_upload_url_pb2
 import preemo.gen.endpoints.check_function_pb2
 import preemo.gen.endpoints.header_pb2
 import preemo.gen.endpoints.register_function_pb2
@@ -34,13 +34,13 @@ class WorkerServiceStub:
         preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactRequest,
         preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactResponse,
     ]
-    BatchGetArtifactDownloadSignedUrl: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.batch_get_artifact_download_signed_url_pb2.BatchGetArtifactDownloadSignedUrlRequest,
-        preemo.gen.endpoints.batch_get_artifact_download_signed_url_pb2.BatchGetArtifactDownloadSignedUrlResponse,
+    BatchGetArtifactDownloadUrl: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_get_artifact_download_url_pb2.BatchGetArtifactDownloadUrlRequest,
+        preemo.gen.endpoints.batch_get_artifact_download_url_pb2.BatchGetArtifactDownloadUrlResponse,
     ]
-    BatchGetArtifactUploadSignedUrl: grpc.UnaryUnaryMultiCallable[
-        preemo.gen.endpoints.batch_get_artifact_upload_signed_url_pb2.BatchGetArtifactUploadSignedUrlRequest,
-        preemo.gen.endpoints.batch_get_artifact_upload_signed_url_pb2.BatchGetArtifactUploadSignedUrlResponse,
+    BatchGetArtifactUploadUrl: grpc.UnaryUnaryMultiCallable[
+        preemo.gen.endpoints.batch_get_artifact_upload_url_pb2.BatchGetArtifactUploadUrlRequest,
+        preemo.gen.endpoints.batch_get_artifact_upload_url_pb2.BatchGetArtifactUploadUrlResponse,
     ]
     BatchGetArtifact: grpc.UnaryUnaryMultiCallable[
         preemo.gen.endpoints.batch_get_artifact_pb2.BatchGetArtifactRequest,
@@ -89,17 +89,17 @@ class WorkerServiceServicer(metaclass=abc.ABCMeta):
         context: grpc.ServicerContext,
     ) -> preemo.gen.endpoints.batch_finalize_artifact_pb2.BatchFinalizeArtifactResponse: ...
     @abc.abstractmethod
-    def BatchGetArtifactDownloadSignedUrl(
+    def BatchGetArtifactDownloadUrl(
         self,
-        request: preemo.gen.endpoints.batch_get_artifact_download_signed_url_pb2.BatchGetArtifactDownloadSignedUrlRequest,
+        request: preemo.gen.endpoints.batch_get_artifact_download_url_pb2.BatchGetArtifactDownloadUrlRequest,
         context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.batch_get_artifact_download_signed_url_pb2.BatchGetArtifactDownloadSignedUrlResponse: ...
+    ) -> preemo.gen.endpoints.batch_get_artifact_download_url_pb2.BatchGetArtifactDownloadUrlResponse: ...
     @abc.abstractmethod
-    def BatchGetArtifactUploadSignedUrl(
+    def BatchGetArtifactUploadUrl(
         self,
-        request: preemo.gen.endpoints.batch_get_artifact_upload_signed_url_pb2.BatchGetArtifactUploadSignedUrlRequest,
+        request: preemo.gen.endpoints.batch_get_artifact_upload_url_pb2.BatchGetArtifactUploadUrlRequest,
         context: grpc.ServicerContext,
-    ) -> preemo.gen.endpoints.batch_get_artifact_upload_signed_url_pb2.BatchGetArtifactUploadSignedUrlResponse: ...
+    ) -> preemo.gen.endpoints.batch_get_artifact_upload_url_pb2.BatchGetArtifactUploadUrlResponse: ...
     @abc.abstractmethod
     def BatchGetArtifact(
         self,

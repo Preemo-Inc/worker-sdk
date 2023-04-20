@@ -6,9 +6,9 @@ from endpoints import batch_allocate_artifact_part_pb2 as endpoints_dot_batch__a
 from endpoints import batch_create_artifact_pb2 as endpoints_dot_batch__create__artifact__pb2
 from endpoints import batch_execute_function_pb2 as endpoints_dot_batch__execute__function__pb2
 from endpoints import batch_finalize_artifact_pb2 as endpoints_dot_batch__finalize__artifact__pb2
-from endpoints import batch_get_artifact_download_signed_url_pb2 as endpoints_dot_batch__get__artifact__download__signed__url__pb2
+from endpoints import batch_get_artifact_download_url_pb2 as endpoints_dot_batch__get__artifact__download__url__pb2
 from endpoints import batch_get_artifact_pb2 as endpoints_dot_batch__get__artifact__pb2
-from endpoints import batch_get_artifact_upload_signed_url_pb2 as endpoints_dot_batch__get__artifact__upload__signed__url__pb2
+from endpoints import batch_get_artifact_upload_url_pb2 as endpoints_dot_batch__get__artifact__upload__url__pb2
 from endpoints import check_function_pb2 as endpoints_dot_check__function__pb2
 from endpoints import header_pb2 as endpoints_dot_header__pb2
 from endpoints import register_function_pb2 as endpoints_dot_register__function__pb2
@@ -44,15 +44,15 @@ class WorkerServiceStub(object):
                 request_serializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.SerializeToString,
                 response_deserializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactResponse.FromString,
                 )
-        self.BatchGetArtifactDownloadSignedUrl = channel.unary_unary(
-                '/services.WorkerService/BatchGetArtifactDownloadSignedUrl',
-                request_serializer=endpoints_dot_batch__get__artifact__download__signed__url__pb2.BatchGetArtifactDownloadSignedUrlRequest.SerializeToString,
-                response_deserializer=endpoints_dot_batch__get__artifact__download__signed__url__pb2.BatchGetArtifactDownloadSignedUrlResponse.FromString,
+        self.BatchGetArtifactDownloadUrl = channel.unary_unary(
+                '/services.WorkerService/BatchGetArtifactDownloadUrl',
+                request_serializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlRequest.SerializeToString,
+                response_deserializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlResponse.FromString,
                 )
-        self.BatchGetArtifactUploadSignedUrl = channel.unary_unary(
-                '/services.WorkerService/BatchGetArtifactUploadSignedUrl',
-                request_serializer=endpoints_dot_batch__get__artifact__upload__signed__url__pb2.BatchGetArtifactUploadSignedUrlRequest.SerializeToString,
-                response_deserializer=endpoints_dot_batch__get__artifact__upload__signed__url__pb2.BatchGetArtifactUploadSignedUrlResponse.FromString,
+        self.BatchGetArtifactUploadUrl = channel.unary_unary(
+                '/services.WorkerService/BatchGetArtifactUploadUrl',
+                request_serializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlRequest.SerializeToString,
+                response_deserializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlResponse.FromString,
                 )
         self.BatchGetArtifact = channel.unary_unary(
                 '/services.WorkerService/BatchGetArtifact',
@@ -108,13 +108,13 @@ class WorkerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BatchGetArtifactDownloadSignedUrl(self, request, context):
+    def BatchGetArtifactDownloadUrl(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BatchGetArtifactUploadSignedUrl(self, request, context):
+    def BatchGetArtifactUploadUrl(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -173,15 +173,15 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     request_deserializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.FromString,
                     response_serializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactResponse.SerializeToString,
             ),
-            'BatchGetArtifactDownloadSignedUrl': grpc.unary_unary_rpc_method_handler(
-                    servicer.BatchGetArtifactDownloadSignedUrl,
-                    request_deserializer=endpoints_dot_batch__get__artifact__download__signed__url__pb2.BatchGetArtifactDownloadSignedUrlRequest.FromString,
-                    response_serializer=endpoints_dot_batch__get__artifact__download__signed__url__pb2.BatchGetArtifactDownloadSignedUrlResponse.SerializeToString,
+            'BatchGetArtifactDownloadUrl': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchGetArtifactDownloadUrl,
+                    request_deserializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlRequest.FromString,
+                    response_serializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlResponse.SerializeToString,
             ),
-            'BatchGetArtifactUploadSignedUrl': grpc.unary_unary_rpc_method_handler(
-                    servicer.BatchGetArtifactUploadSignedUrl,
-                    request_deserializer=endpoints_dot_batch__get__artifact__upload__signed__url__pb2.BatchGetArtifactUploadSignedUrlRequest.FromString,
-                    response_serializer=endpoints_dot_batch__get__artifact__upload__signed__url__pb2.BatchGetArtifactUploadSignedUrlResponse.SerializeToString,
+            'BatchGetArtifactUploadUrl': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchGetArtifactUploadUrl,
+                    request_deserializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlRequest.FromString,
+                    response_serializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlResponse.SerializeToString,
             ),
             'BatchGetArtifact': grpc.unary_unary_rpc_method_handler(
                     servicer.BatchGetArtifact,
@@ -287,7 +287,7 @@ class WorkerService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def BatchGetArtifactDownloadSignedUrl(request,
+    def BatchGetArtifactDownloadUrl(request,
             target,
             options=(),
             channel_credentials=None,
@@ -297,14 +297,14 @@ class WorkerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactDownloadSignedUrl',
-            endpoints_dot_batch__get__artifact__download__signed__url__pb2.BatchGetArtifactDownloadSignedUrlRequest.SerializeToString,
-            endpoints_dot_batch__get__artifact__download__signed__url__pb2.BatchGetArtifactDownloadSignedUrlResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactDownloadUrl',
+            endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlRequest.SerializeToString,
+            endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def BatchGetArtifactUploadSignedUrl(request,
+    def BatchGetArtifactUploadUrl(request,
             target,
             options=(),
             channel_credentials=None,
@@ -314,9 +314,9 @@ class WorkerService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactUploadSignedUrl',
-            endpoints_dot_batch__get__artifact__upload__signed__url__pb2.BatchGetArtifactUploadSignedUrlRequest.SerializeToString,
-            endpoints_dot_batch__get__artifact__upload__signed__url__pb2.BatchGetArtifactUploadSignedUrlResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactUploadUrl',
+            endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlRequest.SerializeToString,
+            endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
