@@ -40,23 +40,25 @@ from preemo.gen.endpoints.sdk_server_ready_pb2 import (
     SdkServerReadyRequest,
     SdkServerReadyResponse,
 )
-from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
+from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
 
 class DoNothingArtifactManager(IArtifactManager):
-    def create_artifact(self, content: bytes) -> ArtifactId:
+    def create_artifact(self, *, content: bytes, type_: ArtifactType) -> ArtifactId:
         raise Exception("no call expected")
 
-    def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
+    def create_artifacts(
+        self, *, contents: List[bytes], type_: ArtifactType
+    ) -> List[ArtifactId]:
         raise Exception("no call expected")
 
-    def get_artifact(self, artifact_id: ArtifactId) -> bytes:
+    def get_artifact(self, *, artifact_id: ArtifactId) -> bytes:
         raise Exception("no call expected")
 
-    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
+    def get_artifacts(self, *, artifact_ids: List[ArtifactId]) -> List[bytes]:
         raise Exception("no call expected")
 
 
