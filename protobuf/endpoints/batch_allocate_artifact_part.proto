@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package endpoints;
+
+// This message is included for potential future use.
+message AllocateArtifactPartConfigMetadata {
+}
+
+message AllocateArtifactPartConfig {
+  // For an artifact, part numbers must be sequential integers starting with 0.
+  map<uint32, AllocateArtifactPartConfigMetadata> metadatas_by_part_number = 1;
+}
+
+message BatchAllocateArtifactPartRequest {
+  map<string, AllocateArtifactPartConfig> configs_by_artifact_id = 1;
+}
+
+// This message is included for potential future use.
+message AllocateArtifactPartResultMetadata {
+}
+
+message AllocateArtifactPartResult {
+  map<uint32, AllocateArtifactPartResultMetadata> metadatas_by_part_number = 1;
+}
+
+message BatchAllocateArtifactPartResponse {
+  map<string, AllocateArtifactPartResult> results_by_artifact_id = 1;
+}

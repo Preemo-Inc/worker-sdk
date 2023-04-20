@@ -17,8 +17,8 @@ else:
 DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
-class CreateArtifactPartConfigMetadata(google.protobuf.message.Message):
-    """This config is included for potential future use."""
+class AllocateArtifactPartConfigMetadata(google.protobuf.message.Message):
+    """This message is included for potential future use."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
@@ -26,10 +26,10 @@ class CreateArtifactPartConfigMetadata(google.protobuf.message.Message):
         self,
     ) -> None: ...
 
-global___CreateArtifactPartConfigMetadata = CreateArtifactPartConfigMetadata
+global___AllocateArtifactPartConfigMetadata = AllocateArtifactPartConfigMetadata
 
 @typing_extensions.final
-class CreateArtifactPartConfig(google.protobuf.message.Message):
+class AllocateArtifactPartConfig(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     @typing_extensions.final
@@ -40,31 +40,31 @@ class CreateArtifactPartConfig(google.protobuf.message.Message):
         VALUE_FIELD_NUMBER: builtins.int
         key: builtins.int
         @property
-        def value(self) -> global___CreateArtifactPartConfigMetadata: ...
+        def value(self) -> global___AllocateArtifactPartConfigMetadata: ...
         def __init__(
             self,
             *,
             key: builtins.int = ...,
-            value: global___CreateArtifactPartConfigMetadata | None = ...,
+            value: global___AllocateArtifactPartConfigMetadata | None = ...,
         ) -> None: ...
         def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
         def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
 
     METADATAS_BY_PART_NUMBER_FIELD_NUMBER: builtins.int
     @property
-    def metadatas_by_part_number(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___CreateArtifactPartConfigMetadata]:
-        """For an artifact, part numbers must be sequential positive integers starting with 0."""
+    def metadatas_by_part_number(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___AllocateArtifactPartConfigMetadata]:
+        """For an artifact, part numbers must be sequential integers starting with 0."""
     def __init__(
         self,
         *,
-        metadatas_by_part_number: collections.abc.Mapping[builtins.int, global___CreateArtifactPartConfigMetadata] | None = ...,
+        metadatas_by_part_number: collections.abc.Mapping[builtins.int, global___AllocateArtifactPartConfigMetadata] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing_extensions.Literal["metadatas_by_part_number", b"metadatas_by_part_number"]) -> None: ...
 
-global___CreateArtifactPartConfig = CreateArtifactPartConfig
+global___AllocateArtifactPartConfig = AllocateArtifactPartConfig
 
 @typing_extensions.final
-class BatchCreateArtifactPartRequest(google.protobuf.message.Message):
+class BatchAllocateArtifactPartRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     @typing_extensions.final
@@ -75,47 +75,42 @@ class BatchCreateArtifactPartRequest(google.protobuf.message.Message):
         VALUE_FIELD_NUMBER: builtins.int
         key: builtins.str
         @property
-        def value(self) -> global___CreateArtifactPartConfig: ...
+        def value(self) -> global___AllocateArtifactPartConfig: ...
         def __init__(
             self,
             *,
             key: builtins.str = ...,
-            value: global___CreateArtifactPartConfig | None = ...,
+            value: global___AllocateArtifactPartConfig | None = ...,
         ) -> None: ...
         def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
         def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
 
     CONFIGS_BY_ARTIFACT_ID_FIELD_NUMBER: builtins.int
     @property
-    def configs_by_artifact_id(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, global___CreateArtifactPartConfig]: ...
+    def configs_by_artifact_id(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, global___AllocateArtifactPartConfig]: ...
     def __init__(
         self,
         *,
-        configs_by_artifact_id: collections.abc.Mapping[builtins.str, global___CreateArtifactPartConfig] | None = ...,
+        configs_by_artifact_id: collections.abc.Mapping[builtins.str, global___AllocateArtifactPartConfig] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing_extensions.Literal["configs_by_artifact_id", b"configs_by_artifact_id"]) -> None: ...
 
-global___BatchCreateArtifactPartRequest = BatchCreateArtifactPartRequest
+global___BatchAllocateArtifactPartRequest = BatchAllocateArtifactPartRequest
 
 @typing_extensions.final
-class CreateArtifactPartResultMetadata(google.protobuf.message.Message):
+class AllocateArtifactPartResultMetadata(google.protobuf.message.Message):
+    """This message is included for potential future use."""
+
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    UPLOAD_SIGNED_URL_FIELD_NUMBER: builtins.int
-    upload_signed_url: builtins.str
     def __init__(
         self,
-        *,
-        upload_signed_url: builtins.str | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_upload_signed_url", b"_upload_signed_url", "upload_signed_url", b"upload_signed_url"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_upload_signed_url", b"_upload_signed_url", "upload_signed_url", b"upload_signed_url"]) -> None: ...
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_upload_signed_url", b"_upload_signed_url"]) -> typing_extensions.Literal["upload_signed_url"] | None: ...
 
-global___CreateArtifactPartResultMetadata = CreateArtifactPartResultMetadata
+global___AllocateArtifactPartResultMetadata = AllocateArtifactPartResultMetadata
 
 @typing_extensions.final
-class CreateArtifactPartResult(google.protobuf.message.Message):
+class AllocateArtifactPartResult(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     @typing_extensions.final
@@ -126,30 +121,30 @@ class CreateArtifactPartResult(google.protobuf.message.Message):
         VALUE_FIELD_NUMBER: builtins.int
         key: builtins.int
         @property
-        def value(self) -> global___CreateArtifactPartResultMetadata: ...
+        def value(self) -> global___AllocateArtifactPartResultMetadata: ...
         def __init__(
             self,
             *,
             key: builtins.int = ...,
-            value: global___CreateArtifactPartResultMetadata | None = ...,
+            value: global___AllocateArtifactPartResultMetadata | None = ...,
         ) -> None: ...
         def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
         def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
 
     METADATAS_BY_PART_NUMBER_FIELD_NUMBER: builtins.int
     @property
-    def metadatas_by_part_number(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___CreateArtifactPartResultMetadata]: ...
+    def metadatas_by_part_number(self) -> google.protobuf.internal.containers.MessageMap[builtins.int, global___AllocateArtifactPartResultMetadata]: ...
     def __init__(
         self,
         *,
-        metadatas_by_part_number: collections.abc.Mapping[builtins.int, global___CreateArtifactPartResultMetadata] | None = ...,
+        metadatas_by_part_number: collections.abc.Mapping[builtins.int, global___AllocateArtifactPartResultMetadata] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing_extensions.Literal["metadatas_by_part_number", b"metadatas_by_part_number"]) -> None: ...
 
-global___CreateArtifactPartResult = CreateArtifactPartResult
+global___AllocateArtifactPartResult = AllocateArtifactPartResult
 
 @typing_extensions.final
-class BatchCreateArtifactPartResponse(google.protobuf.message.Message):
+class BatchAllocateArtifactPartResponse(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     @typing_extensions.final
@@ -160,24 +155,24 @@ class BatchCreateArtifactPartResponse(google.protobuf.message.Message):
         VALUE_FIELD_NUMBER: builtins.int
         key: builtins.str
         @property
-        def value(self) -> global___CreateArtifactPartResult: ...
+        def value(self) -> global___AllocateArtifactPartResult: ...
         def __init__(
             self,
             *,
             key: builtins.str = ...,
-            value: global___CreateArtifactPartResult | None = ...,
+            value: global___AllocateArtifactPartResult | None = ...,
         ) -> None: ...
         def HasField(self, field_name: typing_extensions.Literal["value", b"value"]) -> builtins.bool: ...
         def ClearField(self, field_name: typing_extensions.Literal["key", b"key", "value", b"value"]) -> None: ...
 
     RESULTS_BY_ARTIFACT_ID_FIELD_NUMBER: builtins.int
     @property
-    def results_by_artifact_id(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, global___CreateArtifactPartResult]: ...
+    def results_by_artifact_id(self) -> google.protobuf.internal.containers.MessageMap[builtins.str, global___AllocateArtifactPartResult]: ...
     def __init__(
         self,
         *,
-        results_by_artifact_id: collections.abc.Mapping[builtins.str, global___CreateArtifactPartResult] | None = ...,
+        results_by_artifact_id: collections.abc.Mapping[builtins.str, global___AllocateArtifactPartResult] | None = ...,
     ) -> None: ...
     def ClearField(self, field_name: typing_extensions.Literal["results_by_artifact_id", b"results_by_artifact_id"]) -> None: ...
 
-global___BatchCreateArtifactPartResponse = BatchCreateArtifactPartResponse
+global___BatchAllocateArtifactPartResponse = BatchAllocateArtifactPartResponse

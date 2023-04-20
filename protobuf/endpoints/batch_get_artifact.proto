@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package endpoints;
 
-// This config is included for potential future use.
+// This message is included for potential future use.
 message GetArtifactConfig {
 }
 

@@ -14,7 +14,7 @@ message BatchFinalizeArtifactRequest {
   map<string, FinalizeArtifactConfig> configs_by_artifact_id = 1;
 }
 
-// This result is included for potential future use.
+// This message is included for potential future use.
 message FinalizeArtifactResult {
 }
 

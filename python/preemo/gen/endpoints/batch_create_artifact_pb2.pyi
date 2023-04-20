@@ -37,21 +37,25 @@ global___ArtifactType = ArtifactType
 
 @typing_extensions.final
 class CreateArtifactConfig(google.protobuf.message.Message):
-    """This config is included for potential future use.
-    In the future it may include part count, expiration, or other metadata.
-    """
-
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     TYPE_FIELD_NUMBER: builtins.int
+    PART_COUNT_FIELD_NUMBER: builtins.int
     type: global___ArtifactType.ValueType
+    """Required field representing the type of content the artifact will contain."""
+    part_count: builtins.int
+    """Optional field representing the initial number of parts to allocate for this artifact."""
     def __init__(
         self,
         *,
         type: global___ArtifactType.ValueType | None = ...,
+        part_count: builtins.int | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_type", b"_type", "type", b"type"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_type", b"_type", "type", b"type"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "_type", b"_type", "part_count", b"part_count", "type", b"type"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_part_count", b"_part_count", "_type", b"_type", "part_count", b"part_count", "type", b"type"]) -> None: ...
+    @typing.overload
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_part_count", b"_part_count"]) -> typing_extensions.Literal["part_count"] | None: ...
+    @typing.overload
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_type", b"_type"]) -> typing_extensions.Literal["type"] | None: ...
 
 global___CreateArtifactConfig = CreateArtifactConfig
