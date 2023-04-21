@@ -2,12 +2,13 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from endpoints import batch_create_artifact_part_pb2 as endpoints_dot_batch__create__artifact__part__pb2
+from endpoints import batch_allocate_artifact_part_pb2 as endpoints_dot_batch__allocate__artifact__part__pb2
 from endpoints import batch_create_artifact_pb2 as endpoints_dot_batch__create__artifact__pb2
 from endpoints import batch_execute_function_pb2 as endpoints_dot_batch__execute__function__pb2
 from endpoints import batch_finalize_artifact_pb2 as endpoints_dot_batch__finalize__artifact__pb2
-from endpoints import batch_get_artifact_part_pb2 as endpoints_dot_batch__get__artifact__part__pb2
+from endpoints import batch_get_artifact_download_url_pb2 as endpoints_dot_batch__get__artifact__download__url__pb2
 from endpoints import batch_get_artifact_pb2 as endpoints_dot_batch__get__artifact__pb2
+from endpoints import batch_get_artifact_upload_url_pb2 as endpoints_dot_batch__get__artifact__upload__url__pb2
 from endpoints import check_function_pb2 as endpoints_dot_check__function__pb2
 from endpoints import header_pb2 as endpoints_dot_header__pb2
 from endpoints import register_function_pb2 as endpoints_dot_register__function__pb2
@@ -23,15 +24,15 @@ class WorkerServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.BatchAllocateArtifactPart = channel.unary_unary(
+                '/services.WorkerService/BatchAllocateArtifactPart',
+                request_serializer=endpoints_dot_batch__allocate__artifact__part__pb2.BatchAllocateArtifactPartRequest.SerializeToString,
+                response_deserializer=endpoints_dot_batch__allocate__artifact__part__pb2.BatchAllocateArtifactPartResponse.FromString,
+                )
         self.BatchCreateArtifact = channel.unary_unary(
                 '/services.WorkerService/BatchCreateArtifact',
                 request_serializer=endpoints_dot_batch__create__artifact__pb2.BatchCreateArtifactRequest.SerializeToString,
                 response_deserializer=endpoints_dot_batch__create__artifact__pb2.BatchCreateArtifactResponse.FromString,
-                )
-        self.BatchCreateArtifactPart = channel.unary_unary(
-                '/services.WorkerService/BatchCreateArtifactPart',
-                request_serializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.SerializeToString,
-                response_deserializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.FromString,
                 )
         self.BatchExecuteFunction = channel.unary_unary(
                 '/services.WorkerService/BatchExecuteFunction',
@@ -43,15 +44,20 @@ class WorkerServiceStub(object):
                 request_serializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.SerializeToString,
                 response_deserializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactResponse.FromString,
                 )
+        self.BatchGetArtifactDownloadUrl = channel.unary_unary(
+                '/services.WorkerService/BatchGetArtifactDownloadUrl',
+                request_serializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlRequest.SerializeToString,
+                response_deserializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlResponse.FromString,
+                )
+        self.BatchGetArtifactUploadUrl = channel.unary_unary(
+                '/services.WorkerService/BatchGetArtifactUploadUrl',
+                request_serializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlRequest.SerializeToString,
+                response_deserializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlResponse.FromString,
+                )
         self.BatchGetArtifact = channel.unary_unary(
                 '/services.WorkerService/BatchGetArtifact',
                 request_serializer=endpoints_dot_batch__get__artifact__pb2.BatchGetArtifactRequest.SerializeToString,
                 response_deserializer=endpoints_dot_batch__get__artifact__pb2.BatchGetArtifactResponse.FromString,
-                )
-        self.BatchGetArtifactPart = channel.unary_unary(
-                '/services.WorkerService/BatchGetArtifactPart',
-                request_serializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartRequest.SerializeToString,
-                response_deserializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartResponse.FromString,
                 )
         self.CheckFunction = channel.unary_unary(
                 '/services.WorkerService/CheckFunction',
@@ -78,13 +84,13 @@ class WorkerServiceStub(object):
 class WorkerServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def BatchCreateArtifact(self, request, context):
+    def BatchAllocateArtifactPart(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BatchCreateArtifactPart(self, request, context):
+    def BatchCreateArtifact(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -102,13 +108,19 @@ class WorkerServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BatchGetArtifact(self, request, context):
+    def BatchGetArtifactDownloadUrl(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def BatchGetArtifactPart(self, request, context):
+    def BatchGetArtifactUploadUrl(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def BatchGetArtifact(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -141,15 +153,15 @@ class WorkerServiceServicer(object):
 
 def add_WorkerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'BatchAllocateArtifactPart': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchAllocateArtifactPart,
+                    request_deserializer=endpoints_dot_batch__allocate__artifact__part__pb2.BatchAllocateArtifactPartRequest.FromString,
+                    response_serializer=endpoints_dot_batch__allocate__artifact__part__pb2.BatchAllocateArtifactPartResponse.SerializeToString,
+            ),
             'BatchCreateArtifact': grpc.unary_unary_rpc_method_handler(
                     servicer.BatchCreateArtifact,
                     request_deserializer=endpoints_dot_batch__create__artifact__pb2.BatchCreateArtifactRequest.FromString,
                     response_serializer=endpoints_dot_batch__create__artifact__pb2.BatchCreateArtifactResponse.SerializeToString,
-            ),
-            'BatchCreateArtifactPart': grpc.unary_unary_rpc_method_handler(
-                    servicer.BatchCreateArtifactPart,
-                    request_deserializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.FromString,
-                    response_serializer=endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.SerializeToString,
             ),
             'BatchExecuteFunction': grpc.unary_unary_rpc_method_handler(
                     servicer.BatchExecuteFunction,
@@ -161,15 +173,20 @@ def add_WorkerServiceServicer_to_server(servicer, server):
                     request_deserializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactRequest.FromString,
                     response_serializer=endpoints_dot_batch__finalize__artifact__pb2.BatchFinalizeArtifactResponse.SerializeToString,
             ),
+            'BatchGetArtifactDownloadUrl': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchGetArtifactDownloadUrl,
+                    request_deserializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlRequest.FromString,
+                    response_serializer=endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlResponse.SerializeToString,
+            ),
+            'BatchGetArtifactUploadUrl': grpc.unary_unary_rpc_method_handler(
+                    servicer.BatchGetArtifactUploadUrl,
+                    request_deserializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlRequest.FromString,
+                    response_serializer=endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlResponse.SerializeToString,
+            ),
             'BatchGetArtifact': grpc.unary_unary_rpc_method_handler(
                     servicer.BatchGetArtifact,
                     request_deserializer=endpoints_dot_batch__get__artifact__pb2.BatchGetArtifactRequest.FromString,
                     response_serializer=endpoints_dot_batch__get__artifact__pb2.BatchGetArtifactResponse.SerializeToString,
-            ),
-            'BatchGetArtifactPart': grpc.unary_unary_rpc_method_handler(
-                    servicer.BatchGetArtifactPart,
-                    request_deserializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartRequest.FromString,
-                    response_serializer=endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartResponse.SerializeToString,
             ),
             'CheckFunction': grpc.unary_unary_rpc_method_handler(
                     servicer.CheckFunction,
@@ -202,6 +219,23 @@ class WorkerService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
+    def BatchAllocateArtifactPart(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchAllocateArtifactPart',
+            endpoints_dot_batch__allocate__artifact__part__pb2.BatchAllocateArtifactPartRequest.SerializeToString,
+            endpoints_dot_batch__allocate__artifact__part__pb2.BatchAllocateArtifactPartResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def BatchCreateArtifact(request,
             target,
             options=(),
@@ -215,23 +249,6 @@ class WorkerService(object):
         return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchCreateArtifact',
             endpoints_dot_batch__create__artifact__pb2.BatchCreateArtifactRequest.SerializeToString,
             endpoints_dot_batch__create__artifact__pb2.BatchCreateArtifactResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def BatchCreateArtifactPart(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchCreateArtifactPart',
-            endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartRequest.SerializeToString,
-            endpoints_dot_batch__create__artifact__part__pb2.BatchCreateArtifactPartResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -270,6 +287,40 @@ class WorkerService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def BatchGetArtifactDownloadUrl(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactDownloadUrl',
+            endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlRequest.SerializeToString,
+            endpoints_dot_batch__get__artifact__download__url__pb2.BatchGetArtifactDownloadUrlResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def BatchGetArtifactUploadUrl(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactUploadUrl',
+            endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlRequest.SerializeToString,
+            endpoints_dot_batch__get__artifact__upload__url__pb2.BatchGetArtifactUploadUrlResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def BatchGetArtifact(request,
             target,
             options=(),
@@ -283,23 +334,6 @@ class WorkerService(object):
         return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifact',
             endpoints_dot_batch__get__artifact__pb2.BatchGetArtifactRequest.SerializeToString,
             endpoints_dot_batch__get__artifact__pb2.BatchGetArtifactResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def BatchGetArtifactPart(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/services.WorkerService/BatchGetArtifactPart',
-            endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartRequest.SerializeToString,
-            endpoints_dot_batch__get__artifact__part__pb2.BatchGetArtifactPartResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

@@ -2,9 +2,14 @@ syntax = "proto3";
 
 package endpoints;
 
-// This config is included for potential future use.
-// In the future it may include part count, expiration, or other metadata.
+import "models/artifact_type.proto";
+
 message CreateArtifactConfig {
+  // Required field representing the type of content the artifact will contain.
+  optional models.ArtifactType artifact_type = 1;
+
+  // Optional field representing the initial number of parts to allocate for this artifact.
+  optional uint32 part_count = 2;
 }
 
 message BatchCreateArtifactRequest {

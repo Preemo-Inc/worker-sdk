@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package endpoints;
+
+// This message is included for potential future use.
+message GetArtifactUploadUrlConfigMetadata {
+}
+
+message GetArtifactUploadUrlConfig {
+  map<uint32, GetArtifactUploadUrlConfigMetadata> metadatas_by_part_number = 1;
+}
+
+message BatchGetArtifactUploadUrlRequest {
+  map<string, GetArtifactUploadUrlConfig> configs_by_artifact_id = 1;
+}
+
+message GetArtifactUploadUrlResultMetadata {
+  optional string signed_url = 1;
+}
+
+message GetArtifactUploadUrlResult {
+  map<uint32, GetArtifactUploadUrlResultMetadata> metadatas_by_part_number = 1;
+}
+
+message BatchGetArtifactUploadUrlResponse {
+  map<string, GetArtifactUploadUrlResult> results_by_artifact_id = 1;
+}

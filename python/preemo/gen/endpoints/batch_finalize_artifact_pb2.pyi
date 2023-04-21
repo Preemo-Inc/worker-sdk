@@ -78,7 +78,7 @@ global___BatchFinalizeArtifactRequest = BatchFinalizeArtifactRequest
 
 @typing_extensions.final
 class FinalizeArtifactResult(google.protobuf.message.Message):
-    """This result is included for potential future use."""
+    """This message is included for potential future use."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 

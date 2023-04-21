@@ -1,8 +1,8 @@
 from typing import List
 
-from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
-    BatchCreateArtifactPartRequest,
-    BatchCreateArtifactPartResponse,
+from preemo.gen.endpoints.batch_allocate_artifact_part_pb2 import (
+    BatchAllocateArtifactPartRequest,
+    BatchAllocateArtifactPartResponse,
 )
 from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
@@ -16,13 +16,17 @@ from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
     BatchFinalizeArtifactResponse,
 )
-from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
-    BatchGetArtifactPartRequest,
-    BatchGetArtifactPartResponse,
+from preemo.gen.endpoints.batch_get_artifact_download_url_pb2 import (
+    BatchGetArtifactDownloadUrlRequest,
+    BatchGetArtifactDownloadUrlResponse,
 )
 from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
     BatchGetArtifactResponse,
+)
+from preemo.gen.endpoints.batch_get_artifact_upload_url_pb2 import (
+    BatchGetArtifactUploadUrlRequest,
+    BatchGetArtifactUploadUrlResponse,
 )
 from preemo.gen.endpoints.check_function_pb2 import (
     CheckFunctionRequest,
@@ -36,35 +40,37 @@ from preemo.gen.endpoints.sdk_server_ready_pb2 import (
     SdkServerReadyRequest,
     SdkServerReadyResponse,
 )
-from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
+from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
 
 
 class DoNothingArtifactManager(IArtifactManager):
-    def create_artifact(self, content: bytes) -> ArtifactId:
+    def create_artifact(self, *, content: bytes, type_: ArtifactType) -> ArtifactId:
         raise Exception("no call expected")
 
-    def create_artifacts(self, contents: List[bytes]) -> List[ArtifactId]:
+    def create_artifacts(
+        self, *, contents: List[bytes], type_: ArtifactType
+    ) -> List[ArtifactId]:
         raise Exception("no call expected")
 
-    def get_artifact(self, artifact_id: ArtifactId) -> bytes:
+    def get_artifact(self, *, artifact_id: ArtifactId) -> bytes:
         raise Exception("no call expected")
 
-    def get_artifacts(self, artifact_ids: List[ArtifactId]) -> List[bytes]:
+    def get_artifacts(self, *, artifact_ids: List[ArtifactId]) -> List[bytes]:
         raise Exception("no call expected")
 
 
 class DoNothingMessagingClient(IMessagingClient):
+    def batch_allocate_artifact_part(
+        self, request: BatchAllocateArtifactPartRequest
+    ) -> BatchAllocateArtifactPartResponse:
+        raise Exception("no call expected")
+
     def batch_create_artifact(
         self, request: BatchCreateArtifactRequest
     ) -> BatchCreateArtifactResponse:
-        raise Exception("no call expected")
-
-    def batch_create_artifact_part(
-        self, request: BatchCreateArtifactPartRequest
-    ) -> BatchCreateArtifactPartResponse:
         raise Exception("no call expected")
 
     def batch_execute_function(
@@ -82,9 +88,14 @@ class DoNothingMessagingClient(IMessagingClient):
     ) -> BatchGetArtifactResponse:
         raise Exception("no call expected")
 
-    def batch_get_artifact_part(
-        self, request: BatchGetArtifactPartRequest
-    ) -> BatchGetArtifactPartResponse:
+    def batch_get_artifact_download_url(
+        self, request: BatchGetArtifactDownloadUrlRequest
+    ) -> BatchGetArtifactDownloadUrlResponse:
+        raise Exception("no call expected")
+
+    def batch_get_artifact_upload_url(
+        self, request: BatchGetArtifactUploadUrlRequest
+    ) -> BatchGetArtifactUploadUrlResponse:
         raise Exception("no call expected")
 
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:

@@ -3,9 +3,9 @@ from typing import Protocol, runtime_checkable
 import grpc
 
 from preemo import __version__
-from preemo.gen.endpoints.batch_create_artifact_part_pb2 import (
-    BatchCreateArtifactPartRequest,
-    BatchCreateArtifactPartResponse,
+from preemo.gen.endpoints.batch_allocate_artifact_part_pb2 import (
+    BatchAllocateArtifactPartRequest,
+    BatchAllocateArtifactPartResponse,
 )
 from preemo.gen.endpoints.batch_create_artifact_pb2 import (
     BatchCreateArtifactRequest,
@@ -19,13 +19,17 @@ from preemo.gen.endpoints.batch_finalize_artifact_pb2 import (
     BatchFinalizeArtifactRequest,
     BatchFinalizeArtifactResponse,
 )
-from preemo.gen.endpoints.batch_get_artifact_part_pb2 import (
-    BatchGetArtifactPartRequest,
-    BatchGetArtifactPartResponse,
+from preemo.gen.endpoints.batch_get_artifact_download_url_pb2 import (
+    BatchGetArtifactDownloadUrlRequest,
+    BatchGetArtifactDownloadUrlResponse,
 )
 from preemo.gen.endpoints.batch_get_artifact_pb2 import (
     BatchGetArtifactRequest,
     BatchGetArtifactResponse,
+)
+from preemo.gen.endpoints.batch_get_artifact_upload_url_pb2 import (
+    BatchGetArtifactUploadUrlRequest,
+    BatchGetArtifactUploadUrlResponse,
 )
 from preemo.gen.endpoints.check_function_pb2 import (
     CheckFunctionRequest,
@@ -46,14 +50,14 @@ from preemo.worker._validation import ensure_keys_match
 
 @runtime_checkable
 class IMessagingClient(Protocol):
+    def batch_allocate_artifact_part(
+        self, request: BatchAllocateArtifactPartRequest
+    ) -> BatchAllocateArtifactPartResponse:
+        pass
+
     def batch_create_artifact(
         self, request: BatchCreateArtifactRequest
     ) -> BatchCreateArtifactResponse:
-        pass
-
-    def batch_create_artifact_part(
-        self, request: BatchCreateArtifactPartRequest
-    ) -> BatchCreateArtifactPartResponse:
         pass
 
     def batch_execute_function(
@@ -71,9 +75,14 @@ class IMessagingClient(Protocol):
     ) -> BatchGetArtifactResponse:
         pass
 
-    def batch_get_artifact_part(
-        self, request: BatchGetArtifactPartRequest
-    ) -> BatchGetArtifactPartResponse:
+    def batch_get_artifact_download_url(
+        self, request: BatchGetArtifactDownloadUrlRequest
+    ) -> BatchGetArtifactDownloadUrlResponse:
+        pass
+
+    def batch_get_artifact_upload_url(
+        self, request: BatchGetArtifactUploadUrlRequest
+    ) -> BatchGetArtifactUploadUrlResponse:
         pass
 
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
@@ -101,6 +110,24 @@ class MessagingClient:
     def _initiate(self, request: HeaderRequest) -> HeaderResponse:
         return self._worker_service.Initiate(request)
 
+    def batch_allocate_artifact_part(
+        self, request: BatchAllocateArtifactPartRequest
+    ) -> BatchAllocateArtifactPartResponse:
+        response = self._worker_service.BatchAllocateArtifactPart(request)
+        ensure_keys_match(
+            expected=request.configs_by_artifact_id,
+            actual=response.results_by_artifact_id,
+        )
+
+        for artifact_id, result in response.results_by_artifact_id.items():
+            config = request.configs_by_artifact_id[artifact_id]
+            ensure_keys_match(
+                expected=config.metadatas_by_part_number,
+                actual=result.metadatas_by_part_number,
+            )
+
+        return response
+
     def batch_create_artifact(
         self, request: BatchCreateArtifactRequest
     ) -> BatchCreateArtifactResponse:
@@ -117,30 +144,6 @@ class MessagingClient:
                 raise Exception(
                     "expected CreateArtifactResult to have part_size_threshold"
                 )
-
-        return response
-
-    def batch_create_artifact_part(
-        self, request: BatchCreateArtifactPartRequest
-    ) -> BatchCreateArtifactPartResponse:
-        response = self._worker_service.BatchCreateArtifactPart(request)
-        ensure_keys_match(
-            expected=request.configs_by_artifact_id,
-            actual=response.results_by_artifact_id,
-        )
-
-        for artifact_id, result in response.results_by_artifact_id.items():
-            config = request.configs_by_artifact_id[artifact_id]
-            ensure_keys_match(
-                expected=config.metadatas_by_part_number,
-                actual=result.metadatas_by_part_number,
-            )
-
-            for metadata in result.metadatas_by_part_number.values():
-                if not metadata.HasField("upload_signed_url"):
-                    raise Exception(
-                        "expected CreateArtifactPartResultMetadata to have upload_signed_url"
-                    )
 
         return response
 
@@ -189,10 +192,10 @@ class MessagingClient:
 
         return response
 
-    def batch_get_artifact_part(
-        self, request: BatchGetArtifactPartRequest
-    ) -> BatchGetArtifactPartResponse:
-        response = self._worker_service.BatchGetArtifactPart(request)
+    def batch_get_artifact_download_url(
+        self, request: BatchGetArtifactDownloadUrlRequest
+    ) -> BatchGetArtifactDownloadUrlResponse:
+        response = self._worker_service.BatchGetArtifactDownloadUrl(request)
         ensure_keys_match(
             expected=request.configs_by_artifact_id,
             actual=response.results_by_artifact_id,
@@ -206,9 +209,33 @@ class MessagingClient:
             )
 
             for metadata in result.metadatas_by_part_number.values():
-                if not metadata.HasField("download_signed_url"):
+                if not metadata.HasField("signed_url"):
                     raise Exception(
-                        "expected GetArtifactPartResultMetadata to have download_signed_url"
+                        "expected GetArtifactDownloadUrlResultMetadata to have signed_url"
+                    )
+
+        return response
+
+    def batch_get_artifact_upload_url(
+        self, request: BatchGetArtifactUploadUrlRequest
+    ) -> BatchGetArtifactUploadUrlResponse:
+        response = self._worker_service.BatchGetArtifactUploadUrl(request)
+        ensure_keys_match(
+            expected=request.configs_by_artifact_id,
+            actual=response.results_by_artifact_id,
+        )
+
+        for artifact_id, result in response.results_by_artifact_id.items():
+            config = request.configs_by_artifact_id[artifact_id]
+            ensure_keys_match(
+                expected=config.metadatas_by_part_number,
+                actual=result.metadatas_by_part_number,
+            )
+
+            for metadata in result.metadatas_by_part_number.values():
+                if not metadata.HasField("signed_url"):
+                    raise Exception(
+                        "expected GetArtifactUploadUrlResultMetadata to have signed_url"
                     )
 
         return response
@@ -229,17 +256,17 @@ class MessagingClient:
 
 # This class is intended to be used for tests and local development
 class LocalMessagingClient:
+    def batch_allocate_artifact_part(
+        self, request: BatchAllocateArtifactPartRequest
+    ) -> BatchAllocateArtifactPartResponse:
+        print(f"sending batch allocate artifact part request: {request}")
+        return BatchAllocateArtifactPartResponse()
+
     def batch_create_artifact(
         self, request: BatchCreateArtifactRequest
     ) -> BatchCreateArtifactResponse:
         print(f"sending batch create artifact request: {request}")
         return BatchCreateArtifactResponse()
-
-    def batch_create_artifact_part(
-        self, request: BatchCreateArtifactPartRequest
-    ) -> BatchCreateArtifactPartResponse:
-        print(f"sending batch create artifact part request: {request}")
-        return BatchCreateArtifactPartResponse()
 
     def batch_execute_function(
         self, request: BatchExecuteFunctionRequest
@@ -259,11 +286,17 @@ class LocalMessagingClient:
         print(f"sending batch get artifact request: {request}")
         return BatchGetArtifactResponse()
 
-    def batch_get_artifact_part(
-        self, request: BatchGetArtifactPartRequest
-    ) -> BatchGetArtifactPartResponse:
-        print(f"sending batch get artifact part request: {request}")
-        return BatchGetArtifactPartResponse()
+    def batch_get_artifact_download_url(
+        self, request: BatchGetArtifactDownloadUrlRequest
+    ) -> BatchGetArtifactDownloadUrlResponse:
+        print(f"sending batch get artifact download url request: {request}")
+        return BatchGetArtifactDownloadUrlResponse()
+
+    def batch_get_artifact_upload_url(
+        self, request: BatchGetArtifactUploadUrlRequest
+    ) -> BatchGetArtifactUploadUrlResponse:
+        print(f"sending batch get artifact upload url request: {request}")
+        return BatchGetArtifactUploadUrlResponse()
 
     def check_function(self, request: CheckFunctionRequest) -> CheckFunctionResponse:
         print(f"sending check function request: {request}")

@@ -7,7 +7,7 @@ from preemo.gen.endpoints.check_function_pb2 import CheckFunctionRequest
 from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
 from preemo.gen.models.value_pb2 import Value
-from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
+from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import assert_never
@@ -24,7 +24,7 @@ class Result:
         self._artifact_manager = artifact_manager
 
     def get(self) -> bytes:
-        return self._artifact_manager.get_artifact(self._artifact_id)
+        return self._artifact_manager.get_artifact(artifact_id=self._artifact_id)
 
 
 class Function:
@@ -57,7 +57,9 @@ class Function:
         if params is None:
             function_parameter = Value(null_value=NULL_VALUE)
         else:
-            artifact_id = self._artifact_manager.create_artifact(params)
+            artifact_id = self._artifact_manager.create_artifact(
+                content=params, type_=ArtifactType.PARAMS
+            )
             function_parameter = Value(artifact_id=artifact_id.value)
 
         response = self._messaging_client.batch_execute_function(
@@ -133,7 +135,9 @@ class WorkerClient:
             if len(params) == 0:
                 return []
 
-            artifact_ids = self._artifact_manager.create_artifacts(params)
+            artifact_ids = self._artifact_manager.create_artifacts(
+                contents=params, type_=ArtifactType.PARAMS
+            )
             function_parameters_by_index = {
                 i: Value(artifact_id=artifact_id.value)
                 for i, artifact_id in enumerate(artifact_ids)

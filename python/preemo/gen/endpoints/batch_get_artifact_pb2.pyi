@@ -19,7 +19,7 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
 class GetArtifactConfig(google.protobuf.message.Message):
-    """This config is included for potential future use."""
+    """This message is included for potential future use."""
 
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 

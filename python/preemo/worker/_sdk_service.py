@@ -10,7 +10,7 @@ from preemo.gen.endpoints.execute_function_pb2 import (
 from preemo.gen.endpoints.terminate_pb2 import TerminateRequest, TerminateResponse
 from preemo.gen.models.value_pb2 import Value
 from preemo.gen.services.sdk_pb2_grpc import SdkServiceServicer
-from preemo.worker._artifact_manager import ArtifactId, IArtifactManager
+from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._types import assert_never
 
@@ -59,7 +59,7 @@ class SdkService(SdkServiceServicer):
 
         if kind == "artifact_id":
             return self._artifact_manager.get_artifact(
-                ArtifactId(value=value.artifact_id)
+                artifact_id=ArtifactId(value=value.artifact_id)
             )
 
         assert_never(kind)
@@ -88,7 +88,9 @@ class SdkService(SdkServiceServicer):
             result_value = Value(null_value=NULL_VALUE)
         else:
             # TODO(adrian@preemo.io, 04/04/2023): validate that result is bytes?
-            result_artifact_id = self._artifact_manager.create_artifact(result)
+            result_artifact_id = self._artifact_manager.create_artifact(
+                content=result, type_=ArtifactType.RESULT
+            )
             result_value = Value(artifact_id=result_artifact_id.value)
 
         return ExecuteFunctionResponse(result=result_value)
