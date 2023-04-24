@@ -19,12 +19,13 @@ packages = [
   { include = "preemo" },
 ]
 
+# TODO(adrian@preemo.io, 05/01/2023): Push these versions as low as possible to make it easier for users to meet the requirements
 [tool.poetry.dependencies]
-grpcio = "1.51.3"
-protobuf = "4.21.12"
-pydantic = "1.10.6"
+grpcio = "^1.51.3"
+protobuf = "^4.21.12"
+pydantic = "^1.10.6"
 python = "^3.8.13"
-requests = "2.28.2"
+requests = "^2.28.2"
 
 [tool.poetry.dev-dependencies]
 autoflake = "2.0.1"
