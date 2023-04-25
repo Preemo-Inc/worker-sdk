@@ -1,5 +1,4 @@
 import concurrent.futures
-import random
 
 import grpc
 
@@ -10,40 +9,12 @@ from preemo.worker._sdk_service import SdkService
 
 
 class SdkServer:
-    @staticmethod
-    def _generate_random_port() -> int:
-        return random.randrange(60_000, 61_000)
-
-    @staticmethod
-    def _bind_server_to_random_port(*, server: grpc.Server, host: str) -> int:
-        attempt_count = 0
-        while True:
-            port = SdkServer._generate_random_port()
-            try:
-                # TODO(adrian@preemo.io, 03/27/2023): investigate whether it makes sense to use add_secure_port instead
-                server.add_insecure_port(f"{host}:{port}")
-            except RuntimeError as e:
-                if len(e.args) < 1:
-                    raise e
-
-                message = e.args[0]
-                if "Failed to bind to address" not in message:
-                    raise e
-
-                print(f"failed to bind to port {port}, retrying with a different port")
-            else:
-                return port
-
-            attempt_count += 1
-            if attempt_count >= 20:
-                raise Exception(f"failed to connect {attempt_count} times")
-
     def __init__(
         self,
         *,
         artifact_manager: IArtifactManager,
         function_registry: FunctionRegistry,
-        sdk_server_host: str,
+        sdk_server_port: int,
     ) -> None:
         server = grpc.server(
             concurrent.futures.ThreadPoolExecutor(max_workers=1),
@@ -62,18 +33,13 @@ class SdkServer:
             ),
             server,
         )
-        port = SdkServer._bind_server_to_random_port(
-            server=server, host=sdk_server_host
-        )
 
+        server.add_insecure_port(f"0.0.0.0:{sdk_server_port}")
         server.start()
-        print(f"sdk server has started on port {port}")
+
+        print(f"sdk server has started on port {sdk_server_port}")
 
         self._server = server
-        self._port = port
-
-    def get_port(self) -> int:
-        return self._port
 
     def wait_until_close(self) -> None:
         self._server.wait_for_termination()
