@@ -87,8 +87,11 @@ class ArtifactManager:
 
     def _write_content(self, *, content: memoryview, url: str) -> None:
         if EnvManager.is_development:
+            import os
+
             # treat url as file path
-            with open("/" + url, "wb") as fout:
+            os.makedirs(os.path.dirname(url), exist_ok=True)
+            with open(url, "wb") as fout:
                 fout.write(content)
         else:
             # TODO(adrian@preemo.io, 04/11/2023): might be post
@@ -103,7 +106,7 @@ class ArtifactManager:
     def _read_content(self, *, url: str) -> bytes:
         if EnvManager.is_development:
             # treat url as file path
-            with open("/" + url, "rb") as fin:
+            with open(url, "rb") as fin:
                 return fin.read()
         else:
             response = requests.get(url=url, headers={"Accept-Encoding": "gzip"})
