@@ -157,13 +157,12 @@ class ArtifactManager:
         artifacts = self._create_artifacts(count=len(contents), type_=type_)
         if len(artifacts) != len(contents):
             raise Exception("expected artifacts and contents lengths to be equal")
-        artifacts_and_contents = zip(artifacts, contents)
 
         allocate_configs_by_artifact_id_value: Dict[
             str, AllocateArtifactPartConfig
         ] = {}
         upload_configs_by_artifact_id_value: Dict[str, GetArtifactUploadUrlConfig] = {}
-        for artifact, content in artifacts_and_contents:
+        for artifact, content in zip(artifacts, contents):
             part_count = ArtifactManager._calculate_part_count(
                 content_length=len(content),
                 part_size_threshold=artifact.part_size_threshold,
@@ -203,7 +202,7 @@ class ArtifactManager:
             max_workers=EnvManager.max_upload_threads
         ) as executor:
             futures = []
-            for artifact, content in artifacts_and_contents:
+            for artifact, content in zip(artifacts, contents):
                 content_view = memoryview(content)
                 result = get_url_response.results_by_artifact_id[artifact.id.value]
 
@@ -242,7 +241,7 @@ class ArtifactManager:
                             part_size_threshold=artifact.part_size_threshold,
                         ),
                     )
-                    for artifact, content in artifacts_and_contents
+                    for artifact, content in zip(artifacts, contents)
                 }
             )
         )
