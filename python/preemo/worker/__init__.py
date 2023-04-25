@@ -27,13 +27,13 @@ def _construct_messaging_client() -> _IMessagingClient:
 def _start_sdk_server(
     *, artifact_manager: _IArtifactManager, function_registry: _FunctionRegistry
 ) -> _Optional[_SdkServer]:
-    if _EnvManager.sdk_server_host is None:
+    if _EnvManager.sdk_server_port is None:
         return None
 
     server = _SdkServer(
         artifact_manager=artifact_manager,
         function_registry=function_registry,
-        sdk_server_host=_EnvManager.sdk_server_host,
+        sdk_server_port=_EnvManager.sdk_server_port,
     )
     # This thread will keep the process running until the server is closed
     _Thread(target=lambda: server.wait_until_close()).start()
@@ -51,9 +51,7 @@ def _construct_worker_client() -> _WorkerClient:
     )
 
     if sdk_server is not None:
-        messaging_client.sdk_server_ready(
-            _SdkServerReadyRequest(sdk_server_port=sdk_server.get_port())
-        )
+        messaging_client.sdk_server_ready(_SdkServerReadyRequest())
 
     return _WorkerClient(
         artifact_manager=artifact_manager,

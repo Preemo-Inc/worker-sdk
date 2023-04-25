@@ -10,18 +10,27 @@ def _get_string_env(name: str) -> Optional[str]:
     return value
 
 
-def _get_int_env(name: str, *, default: Optional[int] = None) -> int:
+# TODO(adrian@preemo.io, 04/24/2023): test this
+def _get_optional_int_env(name: str) -> Optional[int]:
     value = _get_string_env(name)
+    if value is None:
+        return None
+
+    try:
+        return int(value)
+    except ValueError:
+        raise Exception(f"expected int for env variable: {name}")
+
+
+def _get_int_env(name: str, *, default: Optional[int] = None) -> int:
+    value = _get_optional_int_env(name)
     if value is None:
         if default is None:
             raise Exception(f"missing required env variable: {name}")
 
         return default
 
-    try:
-        return int(value)
-    except ValueError:
-        raise Exception(f"expected int for env variable: {name}")
+    return value
 
 
 def _get_positive_int_env(name: str, *, default: Optional[int] = None) -> int:
@@ -61,6 +70,6 @@ class EnvManager:
         "PREEMO_MAX_UPLOAD_THREADS", default=5
     )
 
-    sdk_server_host: Final = _get_string_env("PREEMO_SDK_SERVER_HOST")
+    sdk_server_port: Final = _get_optional_int_env("PREEMO_SDK_SERVER_PORT")
 
     worker_server_url: Final = _get_string_env("PREEMO_WORKER_SERVER_URL")
