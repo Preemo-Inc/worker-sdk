@@ -35,3 +35,6 @@ class ImmutableModel(BaseModel):
 
 class StringValue(ImmutableModel):
     value: StrictStr
+
+    def __hash__(self) -> int:
+        return hash(self.value)
