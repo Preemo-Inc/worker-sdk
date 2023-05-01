@@ -102,6 +102,7 @@ class ArtifactManager:
 
             print("upload response:")
             print(response)
+            print(response.request)
 
             # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
             if not response.ok:
