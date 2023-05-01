@@ -5,6 +5,7 @@ from typing import Dict, List, Protocol, runtime_checkable
 
 import requests
 from pydantic import StrictInt
+from requests import Response
 
 from preemo.gen.endpoints.batch_allocate_artifact_part_pb2 import (
     AllocateArtifactPartConfig,
@@ -95,7 +96,7 @@ class ArtifactManager:
                 fout.write(content)
         else:
             # TODO(adrian@preemo.io, 04/11/2023): might be post
-            response = requests.post(
+            response: Response = requests.post(
                 url=url, data=content, headers={"Content-Encoding": "gzip"}
             )
 
@@ -240,6 +241,10 @@ class ArtifactManager:
 
             if len(done) != len(futures):
                 raise Exception("expected all futures to have completed")
+
+            for future in done:
+                # this will raise any exceptions raised in the thread
+                future.result()
 
         self._messaging_client.batch_finalize_artifact(
             BatchFinalizeArtifactRequest(
