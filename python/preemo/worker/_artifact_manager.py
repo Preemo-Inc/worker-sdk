@@ -96,13 +96,14 @@ class ArtifactManager:
                 fout.write(content)
         else:
             # TODO(adrian@preemo.io, 04/11/2023): might be post
-            response: Response = requests.post(
+            response: Response = requests.put(
                 url=url, data=content, headers={"Content-Encoding": "gzip"}
             )
 
             print("upload response:")
             print(response)
-            print(response.request)
+            print(response.request.headers)
+            print(response.request.body)
 
             # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
             if not response.ok:
