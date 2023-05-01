@@ -87,7 +87,10 @@ class ArtifactManager:
 
     def _write_content(self, *, content: memoryview, url: str) -> None:
         if EnvManager.is_development:
+            import os
+
             # treat url as file path
+            os.makedirs(os.path.dirname(url), exist_ok=True)
             with open(url, "wb") as fout:
                 fout.write(content)
         else:
