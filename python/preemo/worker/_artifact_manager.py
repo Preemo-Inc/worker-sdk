@@ -95,7 +95,7 @@ class ArtifactManager:
                 fout.write(content)
         else:
             # TODO(adrian@preemo.io, 04/11/2023): might be post
-            response = requests.put(
+            response = requests.post(
                 url=url, data=content, headers={"Content-Encoding": "gzip"}
             )
 
@@ -214,6 +214,7 @@ class ArtifactManager:
                     part_content = content_view[
                         start_index : start_index + artifact.part_size_threshold
                     ]
+                    print(f"received upload url: {metadata.signed_url}")
 
                     futures.append(
                         executor.submit(
@@ -298,6 +299,8 @@ class ArtifactManager:
                     part_number,
                     metadata,
                 ) in artifact_part_result.metadatas_by_part_number.items():
+                    print(f"received download url: {metadata.signed_url}")
+
                     futures_by_part_number[part_number] = executor.submit(
                         self._read_content,
                         url=metadata.signed_url,
