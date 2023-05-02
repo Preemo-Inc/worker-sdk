@@ -2,6 +2,7 @@ import concurrent.futures
 import enum
 import gzip
 import math
+import os
 from typing import Dict, List, Protocol, runtime_checkable
 
 import requests
@@ -88,8 +89,6 @@ class ArtifactManager:
 
     def _write_content(self, *, content: memoryview, url: str) -> None:
         if EnvManager.is_development:
-            import os
-
             # treat url as file path
             os.makedirs(os.path.dirname(url), exist_ok=True)
             with open(url, "wb") as fout:
