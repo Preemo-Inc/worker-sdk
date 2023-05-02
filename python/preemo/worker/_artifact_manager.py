@@ -121,7 +121,13 @@ class ArtifactManager:
             with open(url, "rb") as fin:
                 return fin.read()
         else:
-            response = requests.get(url=url, headers={"Accept-Encoding": "gzip"})
+            response = requests.get(
+                url=url,
+                headers={
+                    "Accept-Encoding": "gzip",
+                    "Content-Type": "application/octet-stream",
+                },
+            )
 
             print("download response:")
             print(response)
