@@ -1,6 +1,7 @@
 import concurrent.futures
 import enum
 import math
+import zlib
 from typing import Dict, List, Protocol, runtime_checkable
 
 import requests
@@ -97,7 +98,7 @@ class ArtifactManager:
         else:
             response: Response = requests.put(
                 url=url,
-                data=content,
+                data=zlib.compress(content),
                 headers={
                     "Content-Encoding": "gzip",
                     "Content-Type": "application/octet-stream",
