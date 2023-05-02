@@ -105,11 +105,6 @@ class ArtifactManager:
                 },
             )
 
-            print("upload response:")
-            print(response)
-            print(response.request.headers)
-            print(response.request.body)
-
             # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
             if not response.ok:
                 raise Exception(
@@ -129,9 +124,6 @@ class ArtifactManager:
                     "Content-Type": "application/octet-stream",
                 },
             )
-
-            print("download response:")
-            print(response)
 
             # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
             if not response.ok:
@@ -236,7 +228,6 @@ class ArtifactManager:
                     part_content = content_view[
                         start_index : start_index + artifact.part_size_threshold
                     ]
-                    print(f"received upload url: {metadata.signed_url}")
 
                     futures.append(
                         executor.submit(
@@ -325,8 +316,6 @@ class ArtifactManager:
                     part_number,
                     metadata,
                 ) in artifact_part_result.metadatas_by_part_number.items():
-                    print(f"received download url: {metadata.signed_url}")
-
                     futures_by_part_number[part_number] = executor.submit(
                         self._read_content,
                         url=metadata.signed_url,
