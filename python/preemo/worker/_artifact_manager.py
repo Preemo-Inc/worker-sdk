@@ -1,6 +1,8 @@
 import concurrent.futures
 import enum
+import gzip
 import math
+import os
 from typing import Dict, List, Protocol, runtime_checkable
 
 import requests
@@ -87,16 +89,18 @@ class ArtifactManager:
 
     def _write_content(self, *, content: memoryview, url: str) -> None:
         if EnvManager.is_development:
-            import os
-
             # treat url as file path
             os.makedirs(os.path.dirname(url), exist_ok=True)
             with open(url, "wb") as fout:
                 fout.write(content)
         else:
-            # TODO(adrian@preemo.io, 04/11/2023): might be post
             response = requests.put(
-                url=url, data=content, headers={"Content-Encoding": "gzip"}
+                url=url,
+                data=gzip.compress(content),
+                headers={
+                    "Content-Encoding": "gzip",
+                    "Content-Type": "application/octet-stream",
+                },
             )
 
             # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
@@ -109,7 +113,13 @@ class ArtifactManager:
             with open(url, "rb") as fin:
                 return fin.read()
         else:
-            response = requests.get(url=url, headers={"Accept-Encoding": "gzip"})
+            response = requests.get(
+                url=url,
+                headers={
+                    "Accept-Encoding": "gzip",
+                    "Content-Type": "application/octet-stream",
+                },
+            )
 
             # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
             if not response.ok:
@@ -233,6 +243,10 @@ class ArtifactManager:
 
             if len(done) != len(futures):
                 raise Exception("expected all futures to have completed")
+
+            for future in done:
+                # this will raise any exceptions raised in the thread
+                future.result()
 
         self._messaging_client.batch_finalize_artifact(
             BatchFinalizeArtifactRequest(
