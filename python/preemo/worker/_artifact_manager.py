@@ -106,9 +106,7 @@ class ArtifactManager:
 
             # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
             if not response.ok:
-                raise Exception(
-                    f"unexpected response while uploading: {response}: {str(response.content)}"
-                )
+                raise Exception(f"unexpected response while uploading: {response}")
 
     def _read_content(self, *, url: str) -> bytes:
         if EnvManager.is_development:
