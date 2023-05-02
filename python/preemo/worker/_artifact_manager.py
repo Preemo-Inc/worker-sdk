@@ -6,7 +6,6 @@ from typing import Dict, List, Protocol, runtime_checkable
 
 import requests
 from pydantic import StrictInt
-from requests import Response
 
 from preemo.gen.endpoints.batch_allocate_artifact_part_pb2 import (
     AllocateArtifactPartConfig,
@@ -96,7 +95,7 @@ class ArtifactManager:
             with open(url, "wb") as fout:
                 fout.write(content)
         else:
-            response: Response = requests.put(
+            response = requests.put(
                 url=url,
                 data=gzip.compress(content),
                 headers={
