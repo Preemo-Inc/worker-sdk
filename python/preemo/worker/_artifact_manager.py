@@ -95,9 +95,13 @@ class ArtifactManager:
             with open(url, "wb") as fout:
                 fout.write(content)
         else:
-            # TODO(adrian@preemo.io, 04/11/2023): might be post
             response: Response = requests.put(
-                url=url, data=content, headers={"Content-Encoding": "gzip"}
+                url=url,
+                data=content,
+                headers={
+                    "Content-Encoding": "gzip",
+                    "Content-Type": "application/octet-stream",
+                },
             )
 
             print("upload response:")
