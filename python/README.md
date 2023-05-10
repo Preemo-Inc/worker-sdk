@@ -34,7 +34,41 @@ def do_something(params: str):
     ...
 ```
 
-At the moment, only functions that take 0 or 1 bytes arguments will work. These functions should also either return `None` or bytes.
+At the moment, only functions that take 0 or 1 `bytes` arguments will work. These functions should also either return `None` or `bytes`.
+
+#### Resource Requirements
+
+If your function has particular resource requirements, you should specify those during registration.
+
+For example, if your function needs 4 CPUs to run effectively, you can pass a configuration object.
+
+```python
+from preemo.worker import register
+
+@register(name="some_name", namespace="dev", cpu_requirements={ "cores": 4 })
+def do_something(params: bytes):
+    ...
+```
+
+Additionally, you can specify the memory requirments in either Mebibytes (`MiB`) or Gibibytes (`GiB`).
+
+```python
+from preemo.worker import register
+
+@register(name="some_name", namespace="dev", cpu_requirements={ "cores": 4, "memory": { "MiB": 100 } })
+def do_something(params: bytes):
+    ...
+```
+
+Alternatively, if you need GPUs to effectively run your function, you may pass a different configuration object instead.
+
+```python
+from preemo.worker import register
+
+@register(name="some_name", namespace="dev", gpu_requirements={ "model": "nvidia-tesla-k80" })
+def do_something(params: bytes):
+    ...
+```
 
 ### Execute Function
 
