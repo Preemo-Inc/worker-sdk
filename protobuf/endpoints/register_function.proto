@@ -4,8 +4,50 @@ package endpoints;
 
 import "models/registered_function.proto";
 
+// TODO(adrian@preemo.io, 05/10/2023): move some of these to models
+
+message CpuRequirements {
+  // Optional field where 1000 millicores equals 1 CPU.
+  optional uint32 millicores = 1;
+
+  // Optional field indicating amount of memory needed.
+  // Not all precisions may be accepted.
+  // For example, the worker may choose to only accept values that are multiples of Mebibytes.
+  optional uint64 memory_in_bytes = 2;
+
+  // Optional field indicating amount of storage needed.
+  // Not all precisions may be accepted.
+  // For example, the worker may choose to only accept values that are multiples of Mebibytes.
+  optional uint64 storage_in_bytes = 3;
+}
+
+enum GpuModel {
+  GPU_MODEL_UNSPECIFIED = 0;
+  GPU_MODEL_NVIDIA_TESLA_K80 = 1;
+  GPU_MODEL_NVIDIA_TESLA_V100 = 2;
+}
+
+message GpuRequirements {
+  // Required.
+  optional GpuModel gpu_model = 1;
+
+  // TODO(adrian@preemo.io, 05/10/2023): add cores, memory, and storage
+}
+
+message ResourceRequirements {
+  oneof kind {
+    CpuRequirements cpu = 1;
+
+    GpuRequirements gpu = 2;
+  }
+}
+
 message RegisterFunctionRequest {
+  // Required.
   optional models.RegisteredFunction function_to_register = 1;
+
+  // Optional field indicating resources that should be allocated for executing this function.
+  optional ResourceRequirements resource_requirements = 2;
 }
 
 message RegisterFunctionResponse {
