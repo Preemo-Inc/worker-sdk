@@ -40,32 +40,32 @@ At the moment, only functions that take 0 or 1 `bytes` arguments will work. Thes
 
 If your function has particular resource requirements, you should specify those during registration.
 
-For example, if your function needs 4 CPUs to run effectively, you can pass a configuration object.
+For example, if your function needs 4 cores to run effectively, you can pass a configuration object.
 
 ```python
 from preemo.worker import register
 
-@register(name="some_name", namespace="dev", cpu_requirements={ "cores": 4 })
+@register(name="some_name", namespace="dev", cores=4)
 def do_something(params: bytes):
     ...
 ```
 
-Additionally, you can specify the memory requirments in either Mebibytes (`MiB`) or Gibibytes (`GiB`).
+You can specify the memory and/or storage requirments in either Mebibytes (`MiB`) or Gibibytes (`GiB`).
 
 ```python
 from preemo.worker import register
 
-@register(name="some_name", namespace="dev", cpu_requirements={ "cores": 4, "memory": { "MiB": 100 } })
+@register(name="some_name", namespace="dev", memory={ "MiB": 100 }, storage={ "GiB": 10 })
 def do_something(params: bytes):
     ...
 ```
 
-Alternatively, if you need GPUs to effectively run your function, you may pass a different configuration object instead.
+If you need GPUs to effectively run your function, you may pass the specific model to use.
 
 ```python
 from preemo.worker import register
 
-@register(name="some_name", namespace="dev", gpu_requirements={ "model": "nvidia-tesla-k80" })
+@register(name="some_name", namespace="dev", gpu="nvidia-tesla-k80")
 def do_something(params: bytes):
     ...
 ```
