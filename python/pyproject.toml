@@ -19,7 +19,7 @@ packages = [
   { include = "preemo" },
 ]
 
-# TODO(adrian@preemo.io, 05/01/2023): Push these versions as low as possible to make it easier for users to meet the requirements
+# TODO(adrian@preemo.io, 06/01/2023): Push these versions as low as possible to make it easier for users to meet the requirements
 [tool.poetry.dependencies]
 grpcio = "^1.51.3"
 protobuf = "^4.21.12"

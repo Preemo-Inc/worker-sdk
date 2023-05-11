@@ -14,7 +14,7 @@ from preemo.worker._types import assert_never
 
 
 class Result:
-    # TODO(adrian@preemo.io, 04/20/2023): need to sort out how this class
+    # TODO(adrian@preemo.io, 06/20/2023): need to sort out how this class
     # can be used when error handling, status checking, etc
     # Perhaps futures should be used instead
     def __init__(
@@ -116,7 +116,7 @@ class WorkerClient:
         params: Optional[List[bytes]] = None,
         count: Optional[int] = None,
     ) -> List[Optional[Result]]:
-        # TODO(adrian@preemo.io, 03/20/2023): should take an optional config argument includes stuff like max batch size
+        # TODO(adrian@preemo.io, 06/20/2023): should take an optional config argument includes stuff like max batch size
 
         if params is None:
             if count is None:
