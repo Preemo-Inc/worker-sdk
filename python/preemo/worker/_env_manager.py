@@ -10,7 +10,7 @@ def _get_string_env(name: str) -> Optional[str]:
     return value
 
 
-# TODO(adrian@preemo.io, 04/24/2023): test this
+# TODO(adrian@preemo.io, 05/24/2023): test this
 def _get_optional_int_env(name: str) -> Optional[int]:
     value = _get_string_env(name)
     if value is None:
