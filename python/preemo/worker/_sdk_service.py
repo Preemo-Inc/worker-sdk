@@ -15,6 +15,7 @@ from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._types import assert_never
 
 
+# TODO(adrian@preemo.io, 05/11/2023): add logging
 class SdkService(SdkServiceServicer):
     @staticmethod
     def _validate_execute_function_request(

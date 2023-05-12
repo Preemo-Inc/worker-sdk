@@ -89,6 +89,7 @@ class Function:
         assert_never(kind)
 
 
+# TODO(adrian@preemo.io, 05/11/2023): add logging
 class WorkerClient:
     def __init__(
         self,
