@@ -103,7 +103,7 @@ class ArtifactManager:
                 },
             )
 
-            # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
+            # TODO(adrian@preemo.io, 06/15/2023): should retry if it fails
             if not response.ok:
                 raise Exception(f"unexpected response while uploading: {response}")
 
@@ -121,7 +121,7 @@ class ArtifactManager:
                 },
             )
 
-            # TODO(adrian@preemo.io, 04/15/2023): should retry if it fails
+            # TODO(adrian@preemo.io, 06/15/2023): should retry if it fails
             if not response.ok:
                 raise Exception(f"unexpected response while downloading: {response}")
 
@@ -233,7 +233,7 @@ class ArtifactManager:
                         )
                     )
 
-            # TODO(adrian@preemo.io, 04/15/2023): add exception handling
+            # TODO(adrian@preemo.io, 06/15/2023): add exception handling
             done, not_done = concurrent.futures.wait(
                 futures, return_when=concurrent.futures.ALL_COMPLETED
             )
@@ -346,7 +346,7 @@ class ArtifactManager:
                     artifact_id.value
                 ]
 
-                # TODO(adrian@preemo.io, 04/20/2023): Consider other options for constructing the byte result,
+                # TODO(adrian@preemo.io, 06/20/2023): Consider other options for constructing the byte result,
                 # such as a memory-mapped file or BytesIO
                 result = bytearray()
                 for part_number, future in sorted(
@@ -366,7 +366,7 @@ class ArtifactManager:
                 if len(result) != get_artifact_result.total_size:
                     raise Exception("expected result object size to equal total_size")
 
-                # TODO(adrian@preemo.io, 04/20/2023): do i need to convert to bytes here? Is bytearray just masquerading as bytes?
+                # TODO(adrian@preemo.io, 06/20/2023): do i need to convert to bytes here? Is bytearray just masquerading as bytes?
                 results.append(result)
 
         return results

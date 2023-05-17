@@ -15,6 +15,7 @@ from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._types import assert_never
 
 
+# TODO(adrian@preemo.io, 05/11/2023): add logging
 class SdkService(SdkServiceServicer):
     @staticmethod
     def _validate_execute_function_request(
@@ -87,7 +88,7 @@ class SdkService(SdkServiceServicer):
         if result is None:
             result_value = Value(null_value=NULL_VALUE)
         else:
-            # TODO(adrian@preemo.io, 04/04/2023): validate that result is bytes?
+            # TODO(adrian@preemo.io, 06/04/2023): validate that result is bytes?
             result_artifact_id = self._artifact_manager.create_artifact(
                 content=result, type_=ArtifactType.RESULT
             )
