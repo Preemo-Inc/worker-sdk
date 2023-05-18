@@ -33,6 +33,7 @@ class ImmutableModel(BaseModel):
         allow_mutation = False
 
 
+# TODO(adrian@preemo.io, 05/20/2023): rewrite ArtifactId as another type, not a stringValue
 class StringValue(ImmutableModel):
     value: StrictStr
 

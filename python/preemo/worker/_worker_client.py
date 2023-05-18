@@ -1,13 +1,19 @@
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Union
 
 from google.protobuf.struct_pb2 import NULL_VALUE
 
 from preemo.gen.endpoints.batch_execute_function_pb2 import BatchExecuteFunctionRequest
 from preemo.gen.endpoints.check_function_pb2 import CheckFunctionRequest
-from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
+from preemo.gen.endpoints.register_function_pb2 import (
+    CpuRequirements,
+    GpuRequirements,
+    RegisterFunctionRequest,
+    ResourceRequirements,
+)
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
 from preemo.gen.models.value_pb2 import Value
 from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
+from preemo.worker._bytes import ByteDict
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import assert_never
@@ -179,8 +185,12 @@ class WorkerClient:
         self,
         outer_function: Optional[Callable] = None,
         *,
+        cores: Optional[Union[int, float]] = None,
+        gpu: Optional[str] = None,
+        memory: Optional[ByteDict] = None,
         name: Optional[str] = None,
         namespace: Optional[str] = None,
+        storage: Optional[ByteDict] = None,
     ) -> Callable:
         def decorator(function: Callable) -> Callable:
             if name is None:
@@ -192,11 +202,35 @@ class WorkerClient:
                 function, name=function_name, namespace=namespace
             )
 
+            if all(o is None for o in [cores, gpu, memory, storage]):
+                resource_requirements = None
+            else:
+                if gpu is None:
+                    # cpu
+                    pass
+                else:
+                    # gpu
+                    pass
+
+                resource_requirements = ResourceRequirements()
+
+            if gpu is None:
+                # might be cpu req
+                if cores is not None or memory is not None or storage is not None:
+                    # TODO(adrian@preemo.io, 05/18/2023): fix
+                    cpu_requirements = CpuRequirements(
+                        millicores=None, memory_in_bytes=None, storage_in_bytes=None
+                    )
+                pass
+            else:
+                pass
+
             self._messaging_client.register_function(
                 RegisterFunctionRequest(
                     function_to_register=RegisteredFunction(
                         name=function_name, namespace=namespace
-                    )
+                    ),
+                    resource_requirements=resource_requirements,
                 )
             )
 
