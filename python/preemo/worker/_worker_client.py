@@ -97,6 +97,17 @@ class Function:
 
 # TODO(adrian@preemo.io, 05/11/2023): add logging
 class WorkerClient:
+    @staticmethod
+    def _convert_cores_to_millicores(cores: Union[int, float]) -> int:
+        value = 1000 * cores
+        if isinstance(value, int):
+            return value
+
+        if not value.is_integer():
+            raise Exception("core precision must not exceed 3 decimal places")
+
+        return int(value)
+
     def __init__(
         self,
         *,
@@ -205,8 +216,12 @@ class WorkerClient:
             if all(o is None for o in [cores, gpu, memory, storage]):
                 resource_requirements = None
             else:
+                millicores=
                 if gpu is None:
                     # cpu
+                    cpu_requirements = CpuRequirements(
+                        millicores=None, memory_in_bytes=None, storage_in_bytes=None
+                    )
                     pass
                 else:
                     # gpu
