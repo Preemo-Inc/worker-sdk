@@ -82,7 +82,7 @@ class Function:
 
         if kind == "artifact_id":
             return Result(
-                artifact_id=ArtifactId(value=function_result.artifact_id),
+                artifact_id=ArtifactId(function_result.artifact_id),
                 artifact_manager=self._artifact_manager,
             )
 
@@ -166,7 +166,7 @@ class WorkerClient:
             elif kind == "artifact_id":
                 results.append(
                     Result(
-                        artifact_id=ArtifactId(value=function_result.artifact_id),
+                        artifact_id=ArtifactId(function_result.artifact_id),
                         artifact_manager=self._artifact_manager,
                     )
                 )

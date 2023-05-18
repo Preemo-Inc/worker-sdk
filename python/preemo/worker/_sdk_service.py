@@ -60,7 +60,7 @@ class SdkService(SdkServiceServicer):
 
         if kind == "artifact_id":
             return self._artifact_manager.get_artifact(
-                artifact_id=ArtifactId(value=value.artifact_id)
+                artifact_id=ArtifactId(value.artifact_id)
             )
 
         assert_never(kind)
@@ -92,7 +92,7 @@ class SdkService(SdkServiceServicer):
             result_artifact_id = self._artifact_manager.create_artifact(
                 content=result, type_=ArtifactType.RESULT
             )
-            result_value = Value(artifact_id=result_artifact_id.value)
+            result_value = Value(artifact_id=result_artifact_id)
 
         return ExecuteFunctionResponse(result=result_value)
 
