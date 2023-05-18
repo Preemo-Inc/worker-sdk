@@ -13,7 +13,7 @@ from preemo.gen.endpoints.register_function_pb2 import (
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
 from preemo.gen.models.value_pb2 import Value
 from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
-from preemo.worker._bytes import ByteDict
+from preemo.worker._bytes import ByteDict, convert_byte_dict_to_bytes
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import assert_never
@@ -104,9 +104,53 @@ class WorkerClient:
             return value
 
         if not value.is_integer():
-            raise Exception("core precision must not exceed 3 decimal places")
+            raise Exception("cores precision must not exceed 3 decimal places")
 
         return int(value)
+
+    @staticmethod
+    def _construct_resource_requirements(
+        *,
+        cores: Optional[Union[int, float]] = None,
+        gpu: Optional[str] = None,
+        memory: Optional[ByteDict] = None,
+        storage: Optional[ByteDict] = None,
+    ) -> Optional[ResourceRequirements]:
+        if all(o is None for o in [cores, gpu, memory, storage]):
+            return None
+
+        memory_in_bytes = None if memory is None else convert_byte_dict_to_bytes(memory)
+
+        storage_in_bytes = (
+            None if storage is None else convert_byte_dict_to_bytes(storage)
+        )
+
+        if gpu is None:
+            millicores = (
+                None
+                if cores is None
+                else WorkerClient._convert_cores_to_millicores(cores)
+            )
+
+            return ResourceRequirements(
+                cpu=CpuRequirements(
+                    millicores=millicores,
+                    memory_in_bytes=memory_in_bytes,
+                    storage_in_bytes=storage_in_bytes,
+                )
+            )
+
+        if isinstance(cores, float):
+            raise Exception("cores must not be a float")
+
+        return ResourceRequirements(
+            gpu=GpuRequirements(
+                gpu_model=gpu,
+                cores=cores,
+                memory_in_bytes=memory_in_bytes,
+                storage_in_bytes=storage_in_bytes,
+            )
+        )
 
     def __init__(
         self,
@@ -213,32 +257,12 @@ class WorkerClient:
                 function, name=function_name, namespace=namespace
             )
 
-            if all(o is None for o in [cores, gpu, memory, storage]):
-                resource_requirements = None
-            else:
-                millicores=
-                if gpu is None:
-                    # cpu
-                    cpu_requirements = CpuRequirements(
-                        millicores=None, memory_in_bytes=None, storage_in_bytes=None
-                    )
-                    pass
-                else:
-                    # gpu
-                    pass
-
-                resource_requirements = ResourceRequirements()
-
-            if gpu is None:
-                # might be cpu req
-                if cores is not None or memory is not None or storage is not None:
-                    # TODO(adrian@preemo.io, 05/18/2023): fix
-                    cpu_requirements = CpuRequirements(
-                        millicores=None, memory_in_bytes=None, storage_in_bytes=None
-                    )
-                pass
-            else:
-                pass
+            resource_requirements = WorkerClient._construct_resource_requirements(
+                cores=cores,
+                gpu=gpu,
+                memory=memory,
+                storage=storage,
+            )
 
             self._messaging_client.register_function(
                 RegisterFunctionRequest(
