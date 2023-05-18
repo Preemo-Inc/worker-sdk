@@ -142,7 +142,7 @@ class WorkerClient:
             )
 
         if isinstance(cores, float):
-            raise Exception("cores must not be a float")
+            raise Exception("cores must not be a float when gpu is specified")
 
         return ResourceRequirements(
             gpu=GpuRequirements(

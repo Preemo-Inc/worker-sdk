@@ -184,6 +184,12 @@ class TestConstructResourceRequirements:
             )
         )
 
+    def test_fails_with_gpu_and_float_cores(self) -> None:
+        with pytest.raises(
+            Exception, match="cores must not be a float when gpu is specified"
+        ):
+            WorkerClient._construct_resource_requirements(cores=3.1, gpu="anything")
+
 
 class TestRegister:
     def test_param_variations(self) -> None:
