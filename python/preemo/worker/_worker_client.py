@@ -98,8 +98,14 @@ class Function:
 # TODO(adrian@preemo.io, 05/11/2023): add logging
 class WorkerClient:
     @staticmethod
+    def _ensure_value_is_non_negative(
+        *, name: str, value: Optional[Union[int, float]]
+    ) -> None:
+        if value is not None and value < 0:
+            raise Exception(f"{name} must not be negative")
+
+    @staticmethod
     def _convert_cores_to_millicores(cores: Union[int, float]) -> int:
-        # TODO(adrian@preemo.io, 05/18/2023): verify positive value?
         value = 1000 * cores
         if isinstance(value, int):
             return value
@@ -124,6 +130,12 @@ class WorkerClient:
 
         storage_in_bytes = (
             None if storage is None else convert_byte_dict_to_bytes(storage)
+        )
+
+        WorkerClient._ensure_value_is_non_negative(name="cores", value=cores)
+        WorkerClient._ensure_value_is_non_negative(name="memory", value=memory_in_bytes)
+        WorkerClient._ensure_value_is_non_negative(
+            name="storage", value=storage_in_bytes
         )
 
         if gpu is None:
