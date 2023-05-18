@@ -35,14 +35,18 @@ from preemo.gen.endpoints.check_function_pb2 import (
     CheckFunctionResponse,
 )
 from preemo.gen.endpoints.register_function_pb2 import (
+    CpuRequirements,
+    GpuRequirements,
     RegisterFunctionRequest,
     RegisterFunctionResponse,
+    ResourceRequirements,
 )
 from preemo.gen.endpoints.sdk_server_ready_pb2 import (
     SdkServerReadyRequest,
     SdkServerReadyResponse,
 )
 from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
+from preemo.worker._bytes import GiB, MiB
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._worker_client import WorkerClient
@@ -115,17 +119,70 @@ class DoNothingMessagingClient(IMessagingClient):
 
 
 class TestConvertCoresToMillicores:
-    def test_works_for_int(self) -> None:
-        assert WorkerClient._convert_cores_to_millicores(3) == 3000
+    def test_with_int(self) -> None:
+        result = WorkerClient._convert_cores_to_millicores(3)
+        assert result == 3000
 
-    def test_works_for_float(self) -> None:
-        assert WorkerClient._convert_cores_to_millicores(3.123) == 3123
+    def test_with_float(self) -> None:
+        result = WorkerClient._convert_cores_to_millicores(3.123)
+        assert result == 3123
 
-    def test_fails_for_invalid_float(self) -> None:
+    def test_fails_with_invalid_float(self) -> None:
         with pytest.raises(
             Exception, match="cores precision must not exceed 3 decimal places"
         ):
             WorkerClient._convert_cores_to_millicores(3.1234)
+
+
+class TestConstructResourceRequirements:
+    def test_with_no_resource_requirements(self) -> None:
+        result = WorkerClient._construct_resource_requirements()
+        assert result is None
+
+    def test_with_only_gpu(self) -> None:
+        result = WorkerClient._construct_resource_requirements(gpu="anything")
+        assert result == ResourceRequirements(gpu=GpuRequirements(gpu_model="anything"))
+
+    def test_with_only_cores(self) -> None:
+        result = WorkerClient._construct_resource_requirements(cores=3)
+        assert result == ResourceRequirements(cpu=CpuRequirements(millicores=3000))
+
+    def test_with_only_memory(self) -> None:
+        result = WorkerClient._construct_resource_requirements(memory={"MiB": 3})
+        assert result == ResourceRequirements(
+            cpu=CpuRequirements(memory_in_bytes=(3 * MiB))
+        )
+
+    def test_with_only_storage(self) -> None:
+        result = WorkerClient._construct_resource_requirements(storage={"GiB": 3})
+        assert result == ResourceRequirements(
+            cpu=CpuRequirements(storage_in_bytes=(3 * GiB))
+        )
+
+    def test_with_all_cpu_values(self) -> None:
+        result = WorkerClient._construct_resource_requirements(
+            cores=3, memory={"MiB": 3}, storage={"GiB": 3}
+        )
+
+        assert result == ResourceRequirements(
+            cpu=CpuRequirements(
+                millicores=3000, memory_in_bytes=(3 * MiB), storage_in_bytes=(3 * GiB)
+            )
+        )
+
+    def test_with_all_gpu_values(self) -> None:
+        result = WorkerClient._construct_resource_requirements(
+            cores=3, gpu="anything", memory={"MiB": 3}, storage={"GiB": 3}
+        )
+
+        assert result == ResourceRequirements(
+            gpu=GpuRequirements(
+                gpu_model="anything",
+                cores=3,
+                memory_in_bytes=(3 * MiB),
+                storage_in_bytes=(3 * GiB),
+            )
+        )
 
 
 class TestRegister:
