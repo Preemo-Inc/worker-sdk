@@ -3,7 +3,7 @@ import enum
 import gzip
 import math
 import os
-from typing import Dict, List, Protocol, runtime_checkable
+from typing import Dict, List, NewType, Protocol, runtime_checkable
 
 import requests
 from pydantic import StrictInt
@@ -41,11 +41,9 @@ from preemo.gen.models.artifact_type_pb2 import (
 )
 from preemo.worker._env_manager import EnvManager
 from preemo.worker._messaging_client import IMessagingClient
-from preemo.worker._types import ImmutableModel, StringValue
+from preemo.worker._types import ImmutableModel
 
-
-class ArtifactId(StringValue):
-    pass
+ArtifactId = NewType("ArtifactId", str)
 
 
 class Artifact(ImmutableModel):
@@ -149,7 +147,7 @@ class ArtifactManager:
 
         return [
             Artifact(
-                id=ArtifactId(value=result.artifact_id),
+                id=ArtifactId(result.artifact_id),
                 part_size_threshold=result.part_size_threshold,
             )
             for _, result in sorted(
@@ -171,28 +169,22 @@ class ArtifactManager:
         if len(artifacts) != len(contents):
             raise Exception("expected artifacts and contents lengths to be equal")
 
-        allocate_configs_by_artifact_id_value: Dict[
-            str, AllocateArtifactPartConfig
-        ] = {}
-        upload_configs_by_artifact_id_value: Dict[str, GetArtifactUploadUrlConfig] = {}
+        allocate_configs_by_artifact_id: Dict[str, AllocateArtifactPartConfig] = {}
+        upload_configs_by_artifact_id: Dict[str, GetArtifactUploadUrlConfig] = {}
         for artifact, content in zip(artifacts, contents):
             part_count = ArtifactManager._calculate_part_count(
                 content_length=len(content),
                 part_size_threshold=artifact.part_size_threshold,
             )
 
-            allocate_configs_by_artifact_id_value[
-                artifact.id.value
-            ] = AllocateArtifactPartConfig(
+            allocate_configs_by_artifact_id[artifact.id] = AllocateArtifactPartConfig(
                 metadatas_by_part_number={
                     part_number: AllocateArtifactPartConfigMetadata()
                     for part_number in range(part_count)
                 }
             )
 
-            upload_configs_by_artifact_id_value[
-                artifact.id.value
-            ] = GetArtifactUploadUrlConfig(
+            upload_configs_by_artifact_id[artifact.id] = GetArtifactUploadUrlConfig(
                 metadatas_by_part_number={
                     part_number: GetArtifactUploadUrlConfigMetadata()
                     for part_number in range(part_count)
@@ -201,13 +193,13 @@ class ArtifactManager:
 
         self._messaging_client.batch_allocate_artifact_part(
             BatchAllocateArtifactPartRequest(
-                configs_by_artifact_id=allocate_configs_by_artifact_id_value
+                configs_by_artifact_id=allocate_configs_by_artifact_id
             )
         )
 
         get_url_response = self._messaging_client.batch_get_artifact_upload_url(
             BatchGetArtifactUploadUrlRequest(
-                configs_by_artifact_id=upload_configs_by_artifact_id_value
+                configs_by_artifact_id=upload_configs_by_artifact_id
             )
         )
 
@@ -217,7 +209,7 @@ class ArtifactManager:
             futures = []
             for artifact, content in zip(artifacts, contents):
                 content_view = memoryview(content)
-                result = get_url_response.results_by_artifact_id[artifact.id.value]
+                result = get_url_response.results_by_artifact_id[artifact.id]
 
                 for part_number, metadata in result.metadatas_by_part_number.items():
                     start_index = part_number * artifact.part_size_threshold
@@ -251,7 +243,7 @@ class ArtifactManager:
         self._messaging_client.batch_finalize_artifact(
             BatchFinalizeArtifactRequest(
                 configs_by_artifact_id={
-                    artifact.id.value: FinalizeArtifactConfig(
+                    artifact.id: FinalizeArtifactConfig(
                         total_size=len(content),
                         part_count=ArtifactManager._calculate_part_count(
                             content_length=len(content),
@@ -276,24 +268,23 @@ class ArtifactManager:
         get_artifact_response = self._messaging_client.batch_get_artifact(
             BatchGetArtifactRequest(
                 configs_by_artifact_id={
-                    artifact_id.value: GetArtifactConfig()
-                    for artifact_id in artifact_ids
+                    artifact_id: GetArtifactConfig() for artifact_id in artifact_ids
                 }
             )
         )
 
-        configs_by_artifact_id_value = {
-            artifact_id_value: GetArtifactDownloadUrlConfig(
+        configs_by_artifact_id = {
+            artifact_id: GetArtifactDownloadUrlConfig(
                 metadatas_by_part_number={
                     part_number: GetArtifactDownloadUrlConfigMetadata()
                     for part_number in range(result.part_count)
                 }
             )
-            for artifact_id_value, result in get_artifact_response.results_by_artifact_id.items()
+            for artifact_id, result in get_artifact_response.results_by_artifact_id.items()
         }
         get_url_response = self._messaging_client.batch_get_artifact_download_url(
             BatchGetArtifactDownloadUrlRequest(
-                configs_by_artifact_id=configs_by_artifact_id_value
+                configs_by_artifact_id=configs_by_artifact_id
             )
         )
 
@@ -304,7 +295,7 @@ class ArtifactManager:
                 ArtifactId, Dict[int, concurrent.futures.Future]
             ] = {}
             for (
-                artifact_id_value,
+                artifact_id,
                 artifact_part_result,
             ) in get_url_response.results_by_artifact_id.items():
                 futures_by_part_number: Dict[int, concurrent.futures.Future] = {}
@@ -318,7 +309,7 @@ class ArtifactManager:
                     )
 
                 futures_by_artifact_id_and_part_number[
-                    ArtifactId(value=artifact_id_value)
+                    ArtifactId(artifact_id)
                 ] = futures_by_part_number
 
             futures = [
@@ -343,7 +334,7 @@ class ArtifactManager:
                     artifact_id
                 ]
                 get_artifact_result = get_artifact_response.results_by_artifact_id[
-                    artifact_id.value
+                    artifact_id
                 ]
 
                 # TODO(adrian@preemo.io, 06/20/2023): Consider other options for constructing the byte result,
