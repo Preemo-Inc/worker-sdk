@@ -1,5 +1,7 @@
 from typing import List
 
+import pytest
+
 from preemo.gen.endpoints.batch_allocate_artifact_part_pb2 import (
     BatchAllocateArtifactPartRequest,
     BatchAllocateArtifactPartResponse,
@@ -110,6 +112,20 @@ class DoNothingMessagingClient(IMessagingClient):
         self, request: SdkServerReadyRequest
     ) -> SdkServerReadyResponse:
         raise Exception("no call expected")
+
+
+class TestConvertCoresToMillicores:
+    def test_works_for_int(self) -> None:
+        assert WorkerClient._convert_cores_to_millicores(3) == 3000
+
+    def test_works_for_float(self) -> None:
+        assert WorkerClient._convert_cores_to_millicores(3.123) == 3123
+
+    def test_fails_for_invalid_float(self) -> None:
+        with pytest.raises(
+            Exception, match="cores precision must not exceed 3 decimal places"
+        ):
+            WorkerClient._convert_cores_to_millicores(3.1234)
 
 
 class TestRegister:

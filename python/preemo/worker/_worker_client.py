@@ -99,6 +99,7 @@ class Function:
 class WorkerClient:
     @staticmethod
     def _convert_cores_to_millicores(cores: Union[int, float]) -> int:
+        # TODO(adrian@preemo.io, 05/18/2023): verify positive value?
         value = 1000 * cores
         if isinstance(value, int):
             return value

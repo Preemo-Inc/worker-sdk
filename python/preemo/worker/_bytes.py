@@ -19,6 +19,7 @@ mebibyte_literal: Literal["MiB"] = "MiB"
 gibibyte_literal: Literal["GiB"] = "GiB"
 
 
+# TODO(adrian@preemo.io, 05/18/2023): verify positive values?
 def convert_mebibytes_to_bytes(mebibyte_dict: MebibyteDict) -> int:
     return mebibyte_dict[mebibyte_literal] * MiB
 
