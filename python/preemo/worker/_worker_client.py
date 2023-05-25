@@ -17,6 +17,7 @@ from preemo.worker._bytes import ByteDict, convert_byte_dict_to_bytes
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import assert_never
+from preemo.worker._validation import ensure_value_is_non_negative
 
 
 class Result:
@@ -98,13 +99,6 @@ class Function:
 # TODO(adrian@preemo.io, 05/11/2023): add logging
 class WorkerClient:
     @staticmethod
-    def _ensure_value_is_non_negative(
-        *, name: str, value: Optional[Union[int, float]]
-    ) -> None:
-        if value is not None and value < 0:
-            raise Exception(f"{name} must not be negative")
-
-    @staticmethod
     def _convert_cores_to_millicores(cores: Union[int, float]) -> int:
         value = 1000 * cores
         if isinstance(value, int):
@@ -132,9 +126,9 @@ class WorkerClient:
             None if storage is None else convert_byte_dict_to_bytes(storage)
         )
 
-        WorkerClient._ensure_value_is_non_negative(name="cores", value=cores)
-        WorkerClient._ensure_value_is_non_negative(name="memory", value=memory_in_bytes)
-        WorkerClient._ensure_value_is_non_negative(
+        ensure_value_is_non_negative(name="cores", value=cores)
+        ensure_value_is_non_negative(name="memory", value=memory_in_bytes)
+        ensure_value_is_non_negative(
             name="storage", value=storage_in_bytes
         )
 

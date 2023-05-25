@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Mapping, Optional, Union
 
 
 def ensure_keys_match(*, expected: Mapping, actual: Mapping) -> None:
@@ -16,3 +16,10 @@ def ensure_keys_match(*, expected: Mapping, actual: Mapping) -> None:
         message += f"\nunexpected keys: {unexpected_keys}"
 
     raise Exception(message)
+
+
+def ensure_value_is_non_negative(
+    *, name: str, value: Optional[Union[int, float]]
+) -> None:
+    if value is not None and value < 0:
+        raise Exception(f"{name} must not be negative")
