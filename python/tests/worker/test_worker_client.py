@@ -139,12 +139,12 @@ class TestConstructResourceRequirements:
         result = WorkerClient._construct_resource_requirements()
         assert result is None
 
-    def test_with_only_gpu(self) -> None:
-        result = WorkerClient._construct_resource_requirements(gpu="anything")
+    def test_with_only_gpu_model(self) -> None:
+        result = WorkerClient._construct_resource_requirements(gpu_model="anything")
         assert result == ResourceRequirements(gpu=GpuRequirements(gpu_model="anything"))
 
-    def test_with_only_cores(self) -> None:
-        result = WorkerClient._construct_resource_requirements(cores=3)
+    def test_with_only_cpu_cores(self) -> None:
+        result = WorkerClient._construct_resource_requirements(cpu_cores=3)
         assert result == ResourceRequirements(cpu=CpuRequirements(millicores=3000))
 
     def test_with_only_memory(self) -> None:
@@ -161,7 +161,7 @@ class TestConstructResourceRequirements:
 
     def test_with_all_cpu_values(self) -> None:
         result = WorkerClient._construct_resource_requirements(
-            cores=3, memory={"MiB": 3}, storage={"GiB": 3}
+            cpu_cores=3, memory={"MiB": 3}, storage={"GiB": 3}
         )
 
         assert result == ResourceRequirements(
@@ -172,23 +172,32 @@ class TestConstructResourceRequirements:
 
     def test_with_all_gpu_values(self) -> None:
         result = WorkerClient._construct_resource_requirements(
-            cores=3, gpu="anything", memory={"MiB": 3}, storage={"GiB": 3}
+            gpu_count=3, gpu_model="anything", memory={"MiB": 3}, storage={"GiB": 3}
         )
 
         assert result == ResourceRequirements(
             gpu=GpuRequirements(
                 gpu_model="anything",
-                cores=3,
+                gpu_count=3,
                 memory_in_bytes=(3 * MiB),
                 storage_in_bytes=(3 * GiB),
             )
         )
 
-    def test_fails_with_gpu_and_float_cores(self) -> None:
+    def test_fails_with_gpu_model_and_cpu_cores(self) -> None:
         with pytest.raises(
-            Exception, match="cores must not be a float when gpu is specified"
+            Exception, match="cannot specify cpu_cores while specifying a gpu_model"
         ):
-            WorkerClient._construct_resource_requirements(cores=3.1, gpu="anything")
+            WorkerClient._construct_resource_requirements(
+                cpu_cores=3, gpu_model="anything"
+            )
+
+    def test_fails_with_gpu_count_and_no_gpu_model(self) -> None:
+        with pytest.raises(
+            Exception,
+            match="cannot specify gpu_count without also specifying a gpu_model",
+        ):
+            WorkerClient._construct_resource_requirements(gpu_count=3)
 
 
 class TestRegister:
