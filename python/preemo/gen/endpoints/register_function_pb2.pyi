@@ -61,13 +61,13 @@ class GpuRequirements(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     GPU_MODEL_FIELD_NUMBER: builtins.int
-    CORES_FIELD_NUMBER: builtins.int
+    GPU_COUNT_FIELD_NUMBER: builtins.int
     MEMORY_IN_BYTES_FIELD_NUMBER: builtins.int
     STORAGE_IN_BYTES_FIELD_NUMBER: builtins.int
     gpu_model: builtins.str
     """Required field indicating which GPU machine should be used to execute the function."""
-    cores: builtins.int
-    """Optional field indicating the number of GPU cores needed."""
+    gpu_count: builtins.int
+    """Optional field indicating the number of GPU devices needed."""
     memory_in_bytes: builtins.int
     """Optional field indicating amount of memory needed.
     Not all precisions may be accepted.
@@ -82,14 +82,14 @@ class GpuRequirements(google.protobuf.message.Message):
         self,
         *,
         gpu_model: builtins.str | None = ...,
-        cores: builtins.int | None = ...,
+        gpu_count: builtins.int | None = ...,
         memory_in_bytes: builtins.int | None = ...,
         storage_in_bytes: builtins.int | None = ...,
     ) -> None: ...
-    def HasField(self, field_name: typing_extensions.Literal["_cores", b"_cores", "_gpu_model", b"_gpu_model", "_memory_in_bytes", b"_memory_in_bytes", "_storage_in_bytes", b"_storage_in_bytes", "cores", b"cores", "gpu_model", b"gpu_model", "memory_in_bytes", b"memory_in_bytes", "storage_in_bytes", b"storage_in_bytes"]) -> builtins.bool: ...
-    def ClearField(self, field_name: typing_extensions.Literal["_cores", b"_cores", "_gpu_model", b"_gpu_model", "_memory_in_bytes", b"_memory_in_bytes", "_storage_in_bytes", b"_storage_in_bytes", "cores", b"cores", "gpu_model", b"gpu_model", "memory_in_bytes", b"memory_in_bytes", "storage_in_bytes", b"storage_in_bytes"]) -> None: ...
+    def HasField(self, field_name: typing_extensions.Literal["_gpu_count", b"_gpu_count", "_gpu_model", b"_gpu_model", "_memory_in_bytes", b"_memory_in_bytes", "_storage_in_bytes", b"_storage_in_bytes", "gpu_count", b"gpu_count", "gpu_model", b"gpu_model", "memory_in_bytes", b"memory_in_bytes", "storage_in_bytes", b"storage_in_bytes"]) -> builtins.bool: ...
+    def ClearField(self, field_name: typing_extensions.Literal["_gpu_count", b"_gpu_count", "_gpu_model", b"_gpu_model", "_memory_in_bytes", b"_memory_in_bytes", "_storage_in_bytes", b"_storage_in_bytes", "gpu_count", b"gpu_count", "gpu_model", b"gpu_model", "memory_in_bytes", b"memory_in_bytes", "storage_in_bytes", b"storage_in_bytes"]) -> None: ...
     @typing.overload
-    def WhichOneof(self, oneof_group: typing_extensions.Literal["_cores", b"_cores"]) -> typing_extensions.Literal["cores"] | None: ...
+    def WhichOneof(self, oneof_group: typing_extensions.Literal["_gpu_count", b"_gpu_count"]) -> typing_extensions.Literal["gpu_count"] | None: ...
     @typing.overload
     def WhichOneof(self, oneof_group: typing_extensions.Literal["_gpu_model", b"_gpu_model"]) -> typing_extensions.Literal["gpu_model"] | None: ...
     @typing.overload

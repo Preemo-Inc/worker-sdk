@@ -24,8 +24,9 @@ def parallel(
 def register(
     outer_function: Optional[Callable] = ...,
     *,
-    cores: Optional[Union[int, float]] = ...,
-    gpu: Optional[str] = ...,
+    cpu_cores: Optional[Union[int, float]] = ...,
+    gpu_count: Optional[int] = ...,
+    gpu_model: Optional[str] = ...,
     memory: Optional[ByteDict] = ...,
     name: Optional[str] = ...,
     namespace: Optional[str] = ...,

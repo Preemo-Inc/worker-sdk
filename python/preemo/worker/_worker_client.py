@@ -112,12 +112,13 @@ class WorkerClient:
     @staticmethod
     def _construct_resource_requirements(
         *,
-        cores: Optional[Union[int, float]] = None,
-        gpu: Optional[str] = None,
+        cpu_cores: Optional[Union[int, float]] = None,
+        gpu_count: Optional[int] = None,
+        gpu_model: Optional[str] = None,
         memory: Optional[ByteDict] = None,
         storage: Optional[ByteDict] = None,
     ) -> Optional[ResourceRequirements]:
-        if all(o is None for o in [cores, gpu, memory, storage]):
+        if all(o is None for o in [cpu_cores, gpu_count, gpu_model, memory, storage]):
             return None
 
         memory_in_bytes = None if memory is None else convert_byte_dict_to_bytes(memory)
@@ -126,17 +127,21 @@ class WorkerClient:
             None if storage is None else convert_byte_dict_to_bytes(storage)
         )
 
-        ensure_value_is_non_negative(name="cores", value=cores)
+        ensure_value_is_non_negative(name="cpu_cores", value=cpu_cores)
+        ensure_value_is_non_negative(name="gpu_count", value=gpu_count)
         ensure_value_is_non_negative(name="memory", value=memory_in_bytes)
-        ensure_value_is_non_negative(
-            name="storage", value=storage_in_bytes
-        )
+        ensure_value_is_non_negative(name="storage", value=storage_in_bytes)
 
-        if gpu is None:
+        if gpu_model is None:
+            if gpu_count is not None:
+                raise Exception(
+                    "cannot specify gpu_count without also specifying a gpu_model"
+                )
+
             millicores = (
                 None
-                if cores is None
-                else WorkerClient._convert_cores_to_millicores(cores)
+                if cpu_cores is None
+                else WorkerClient._convert_cores_to_millicores(cpu_cores)
             )
 
             return ResourceRequirements(
@@ -147,13 +152,15 @@ class WorkerClient:
                 )
             )
 
-        if isinstance(cores, float):
-            raise Exception("cores must not be a float when gpu is specified")
+        if cpu_cores is not None:
+            raise Exception(
+                "cannot specify cpu_cores while specifying a gpu_model (perhaps you meant gpu_count?)"
+            )
 
         return ResourceRequirements(
             gpu=GpuRequirements(
-                gpu_model=gpu,
-                cores=cores,
+                gpu_model=gpu_model,
+                gpu_count=gpu_count,
                 memory_in_bytes=memory_in_bytes,
                 storage_in_bytes=storage_in_bytes,
             )
@@ -247,8 +254,10 @@ class WorkerClient:
         self,
         outer_function: Optional[Callable] = None,
         *,
-        cores: Optional[Union[int, float]] = None,
-        gpu: Optional[str] = None,
+        cpu_cores: Optional[Union[int, float]] = None,
+        gpu_count: Optional[int] = None,
+        # TODO(adrian@preemo.io, 06/01/2023): create an enum of supported options to make the gpu_model parameter easier to use
+        gpu_model: Optional[str] = None,
         memory: Optional[ByteDict] = None,
         name: Optional[str] = None,
         namespace: Optional[str] = None,
@@ -265,8 +274,9 @@ class WorkerClient:
             )
 
             resource_requirements = WorkerClient._construct_resource_requirements(
-                cores=cores,
-                gpu=gpu,
+                cpu_cores=cpu_cores,
+                gpu_count=gpu_count,
+                gpu_model=gpu_model,
                 memory=memory,
                 storage=storage,
             )
