@@ -66,7 +66,7 @@ class Function:
             artifact_id = self._artifact_manager.create_artifact(
                 content=params, type_=ArtifactType.PARAMS
             )
-            function_parameter = Value(artifact_id=artifact_id.value)
+            function_parameter = Value(artifact_id=artifact_id)
 
         response = self._messaging_client.batch_execute_function(
             BatchExecuteFunctionRequest(
@@ -88,7 +88,7 @@ class Function:
 
         if kind == "artifact_id":
             return Result(
-                artifact_id=ArtifactId(value=function_result.artifact_id),
+                artifact_id=ArtifactId(function_result.artifact_id),
                 artifact_manager=self._artifact_manager,
             )
 
@@ -214,7 +214,7 @@ class WorkerClient:
                 contents=params, type_=ArtifactType.PARAMS
             )
             function_parameters_by_index = {
-                i: Value(artifact_id=artifact_id.value)
+                i: Value(artifact_id=artifact_id)
                 for i, artifact_id in enumerate(artifact_ids)
             }
 
@@ -240,7 +240,7 @@ class WorkerClient:
             elif kind == "artifact_id":
                 results.append(
                     Result(
-                        artifact_id=ArtifactId(value=function_result.artifact_id),
+                        artifact_id=ArtifactId(function_result.artifact_id),
                         artifact_manager=self._artifact_manager,
                     )
                 )
