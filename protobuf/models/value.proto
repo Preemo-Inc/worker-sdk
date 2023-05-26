@@ -4,6 +4,7 @@ package models;
 
 import "google/protobuf/struct.proto";
 
+// TODO(adrian@preemo.io, 06/01/2023): move this to an ArtifactId message with an optional string value
 message Value {
   oneof kind {
     google.protobuf.NullValue null_value = 1;
