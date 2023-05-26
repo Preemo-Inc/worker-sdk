@@ -4,8 +4,55 @@ package endpoints;
 
 import "models/registered_function.proto";
 
+message CpuRequirements {
+  // Optional field where 1000 millicores equals 1 CPU.
+  // From https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu:
+  // "For CPU resource units, the quantity expression 0.1 is equivalent to the expression 100m, which can be read as 'one hundred millicpu'."
+  optional uint32 millicores = 1;
+
+  // Optional field indicating amount of memory needed.
+  // Not all precisions may be accepted.
+  // For example, the worker may choose to only accept values that are multiples of Mebibytes.
+  optional uint64 memory_in_bytes = 2;
+
+  // Optional field indicating amount of storage needed.
+  // Not all precisions may be accepted.
+  // For example, the worker may choose to only accept values that are multiples of Mebibytes.
+  optional uint64 storage_in_bytes = 3;
+}
+
+message GpuRequirements {
+  // Required field indicating which GPU machine should be used to execute the function.
+  optional string gpu_model = 1;
+
+  // Optional field indicating the number of GPU devices needed.
+  optional uint32 gpu_count = 2;
+
+  // Optional field indicating amount of memory needed.
+  // Not all precisions may be accepted.
+  // For example, the worker may choose to only accept values that are multiples of Mebibytes.
+  optional uint64 memory_in_bytes = 3;
+
+  // Optional field indicating amount of storage needed.
+  // Not all precisions may be accepted.
+  // For example, the worker may choose to only accept values that are multiples of Mebibytes.
+  optional uint64 storage_in_bytes = 4;
+}
+
+message ResourceRequirements {
+  oneof kind {
+    CpuRequirements cpu = 1;
+
+    GpuRequirements gpu = 2;
+  }
+}
+
 message RegisterFunctionRequest {
+  // Required.
   optional models.RegisteredFunction function_to_register = 1;
+
+  // Optional field indicating resources that should be allocated for executing this function.
+  optional ResourceRequirements resource_requirements = 2;
 }
 
 message RegisterFunctionResponse {

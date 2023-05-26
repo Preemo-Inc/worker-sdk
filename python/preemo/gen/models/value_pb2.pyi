@@ -17,6 +17,8 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 
 @typing_extensions.final
 class Value(google.protobuf.message.Message):
+    """TODO(adrian@preemo.io, 06/01/2023): move this to an ArtifactId message with an optional string value"""
+
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
     NULL_VALUE_FIELD_NUMBER: builtins.int

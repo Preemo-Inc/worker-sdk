@@ -1,16 +1,23 @@
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Union
 
 from google.protobuf.struct_pb2 import NULL_VALUE
 
 from preemo.gen.endpoints.batch_execute_function_pb2 import BatchExecuteFunctionRequest
 from preemo.gen.endpoints.check_function_pb2 import CheckFunctionRequest
-from preemo.gen.endpoints.register_function_pb2 import RegisterFunctionRequest
+from preemo.gen.endpoints.register_function_pb2 import (
+    CpuRequirements,
+    GpuRequirements,
+    RegisterFunctionRequest,
+    ResourceRequirements,
+)
 from preemo.gen.models.registered_function_pb2 import RegisteredFunction
 from preemo.gen.models.value_pb2 import Value
 from preemo.worker._artifact_manager import ArtifactId, ArtifactType, IArtifactManager
+from preemo.worker._bytes import ByteDict, convert_byte_dict_to_bytes
 from preemo.worker._function_registry import FunctionRegistry
 from preemo.worker._messaging_client import IMessagingClient
 from preemo.worker._types import assert_never
+from preemo.worker._validation import ensure_value_is_non_negative
 
 
 class Result:
@@ -91,6 +98,74 @@ class Function:
 
 # TODO(adrian@preemo.io, 05/11/2023): add logging
 class WorkerClient:
+    @staticmethod
+    def _convert_cores_to_millicores(cores: Union[int, float]) -> int:
+        value = 1000 * cores
+        if isinstance(value, int):
+            return value
+
+        if not value.is_integer():
+            raise Exception("cores precision must not exceed 3 decimal places")
+
+        return int(value)
+
+    @staticmethod
+    def _construct_resource_requirements(
+        *,
+        cpu_cores: Optional[Union[int, float]] = None,
+        gpu_count: Optional[int] = None,
+        gpu_model: Optional[str] = None,
+        memory: Optional[ByteDict] = None,
+        storage: Optional[ByteDict] = None,
+    ) -> Optional[ResourceRequirements]:
+        if all(o is None for o in [cpu_cores, gpu_count, gpu_model, memory, storage]):
+            return None
+
+        memory_in_bytes = None if memory is None else convert_byte_dict_to_bytes(memory)
+
+        storage_in_bytes = (
+            None if storage is None else convert_byte_dict_to_bytes(storage)
+        )
+
+        ensure_value_is_non_negative(name="cpu_cores", value=cpu_cores)
+        ensure_value_is_non_negative(name="gpu_count", value=gpu_count)
+        ensure_value_is_non_negative(name="memory", value=memory_in_bytes)
+        ensure_value_is_non_negative(name="storage", value=storage_in_bytes)
+
+        if gpu_model is None:
+            if gpu_count is not None:
+                raise Exception(
+                    "cannot specify gpu_count without also specifying a gpu_model"
+                )
+
+            millicores = (
+                None
+                if cpu_cores is None
+                else WorkerClient._convert_cores_to_millicores(cpu_cores)
+            )
+
+            return ResourceRequirements(
+                cpu=CpuRequirements(
+                    millicores=millicores,
+                    memory_in_bytes=memory_in_bytes,
+                    storage_in_bytes=storage_in_bytes,
+                )
+            )
+
+        if cpu_cores is not None:
+            raise Exception(
+                "cannot specify cpu_cores while specifying a gpu_model (perhaps you meant gpu_count?)"
+            )
+
+        return ResourceRequirements(
+            gpu=GpuRequirements(
+                gpu_model=gpu_model,
+                gpu_count=gpu_count,
+                memory_in_bytes=memory_in_bytes,
+                storage_in_bytes=storage_in_bytes,
+            )
+        )
+
     def __init__(
         self,
         *,
@@ -179,8 +254,14 @@ class WorkerClient:
         self,
         outer_function: Optional[Callable] = None,
         *,
+        cpu_cores: Optional[Union[int, float]] = None,
+        gpu_count: Optional[int] = None,
+        # TODO(adrian@preemo.io, 06/01/2023): create an enum of supported options to make the gpu_model parameter easier to use
+        gpu_model: Optional[str] = None,
+        memory: Optional[ByteDict] = None,
         name: Optional[str] = None,
         namespace: Optional[str] = None,
+        storage: Optional[ByteDict] = None,
     ) -> Callable:
         def decorator(function: Callable) -> Callable:
             if name is None:
@@ -192,11 +273,20 @@ class WorkerClient:
                 function, name=function_name, namespace=namespace
             )
 
+            resource_requirements = WorkerClient._construct_resource_requirements(
+                cpu_cores=cpu_cores,
+                gpu_count=gpu_count,
+                gpu_model=gpu_model,
+                memory=memory,
+                storage=storage,
+            )
+
             self._messaging_client.register_function(
                 RegisterFunctionRequest(
                     function_to_register=RegisteredFunction(
                         name=function_name, namespace=namespace
-                    )
+                    ),
+                    resource_requirements=resource_requirements,
                 )
             )
 

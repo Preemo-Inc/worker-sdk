@@ -34,7 +34,53 @@ def do_something(params: str):
     ...
 ```
 
-At the moment, only functions that take 0 or 1 bytes arguments will work. These functions should also either return `None` or bytes.
+At the moment, only functions that take 0 or 1 `bytes` arguments will work. These functions should also either return `None` or `bytes`.
+
+#### Resource Requirements
+
+If your function has particular resource requirements, you should specify those during registration.
+
+For example, if your function needs 4 cpu cores to run effectively, you can pass a configuration object.
+
+```python
+from preemo.worker import register
+
+@register(name="some_name", namespace="dev", cpu_cores=4)
+def do_something(params: bytes):
+    ...
+```
+
+You can specify the memory and/or storage requirments in either Mebibytes (`MiB`) or Gibibytes (`GiB`).
+
+```python
+from preemo.worker import register
+
+@register(name="some_name", namespace="dev", memory={ "MiB": 100 }, storage={ "GiB": 10 })
+def do_something(params: bytes):
+    ...
+```
+
+If you need GPUs to effectively run your function, you may pass the specific model to use.
+
+```python
+from preemo.worker import register
+
+@register(name="some_name", namespace="dev", gpu_model="nvidia-tesla-k80")
+def do_something(params: bytes):
+    ...
+```
+
+Along with a gpu model, you may pass a number of gpu devices needed.
+
+```python
+from preemo.worker import register
+
+@register(name="some_name", namespace="dev", gpu_model="nvidia-tesla-k80", gpu_count=2)
+def do_something(params: bytes):
+    ...
+```
+
+<!-- TODO(adrian@preemo.io, 06/01/2023): Include a list of supported gpu models -->
 
 ### Execute Function
 
